@@ -202,24 +202,12 @@ rda_high_dim.formula <- function(formula, data, ...) {
 #' @param ... unused
 #' @export
 print.rda_high_dim <- function(x, ...) {
-  cat("Call:\n")
-  print(x$call)
-  cat("Sample Size:\n")
-  print(x$N)
-  cat("Number of Features:\n")
-  print(x$p)
-  cat("Classes:\n")
-  print(x$groups)
-  cat("Prior Probabilities:\n")
-  print(sapply(x$est, function(z) z$prior))
-  cat("Reduced dimension, q:\n")
-  print(x$q)
-  cat("Shrinkage type:\n")
-  print(x$shrinkage_type)
-  cat("Lambda:\n")
-  print(x$lambda)
-  cat("Gamma:\n")
-  print(x$gamma)
+  cat("High-Dimensional Regularized Discriminant Analysis\n\n")
+  print_basics(x, ...)
+  cat("\nReduced dimension:", x$q, "\n")
+  cat("Shrinkage type:", x$shrinkage_type, "\n")
+  cat("Lambda:", signif(x$lambda, 3), "Gamma:", signif(x$gamma, 3), "\n")
+  invisible(x)
 }
 
 #' Predicts the class membership of a matrix of unlabeled observations with a

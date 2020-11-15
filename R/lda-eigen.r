@@ -117,16 +117,9 @@ lda_eigen.formula <- function(formula, data, prior = NULL, ...) {
 #' @param ... unused
 #' @export
 print.lda_eigen <- function(x, ...) {
-  cat("Call:\n")
-  print(x$call)
-  cat("Sample Size:\n")
-  print(x$N)
-  cat("Number of Features:\n")
-  print(x$p)
-  cat("Classes:\n")
-  print(x$groups)
-  cat("Prior Probabilities:\n")
-  print(sapply(x$est, function(z) z$prior))
+  cat("Minimum Distance Rule using Moore-Penrose Inverse\n\n")
+  print_basics(x, ...)
+  invisible(x)
 }
 
 #' Predicts of class membership of a matrix of new observations using the

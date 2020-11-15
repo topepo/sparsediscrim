@@ -169,3 +169,15 @@ outcome_to_factor <- function(y) {
   y
 }
 
+format_priors <- function(x) {
+  priors <- vapply(x$est, function(x) x$prior, numeric(1))
+  paste0(names(priors), " (", round(priors * 100, 2), "%)", collapse = ", ")
+}
+
+print_basics <- function(x, ...) {
+  cat("Sample Size:", x$N, "\n")
+  cat("Number of Features:", x$p, "\n\n")
+  cat("Classes and Prior Probabilities:\n  ")
+  cat(format_priors(x), "\n")
+}
+

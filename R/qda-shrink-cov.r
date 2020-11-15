@@ -129,16 +129,9 @@ qda_shrink_cov.formula <- function(formula, data, prior = NULL, num_alphas = 101
 #' @param ... unused
 #' @export
 print.qda_shrink_cov <- function(x, ...) {
-  cat("Call:\n")
-  print(x$call)
-  cat("Sample Size:\n")
-  print(x$N)
-  cat("Number of Features:\n")
-  print(x$p)
-  cat("Classes:\n")
-  print(x$groups)
-  cat("Prior Probabilities:\n")
-  print(sapply(x$est, function(z) z$prior))
+  cat("Shrinkage-Based Diagonal QDA\n\n")
+  print_basics(x, ...)
+  invisible(x)
 }
 
 #' SDQDA prediction of the class membership of a matrix of new observations.

@@ -107,16 +107,10 @@ lda_diag.formula <- function(formula, data, prior = NULL, ...) {
 #' @param ... unused
 #' @export
 print.lda_diag <- function(x, ...) {
-  cat("Call:\n")
-  print(x$call)
-  cat("Sample Size:\n")
-  print(x$N)
-  cat("Number of Features:\n")
-  print(x$p)
-  cat("Classes:\n")
-  print(x$groups)
-  cat("Prior Probabilities:\n")
-  print(sapply(x$est, function(z) z$prior))
+  cat("Diagonal LDA\n\n")
+  
+  print_basics(x, ...)
+  invisible(x)
 }
 
 #' DLDA prediction of the class membership of a matrix of new observations.

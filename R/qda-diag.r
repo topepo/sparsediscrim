@@ -108,16 +108,9 @@ qda_diag.formula <- function(formula, data, prior = NULL, ...) {
 #' @param ... unused
 #' @export
 print.qda_diag <- function(x, ...) {
-  cat("Call:\n")
-  print(x$call)
-  cat("Sample Size:\n")
-  print(x$N)
-  cat("Number of Features:\n")
-  print(x$p)
-  cat("Classes:\n")
-  print(x$groups)
-  cat("Prior Probabilities:\n")
-  print(sapply(x$est, function(z) z$prior))
+  cat("Diagonal QDA\n\n")
+  print_basics(x, ...)
+  invisible(x)
 }
 
 #' DQDA prediction of the class membership of a matrix of new observations.

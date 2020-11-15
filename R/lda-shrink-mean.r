@@ -117,16 +117,9 @@ lda_shrink_mean.formula <- function(formula, data, prior = NULL, ...) {
 #' @param ... unused
 #' @export
 print.lda_shrink_mean <- function(x, ...) {
-  cat("Call:\n")
-  print(x$call)
-  cat("Sample Size:\n")
-  print(x$N)
-  cat("Number of Features:\n")
-  print(x$p)
-  cat("Classes:\n")
-  print(x$groups)
-  cat("Prior Probabilities:\n")
-  print(sapply(x$est, function(z) z$prior))
+  cat("Shrinkage-Mean-Based Diagonal LDA\n\n")
+  print_basics(x, ...)
+  invisible(x)
 }
 
 #' SmDLDA prediction of the class membership of a matrix of new observations.
