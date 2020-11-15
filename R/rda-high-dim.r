@@ -214,21 +214,21 @@ print.rda_high_dim <- function(x, ...) {
 #' trained HDRDA classifier.
 #'
 #' For a given \code{rda_high_dim} object, we predict the class of each observation
-#' (row) of the the matrix given in \code{newdata}.
+#' (row) of the the matrix given in \code{new_data}.
 #'
 #' @rdname rda_high_dim
 #' @export
 #' @param object object of type \code{rda_high_dim} that contains the trained HDRDA
 #' classifier
-#' @param newdata matrix containing the unlabeled observations to classify. Each
+#' @param new_data matrix containing the unlabeled observations to classify. Each
 #' row corresponds to a new observation.
-#' @param projected logical indicating whether \code{newdata} have already been
+#' @param projected logical indicating whether \code{new_data} have already been
 #' projected to a q-dimensional subspace. This argument can yield large gains in
 #' speed when the linear transformation has already been performed.
 #' @return list with predicted class and discriminant scores for each of the K
 #' classes
-predict.rda_high_dim <- function(object, newdata, projected = FALSE, ...) {
-  newdata <- as.matrix(newdata)
+predict.rda_high_dim <- function(object, new_data, projected = FALSE, ...) {
+  new_data <- as.matrix(new_data)
   
   scores <- sapply(object$est, function(class_est) {
     if (object$lambda == 0 && object$gamma == 0) {
@@ -239,14 +239,14 @@ predict.rda_high_dim <- function(object, newdata, projected = FALSE, ...) {
     }
     
     if (projected) {
-      # The newdata have already been projected. Yay for speed!
-      # Center the 'newdata' by the projected class sample mean
-      U1_x <- scale(newdata, center = class_est$xbar_U1, scale = FALSE)
+      # The new_data have already been projected. Yay for speed!
+      # Center the 'new_data' by the projected class sample mean
+      U1_x <- scale(new_data, center = class_est$xbar_U1, scale = FALSE)
       
       quad_forms <- diag(drop(tcrossprod(U1_x %*% class_est$W_inv, U1_x)))
     } else {
-      # Center the 'newdata' by the class sample mean
-      x_centered <- scale(newdata, center = class_est$xbar, scale = FALSE)
+      # Center the 'new_data' by the class sample mean
+      x_centered <- scale(new_data, center = class_est$xbar, scale = FALSE)
       
       U1_x <- crossprod(object$U1, t(x_centered))
       

@@ -13,7 +13,7 @@ lda_emp_bayes(x, ...)
 
 \method{lda_emp_bayes}{formula}(formula, data, prior = NULL, ...)
 
-\method{predict}{lda_emp_bayes}(object, newdata, ...)
+\method{predict}{lda_emp_bayes}(object, new_data, ...)
 }
 \arguments{
 \item{x}{matrix containing the training data. The rows are the sample
@@ -35,12 +35,12 @@ preferentially to be taken.}
 
 \item{object}{trained lda_emp_bayes object}
 
-\item{newdata}{matrix of observations to predict. Each row corresponds to a new observation.}
+\item{new_data}{matrix of observations to predict. Each row corresponds to a new observation.}
 }
 \value{
 \code{lda_emp_bayes} object that contains the trained MDEB classifier
 
-list predicted class memberships of each row in newdata
+list predicted class memberships of each row in new_data
 }
 \description{
 Given a set of training data, this function builds the MDEB classifier from

@@ -145,7 +145,7 @@ print.qda_shrink_cov <- function(x, ...) {
 #' @export
 #'
 #' @param object trained SDQDA object
-#' @param newdata matrix of observations to predict. Each row corresponds to a
+#' @param new_data matrix of observations to predict. Each row corresponds to a
 #' new observation.
 #' @param ... additional arguments
 #' @references Dudoit, S., Fridlyand, J., & Speed, T. P. (2002). "Comparison of
@@ -154,15 +154,15 @@ print.qda_shrink_cov <- function(x, ...) {
 #' @references Pang, H., Tong, T., & Zhao, H. (2009). "Shrinkage-based Diagonal
 #' Discriminant Analysis and Its Applications in High-Dimensional Data,"
 #' Biometrics, 65, 4, 1021-1029.
-#' @return list predicted class memberships of each row in newdata
-predict.qda_shrink_cov <- function(object, newdata, ...) {
+#' @return list predicted class memberships of each row in new_data
+predict.qda_shrink_cov <- function(object, new_data, ...) {
   if (!inherits(object, "qda_shrink_cov"))  {
     rlang::abort("object not of class 'qda_shrink_cov'")
   }
 
-  newdata <- as.matrix(newdata)
+  new_data <- as.matrix(new_data)
 
-  scores <- apply(newdata, 1, function(obs) {
+  scores <- apply(new_data, 1, function(obs) {
     sapply(object$est, function(class_est) {
       with(class_est, sum((obs - xbar)^2 / var_shrink + log(var_shrink))
            + log(prior))
@@ -179,7 +179,7 @@ predict.qda_shrink_cov <- function(object, newdata, ...) {
   means <- lapply(object$est, "[[", "xbar")
   covs <- lapply(object$est, "[[", "var_shrink")
   priors <- lapply(object$est, "[[", "prior")
-  posterior <- posterior_probs(x=newdata,
+  posterior <- posterior_probs(x=new_data,
                                means=means,
                                covs=covs,
                                priors=priors)

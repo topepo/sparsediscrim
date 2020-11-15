@@ -13,7 +13,7 @@ qda_diag(x, ...)
 
 \method{qda_diag}{formula}(formula, data, prior = NULL, ...)
 
-\method{predict}{qda_diag}(object, newdata, ...)
+\method{predict}{qda_diag}(object, new_data, ...)
 }
 \arguments{
 \item{x}{matrix containing the training data. The rows are the sample
@@ -35,13 +35,13 @@ preferentially to be taken.}
 
 \item{object}{trained DQDA object}
 
-\item{newdata}{matrix of observations to predict. Each row corresponds to a
+\item{new_data}{matrix of observations to predict. Each row corresponds to a
 new observation.}
 }
 \value{
 \code{qda_diag} object that contains the trained DQDA classifier
 
-list predicted class memberships of each row in newdata
+list predicted class memberships of each row in new_data
 }
 \description{
 Given a set of training data, this function builds the Diagonal Quadratic

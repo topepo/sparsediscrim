@@ -22,7 +22,7 @@ rda_high_dim(x, ...)
 
 \method{rda_high_dim}{formula}(formula, data, ...)
 
-\method{predict}{rda_high_dim}(object, newdata, projected = FALSE, ...)
+\method{predict}{rda_high_dim}(object, new_data, projected = FALSE, ...)
 }
 \arguments{
 \item{x}{matrix containing the training data. The rows are the sample
@@ -59,10 +59,10 @@ preferentially to be taken.}
 \item{object}{object of type \code{rda_high_dim} that contains the trained HDRDA
 classifier}
 
-\item{newdata}{matrix containing the unlabeled observations to classify. Each
+\item{new_data}{matrix containing the unlabeled observations to classify. Each
 row corresponds to a new observation.}
 
-\item{projected}{logical indicating whether \code{newdata} have already been
+\item{projected}{logical indicating whether \code{new_data} have already been
 projected to a q-dimensional subspace. This argument can yield large gains in
 speed when the linear transformation has already been performed.}
 }
@@ -80,7 +80,7 @@ and covariance-matrix shrinkage to enable a computationally efficient
 classifier.
 
 For a given \code{rda_high_dim} object, we predict the class of each observation
-(row) of the the matrix given in \code{newdata}.
+(row) of the the matrix given in \code{new_data}.
 }
 \details{
 The HDRDA classifier utilizes a covariance-matrix estimator that is a convex

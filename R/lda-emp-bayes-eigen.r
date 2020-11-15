@@ -144,19 +144,19 @@ print.lda_emp_bayes_eigen <- function(x, ...) {
 #' Discrimination Methods for High Dimensional Data," Journal of the Japanese
 #' Statistical Association, 37, 1, 123-134.
 #' @param object trained lda_emp_bayes_eigen object
-#' @param newdata matrix of observations to predict. Each row corresponds to a
+#' @param new_data matrix of observations to predict. Each row corresponds to a
 #' new observation.
 #' @param ... additional arguments
-#' @return list predicted class memberships of each row in newdata
-predict.lda_emp_bayes_eigen <- function(object, newdata, ...) {
+#' @return list predicted class memberships of each row in new_data
+predict.lda_emp_bayes_eigen <- function(object, new_data, ...) {
   if (!inherits(object, "lda_emp_bayes_eigen"))  {
     rlang::abort("object not of class 'lda_emp_bayes_eigen'")
   }
 
-  newdata <- as.matrix(newdata)
+  new_data <- as.matrix(new_data)
 
   # Calculates the discriminant scores for each test observation
-  scores <- apply(newdata, 1, function(obs) {
+  scores <- apply(new_data, 1, function(obs) {
     sapply(object$est, function(class_est) {
       with(class_est, quadform(object$cov_inv, obs - xbar) + log(prior))
     })
@@ -172,7 +172,7 @@ predict.lda_emp_bayes_eigen <- function(object, newdata, ...) {
   means <- lapply(object$est, "[[", "xbar")
   covs <- replicate(n=object$num_groups, object$cov_pool, simplify=FALSE)
   priors <- lapply(object$est, "[[", "prior")
-  posterior <- posterior_probs(x=newdata,
+  posterior <- posterior_probs(x=new_data,
                                means=means,
                                covs=covs,
                                priors=priors)

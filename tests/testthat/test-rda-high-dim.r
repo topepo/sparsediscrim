@@ -465,7 +465,7 @@ test_that("HDRDA posterior probabilities sum to one. (Issue #34)", {
 
   mod <- rda_high_dim(x = as.matrix(trn[, -ncol(trn)]), y = trn$Class)
 
-  predict_out <- predict(mod, newdata=tst[, -ncol(tst)])
+  predict_out <- predict(mod, new_data=tst[, -ncol(tst)])
   posterior_probs <- predict_out$posterior
   scores <- predict_out$scores
 
@@ -481,7 +481,7 @@ test_that("HDRDA correctly predicts one observation. (Issue #34)", {
 
   mod <- rda_high_dim(x = as.matrix(trn[, -ncol(trn)]), y = trn$Class)
 
-  predict_out <- predict(mod, newdata=tst[, -ncol(tst)])
+  predict_out <- predict(mod, new_data=tst[, -ncol(tst)])
   posterior_probs <- predict_out$posterior
   scores <- predict_out$scores
 

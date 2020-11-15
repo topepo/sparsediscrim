@@ -13,7 +13,7 @@ lda_eigen(x, ...)
 
 \method{lda_eigen}{formula}(formula, data, prior = NULL, ...)
 
-\method{predict}{lda_eigen}(object, newdata, ...)
+\method{predict}{lda_eigen}(object, new_data, ...)
 }
 \arguments{
 \item{x}{matrix containing the training data. The rows are the sample
@@ -37,12 +37,12 @@ preferentially to be taken.}
 
 \item{object}{trained lda_eigen object}
 
-\item{newdata}{matrix of observations to predict. Each row corresponds to a new observation.}
+\item{new_data}{matrix of observations to predict. Each row corresponds to a new observation.}
 }
 \value{
 \code{lda_eigen} object that contains the trained MDMP classifier
 
-list predicted class memberships of each row in newdata
+list predicted class memberships of each row in new_data
 }
 \description{
 Given a set of training data, this function builds the MDMP classifier from

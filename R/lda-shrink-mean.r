@@ -131,21 +131,21 @@ print.lda_shrink_mean <- function(x, ...) {
 #' @export
 #'
 #' @param object trained SmDLDA object
-#' @param newdata matrix of observations to predict. Each row corresponds to a
+#' @param new_data matrix of observations to predict. Each row corresponds to a
 #' new observation.
 #' @param ... additional arguments
 #' @references Dudoit, S., Fridlyand, J., & Speed, T. P. (2002). "Comparison of
 #' Discrimination Methods for the Classification of Tumors Using Gene Expression
 #' Data," Journal of the American Statistical Association, 97, 457, 77-87.
-#' @return list predicted class memberships of each row in newdata
-predict.lda_shrink_mean <- function(object, newdata, ...) {
+#' @return list predicted class memberships of each row in new_data
+predict.lda_shrink_mean <- function(object, new_data, ...) {
   if (!inherits(object, "lda_shrink_mean"))  {
     rlang::abort("object not of class 'lda_shrink_mean'")
   }
 
-  newdata <- as.matrix(newdata)
+  new_data <- as.matrix(new_data)
 
-  scores <- apply(newdata, 1, function(obs) {
+  scores <- apply(new_data, 1, function(obs) {
     sapply(object$est, function(class_est) {
       with(class_est, sum((obs - xbar)^2 / object$var_pool) + log(prior))
     })
@@ -161,7 +161,7 @@ predict.lda_shrink_mean <- function(object, newdata, ...) {
   means <- lapply(object$est, "[[", "xbar")
   covs <- replicate(n=object$num_groups, object$var_pool, simplify=FALSE)
   priors <- lapply(object$est, "[[", "prior")
-  posterior <- posterior_probs(x=newdata,
+  posterior <- posterior_probs(x=new_data,
                                means=means,
                                covs=covs,
                                priors=priors)

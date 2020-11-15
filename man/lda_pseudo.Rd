@@ -13,7 +13,7 @@ lda_pseudo(x, ...)
 
 \method{lda_pseudo}{formula}(formula, data, prior = NULL, tol = 1e-08, ...)
 
-\method{predict}{lda_pseudo}(object, newdata, ...)
+\method{predict}{lda_pseudo}(object, new_data, ...)
 }
 \arguments{
 \item{x}{matrix containing the training data. The rows are the sample
@@ -38,14 +38,14 @@ preferentially to be taken.}
 
 \item{object}{trained lda_pseudo object}
 
-\item{newdata}{matrix of observations to predict. Each row corresponds to a
+\item{new_data}{matrix of observations to predict. Each row corresponds to a
 new observation.}
 }
 \value{
 \code{lda_pseudo} object that contains the trained lda_pseudo
 classifier
 
-list predicted class memberships of each row in newdata
+list predicted class memberships of each row in new_data
 }
 \description{
 Given a set of training data, this function builds the Linear Discriminant

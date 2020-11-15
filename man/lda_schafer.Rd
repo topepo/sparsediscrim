@@ -14,7 +14,7 @@ lda_schafer(x, ...)
 
 \method{lda_schafer}{formula}(formula, data, prior = NULL, ...)
 
-\method{predict}{lda_schafer}(object, newdata, ...)
+\method{predict}{lda_schafer}(object, new_data, ...)
 }
 \arguments{
 \item{x}{matrix containing the training data. The rows are the sample
@@ -37,13 +37,13 @@ preferentially to be taken.}
 
 \item{object}{trained lda_schafer object}
 
-\item{newdata}{matrix of observations to predict. Each row corresponds to a
+\item{new_data}{matrix of observations to predict. Each row corresponds to a
 new observation.}
 }
 \value{
 \code{lda_schafer} object that contains the trained classifier
 
-list predicted class memberships of each row in newdata
+list predicted class memberships of each row in new_data
 }
 \description{
 Given a set of training data, this function builds the Linear Discriminant
