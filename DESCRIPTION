@@ -20,7 +20,8 @@ Imports:
     rlang
 Suggests:
     testthat,
-    MASS
+    MASS,
+    covr
 License: MIT + file LICENSE
 URL: https://github.com/ramhiser/sparsediscrim,
     http://ramhiser.com
