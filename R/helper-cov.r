@@ -78,11 +78,11 @@ cov_list <- function(x, y) {
 #'
 #' If the `fast` argument is selected, we utilize the so-called Fast
 #' Singular Value Decomposition (SVD) to quickly compute the eigenvalue
-#' decomposition. To compute the Fast SVD, we use the `\link{fast.svd`}
+#' decomposition. To compute the Fast SVD, we use the [corpcor::fast.svd()]
 #' function, which employs a well-known trick for tall data (large `n`,
 #' small `p`) and wide data (large `p`, small `n`) to compute the
 #' SVD corresponding to the nonzero singular values. For more information about
-#' the Fast SVD, see `\link[corpcor]{fast.svd`}.
+#' the Fast SVD, see [corpcor::fast.svd()].
 #' 
 #' @importFrom corpcor fast.svd
 #' @export
@@ -156,10 +156,9 @@ cov_eigen <- function(x, y, pool = FALSE, fast = FALSE, tol = 1e-6) {
 #'
 #' This function calculates the weight for each observation in the data matrix
 #' `x` in order to calculate the covariance matrices employed in the HDRDA
-#' classifier, implemented in `\link{rda_high_dim`}.
+#' classifier, implemented in [rda_high_dim()].
 #'
-#' @param x matrix containing the training data. The rows are the sample
-#' observations, and the columns are the features.
+#' @inheritParams lda_diag
 #' @param y vector of class labels for each training observation
 #' @param lambda the RDA pooling parameter. Must be between 0 and 1, inclusively.
 #' @return list containing the observations for each class given in `y`
@@ -181,10 +180,9 @@ rda_weights <- function(x, y, lambda = 1) {
 #'
 #' For the classes given in the vector `y`, this function calculates the
 #' class covariance-matrix estimators employed in the HDRDA classifier,
-#' implemented in `\link{rda_high_dim`}.
+#' implemented in [rda_high_dim()].
 #'
-#' @param x matrix containing the training data. The rows are the sample
-#' observations, and the columns are the features.
+#' @inheritParams lda_diag
 #' @param y vector of class labels for each training observation
 #' @param lambda the RDA pooling parameter. Must be between 0 and 1, inclusively.
 #' @return list containing the RDA covariance-matrix estimators for each class

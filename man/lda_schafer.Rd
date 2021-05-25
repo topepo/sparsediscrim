@@ -20,8 +20,7 @@ lda_schafer(x, ...)
 \item{x}{matrix containing the training data. The rows are the sample
 observations, and the columns are the features.}
 
-\item{...}{additional arguments passed to
-`\link[corpcor]{invcov.shrink`}}
+\item{...}{additional arguments passed to [corpcor::invcov.shrink()]}
 
 \item{y}{vector of class labels for each training observation}
 
@@ -52,7 +51,7 @@ to be multivariate normal and share a common covariance matrix. When the
 pooled sample covariance matrix is singular, the linear discriminant function
 is incalculable. This function replaces the inverse of pooled sample
 covariance matrix with an estimator proposed by Schafer and Strimmer
-(2005). The estimator is calculated via `\link[corpcor]{invcov.shrink`}.
+(2005). The estimator is calculated via [corpcor::invcov.shrink()].
 
 The Linear Discriminant Analysis (LDA) classifier involves the assumption
 that the distributions of each class are assumed to be multivariate normal

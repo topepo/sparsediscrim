@@ -7,7 +7,7 @@
 #' pooled sample covariance matrix is singular, the linear discriminant function
 #' is incalculable. This function replaces the inverse of pooled sample
 #' covariance matrix with an estimator proposed by Schafer and Strimmer
-#' (2005). The estimator is calculated via `\link[corpcor]{invcov.shrink`}.
+#' (2005). The estimator is calculated via [corpcor::invcov.shrink()].
 #'
 #' The matrix of training observations are given in `x`. The rows of `x`
 #' contain the sample observations, and the columns contain the features for each
@@ -30,13 +30,8 @@
 #' @importFrom corpcor cov.shrink invcov.shrink
 #' @export
 #'
-#' @param x matrix containing the training data. The rows are the sample
-#' observations, and the columns are the features.
-#' @param y vector of class labels for each training observation
-#' @param prior vector with prior probabilities for each class. If NULL
-#' (default), then equal probabilities are used. See details.
-#' @param ... additional arguments passed to
-#' `\link[corpcor]{invcov.shrink`}
+#' @inheritParams lda_diag
+#' @param ... additional arguments passed to [corpcor::invcov.shrink()]
 #' @return `lda_schafer` object that contains the trained classifier
 #' @examples
 #' n <- nrow(iris)
@@ -84,11 +79,7 @@ lda_schafer.default <- function(x, y, prior = NULL, ...) {
   obj
 }
 
-#' @param formula A formula of the form `groups ~ x1 + x2 + ...` That is,
-#' the response is the grouping factor and the right hand side specifies the
-#' (non-factor) discriminators.
-#' @param data data frame from which variables specified in `formula` are
-#' preferentially to be taken.
+#' @inheritParams lda_diag.formula
 #' @rdname lda_schafer
 #' @importFrom stats model.frame model.matrix model.response
 #' @export

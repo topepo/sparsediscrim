@@ -41,8 +41,7 @@
 #' @references Friedman, J. H. (1989), "Regularized Discriminant Analysis,"
 #' Journal of American Statistical Association, 84, 405, 165-175.
 #' \url{http://www.jstor.org/pss/2289860} (Requires full-text access).
-#' @param x matrix containing the training data. The rows are the sample
-#' observations, and the columns are the features.
+#' @inheritParams lda_diag
 #' @param y vector of class labels for each training observation
 #' @param lambda the HDRDA pooling parameter. Must be between 0 and 1,
 #' inclusively.
@@ -289,8 +288,7 @@ predict.rda_high_dim <- function(object, newdata, projected = FALSE, ...) {
 #'
 #' @export
 #' @importFrom dplyr arrange
-#' @param x matrix containing the training data. The rows are the sample
-#' observations, and the columns are the features.
+#' @inheritParams lda_diag
 #' @param y vector of class labels for each training observation
 #' @param num_folds the number of cross-validation folds.
 #' @param num_lambda The number of values of `lambda` to consider
@@ -301,7 +299,7 @@ predict.rda_high_dim <- function(object, newdata, projected = FALSE, ...) {
 #' details.
 #' @param verbose If set to `TRUE`, summary information will be outputted
 #' as the optimal model is being determined.
-#' @param ... Additional arguments passed to `\link{rda_high_dim`}.
+#' @param ... Additional arguments passed to [rda_high_dim()].
 #' @return list containing the HDRDA model that minimizes cross-validation as
 #' well as a `data.frame` that summarizes the cross-validation results.
 rda_high_dim_cv <- function(x, y, num_folds = 10, num_lambda = 21, num_gamma = 8,
@@ -385,7 +383,7 @@ rda_high_dim_cv <- function(x, y, num_folds = 10, num_lambda = 21, num_gamma = 8
 
 #' Plots a heatmap of cross-validation error grid for a HDRDA classifier object.
 #'
-#' Uses `\link[ggplot2]{ggplot`} to plot a heatmap of the training error
+#' Uses [ggplot2::ggplot2()] to plot a heatmap of the training error
 #' grid.
 #'
 #' @param x object to plot

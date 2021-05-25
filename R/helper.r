@@ -41,8 +41,7 @@ quadform_inv <- function(A, x) {
 
 #' Centers the observations in a matrix by their respective class sample means
 #'
-#' @param x matrix containing the training data. The rows are the sample
-#' observations, and the columns are the features.
+#' @inheritParams lda_diag
 #' @param y vector of class labels for each training observation
 #' @return matrix with observations centered by its corresponding class sample
 #' mean
@@ -66,7 +65,7 @@ center_data <- function(x, y) {
 #' Computes the inverse of a symmetric, positive-definite matrix using the
 #' Cholesky decomposition
 #'
-#' This often faster than `\link{solve`} for larger matrices.
+#' This often faster than [solve()] for larger matrices.
 #' See, for example:
 #' \url{http://blog.phytools.org/2012/12/faster-inversion-of-square-symmetric.html}
 #' and

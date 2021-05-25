@@ -26,11 +26,7 @@
 #' as the number of classes in `y`. The `prior` probabilities should be
 #' nonnegative and sum to one.
 #'
-#' @param x matrix containing the training data. The rows are the sample
-#' observations, and the columns are the features.
-#' @param y vector of class labels for each training observation
-#' @param prior vector with prior probabilities for each class. If NULL
-#' (default), then equal probabilities are used. See details.
+#' @inheritParams lda_diag
 #' @param pool logical value. If TRUE, calculates the pooled sample variances
 #' for each class.
 #' @param est_mean the estimator for the class means. By default, we use the
@@ -133,8 +129,7 @@ diag_estimates <- function(x, y, prior = NULL, pool = FALSE,
 #' as the number of classes in `y`. The `prior` probabilities should be
 #' nonnegative and sum to one.
 #'
-#' @param x matrix containing the training data. The rows are the sample
-#' observations, and the columns are the features.
+#' @inheritParams lda_diag
 #' @param y vector of class labels for each training observation
 #' @param cov logical. Should the sample covariance matrices be computed?
 #' (Default: yes)

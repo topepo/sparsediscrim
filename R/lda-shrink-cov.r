@@ -38,11 +38,7 @@
 #'
 #' @export
 #'
-#' @param x matrix containing the training data. The rows are the sample
-#' observations, and the columns are the features.
-#' @param y vector of class labels for each training observation
-#' @param prior vector with prior probabilities for each class. If NULL
-#' (default), then equal probabilities are used. See details.
+#' @inheritParams lda_diag
 #' @param num_alphas the number of values used to find the optimal amount of
 #' shrinkage
 #' @return `lda_shrink_cov` object that contains the trained SDLDA classifier
@@ -90,11 +86,7 @@ lda_shrink_cov.default <- function(x, y, prior = NULL, num_alphas = 101, ...) {
   obj
 }
 
-#' @param formula A formula of the form `groups ~ x1 + x2 + ...` That is,
-#' the response is the grouping factor and the right hand side specifies the
-#' (non-factor) discriminators.
-#' @param data data frame from which variables specified in `formula` are
-#' preferentially to be taken.
+#' @inheritParams lda_diag.formula
 #' @rdname lda_shrink_cov
 #' @importFrom stats model.frame model.matrix model.response
 #' @export

@@ -12,6 +12,6 @@
 \item{...}{unused}
 }
 \description{
-Uses `\link[ggplot2]{ggplot`} to plot a heatmap of the training error
+Uses [ggplot2::ggplot2()] to plot a heatmap of the training error
 grid.
 }

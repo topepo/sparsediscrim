@@ -5,7 +5,7 @@
 #' Diagonal Linear Discriminant Analysis (SmDLDA) classifier from Tong, Chen,
 #' and Zhao (2012). The SmDLDA classifier incorporates a Lindley-type shrunken
 #' mean estimator into the DLDA classifier from Dudoit et al. (2002). For more
-#' about the DLDA classifier, see `\link{lda_diag`}.
+#' about the DLDA classifier, see [lda_diag()].
 #'
 #' The DLDA classifier belongs to the family of Naive Bayes classifiers, where
 #' the distributions of each class are assumed to be multivariate normal and to
@@ -40,11 +40,7 @@
 #'
 #' @export
 #'
-#' @param x matrix containing the training data. The rows are the sample
-#' observations, and the columns are the features.
-#' @param y vector of class labels for each training observation
-#' @param prior vector with prior probabilities for each class. If NULL
-#' (default), then equal probabilities are used. See details.
+#' @inheritParams lda_diag
 #' @return `lda_shrink_mean` object that contains the trained SmDLDA classifier
 #'
 #' @references Tong, T., Chen, L., and Zhao, H. (2012), "Improved Mean
@@ -83,11 +79,7 @@ lda_shrink_mean.default <- function(x, y, prior = NULL, ...) {
   obj
 }
 
-#' @param formula A formula of the form `groups ~ x1 + x2 + ...` That is,
-#' the response is the grouping factor and the right hand side specifies the
-#' (non-factor) discriminators.
-#' @param data data frame from which variables specified in `formula` are
-#' preferentially to be taken.
+#' @inheritParams lda_diag.formula
 #' @rdname lda_shrink_mean
 #' @importFrom stats model.frame model.matrix model.response
 #' @export

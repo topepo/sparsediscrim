@@ -14,7 +14,7 @@ solve_chol(x)
 the inverse of `x`
 }
 \description{
-This often faster than `\link{solve`} for larger matrices.
+This often faster than [solve()] for larger matrices.
 See, for example:
 \url{http://blog.phytools.org/2012/12/faster-inversion-of-square-symmetric.html}
 and

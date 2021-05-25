@@ -21,7 +21,7 @@ given in `y`
 \description{
 For the classes given in the vector `y`, this function calculates the
 class covariance-matrix estimators employed in the HDRDA classifier,
-implemented in `\link{rda_high_dim`}.
+implemented in [rda_high_dim()].
 }
 \references{
 Ramey, J. A., Stein, C. K., and Young, D. M. (2013),

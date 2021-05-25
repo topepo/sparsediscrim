@@ -36,11 +36,7 @@
 #'
 #' @export
 #'
-#' @param x matrix containing the training data. The rows are the sample
-#' observations, and the columns are the features.
-#' @param y vector of class labels for each training observation
-#' @param prior vector with prior probabilities for each class. If NULL
-#' (default), then equal probabilities are used. See details.
+#' @inheritParams lda_diag
 #' @return `qda_diag` object that contains the trained DQDA classifier
 #'
 #' @references Dudoit, S., Fridlyand, J., & Speed, T. P. (2002). "Comparison of
@@ -74,11 +70,7 @@ qda_diag.default <- function(x, y, prior = NULL, ...) {
   obj
 }
 
-#' @param formula A formula of the form `groups ~ x1 + x2 + ...` That is,
-#' the response is the grouping factor and the right hand side specifies the
-#' (non-factor) discriminators.
-#' @param data data frame from which variables specified in `formula` are
-#' preferentially to be taken.
+#' @inheritParams lda_diag.formula
 #' @rdname qda_diag
 #' @importFrom stats model.frame model.matrix model.response
 #' @export

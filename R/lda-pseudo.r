@@ -30,11 +30,7 @@
 #'
 #' @export
 #'
-#' @param x matrix containing the training data. The rows are the sample
-#' observations, and the columns are the features.
-#' @param y vector of class labels for each training observation
-#' @param prior vector with prior probabilities for each class. If NULL
-#' (default), then equal probabilities are used. See details.
+#' @inheritParams lda_diag
 #' @param tol tolerance value below which eigenvalues are considered numerically
 #' equal to 0
 #' @return `lda_pseudo` object that contains the trained lda_pseudo
@@ -85,11 +81,7 @@ lda_pseudo.default <- function(x, y, prior = NULL, tol = 1e-8, ...) {
   obj
 }
 
-#' @param formula A formula of the form `groups ~ x1 + x2 + ...` That is,
-#' the response is the grouping factor and the right hand side specifies the
-#' (non-factor) discriminators.
-#' @param data data frame from which variables specified in `formula` are
-#' preferentially to be taken.
+#' @inheritParams lda_diag.formula
 #' @rdname lda_pseudo
 #' @importFrom stats model.frame model.matrix model.response
 #' @export

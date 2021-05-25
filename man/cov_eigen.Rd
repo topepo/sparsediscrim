@@ -31,11 +31,11 @@ the data matrix `x`.
 \details{
 If the `fast` argument is selected, we utilize the so-called Fast
 Singular Value Decomposition (SVD) to quickly compute the eigenvalue
-decomposition. To compute the Fast SVD, we use the `\link{fast.svd`}
+decomposition. To compute the Fast SVD, we use the [corpcor::fast.svd()]
 function, which employs a well-known trick for tall data (large `n`,
 small `p`) and wide data (large `p`, small `n`) to compute the
 SVD corresponding to the nonzero singular values. For more information about
-the Fast SVD, see `\link[corpcor]{fast.svd`}.
+the Fast SVD, see [corpcor::fast.svd()].
 }
 \examples{
 cov_eigen(x = iris[, -5], y = iris[, 5])
