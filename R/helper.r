@@ -48,6 +48,9 @@ quadform_inv <- function(A, x) {
 center_data <- function(x, y) {
   x <- pred_to_matrix(x)
   y <- outcome_to_factor(y)
+  complete <- complete.cases(x) & complete.cases(y)
+  x <- x[complete,,drop = FALSE]
+  y <- y[complete]
 
   # Notice that the resulting centered data are sorted by class and do not
   # preserve the original ordering of the data.
@@ -139,6 +142,13 @@ posterior_probs <- function(x, means, covs, priors) {
 
 
 pred_to_matrix <- function(x) {
+  if (is.vector(x)) {
+    rlang::abort("'x' should be a matrix or data frame.")
+  }
+  
+  if (is.null(colnames(x))) {
+    rlang::abort("'x' should have column names.")
+  }
   if (!is.matrix(x)) {
    x <- as.matrix(x)
    if (is.character(x)) {
@@ -179,4 +189,66 @@ print_basics <- function(x, ...) {
   cat("Classes and Prior Probabilities:\n  ")
   cat(format_priors(x), "\n")
 }
+
+no_form_env <- function(x) {
+  attr(x, ".Environment") <- rlang::base_env()
+  x
+}
+
+
+new_discrim_object <- function(x, cls) {
+  class(x) <- cls
+  has_terms <- any(names(x) == ".terms")
+  
+  if (has_terms) {
+    attr(x$.terms, ".Environment") <- rlang::base_env()
+    class(x) <- c(paste0(cls, "_formula"), cls)
+  }
+  x
+}
+
+process_newdata <- function(object, x) {
+  if (is.null(colnames(x))) {
+    rlang::abort("'newdata' should have column names.")
+  }
+  has_terms <- any(names(object) == ".terms")
+  if (has_terms) {
+    .terms <- object$.terms
+    .terms <- stats::delete.response(.terms)
+    x <- stats::model.frame(.terms, x, na.action = stats::na.exclude) #, xlev = object$xlevels)
+    x <- model.matrix(.terms, x)
+    attr(x, "contrasts") <- NULL
+    attr(x, "assign") <- NULL
+  } else {
+    x <- x[, object$col_names, drop = FALSE]
+    x <- as.matrix(x)
+  }
+  x
+}
+
+check_for_zero_vars <- function(x, warn = TRUE) {
+  var_est <- lapply(x, function(x) x$var == 0)
+  is_zv <- do.call("rbind", var_est)
+  any_zv <- apply(is_zv, 2, any)
+  if (all(any_zv)) {
+    rlang::abort("All predictors have zero variance.")
+  }
+  if (any(any_zv)) {
+    if (warn) {
+      nms <- paste0(names(any_zv)[any_zv], collapse = ", ")
+      nms <- paste("The following predictors had zero variance (possibly with ",
+                   "a class) and were removed from the analysis:", nms)
+      rlang::warn(nms)
+    }
+    x <- lapply(x, reduce_elem, retain = names(any_zv)[!any_zv], "xbar")
+    x <- lapply(x, reduce_elem, retain = names(any_zv)[!any_zv], "var")
+  }
+  x
+}
+
+reduce_elem <- function(x, retain, col) {
+  x[[col]] <- x[[col]][retain]
+  x
+}
+
 

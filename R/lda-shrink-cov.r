@@ -67,6 +67,9 @@ lda_shrink_cov <- function(x, ...) {
 lda_shrink_cov.default <- function(x, y, prior = NULL, num_alphas = 101, ...) {
   x <- pred_to_matrix(x)
   y <- outcome_to_factor(y)
+  complete <- complete.cases(x) & complete.cases(y)
+  x <- x[complete,,drop = FALSE]
+  y <- y[complete]
 
   obj <- diag_estimates(x, y, prior, pool = TRUE)
 
@@ -79,9 +82,9 @@ lda_shrink_cov.default <- function(x, y, prior = NULL, num_alphas = 101, ...) {
     t = -1
   )
 
-  # Creates an object of type 'lda_shrink_cov' and adds the 'match.call' to the object
-  obj$call <- match.call()
-  class(obj) <- "lda_shrink_cov"
+  # Creates an object of type 'lda_shrink_cov'
+  obj$col_names <- colnames(x)
+  obj <- new_discrim_object(obj, "lda_shrink_cov")
 
   obj
 }
@@ -99,13 +102,14 @@ lda_shrink_cov.formula <- function(formula, data, prior = NULL, num_alphas = 101
   formula <- no_intercept(formula, data)
   
   mf <- model.frame(formula = formula, data = data)
-  x <- model.matrix(attr(mf, "terms"), data = mf)
+  .terms <- attr(mf, "terms")
+  x <- model.matrix(.terms, data = mf)
   y <- model.response(mf)
 
   est <- lda_shrink_cov.default(x = x, y = y, prior = prior, num_alphas = num_alphas)
 
-  est$call <- match.call()
-  est$formula <- formula
+  est$.terms <- .terms
+  est <- new_discrim_object(est, class(est))
   est
 }
 

@@ -53,6 +53,9 @@ lda_pseudo <- function(x, ...) {
 lda_pseudo.default <- function(x, y, prior = NULL, tol = 1e-8, ...) {
   x <- pred_to_matrix(x)
   y <- outcome_to_factor(y)
+  complete <- complete.cases(x) & complete.cases(y)
+  x <- x[complete,,drop = FALSE]
+  y <- y[complete]
 
   obj <- regdiscrim_estimates(x = x, y = y, prior = prior, cov = TRUE)
 
@@ -74,9 +77,9 @@ lda_pseudo.default <- function(x, y, prior = NULL, tol = 1e-8, ...) {
     obj$cov_inv <- with(cov_eigen,
                         tcrossprod(vectors %*% as.matrix(evals_inv), vectors))
   }
-  # Creates an object of type 'lda_pseudo' and adds the 'match.call' to the object
-  obj$call <- match.call()
-  class(obj) <- "lda_pseudo"
+  # Creates an object of type 'lda_pseudo'
+  obj$col_names <- colnames(x)
+  obj <- new_discrim_object(obj, "lda_pseudo")
 
   obj
 }
@@ -94,12 +97,13 @@ lda_pseudo.formula <- function(formula, data, prior = NULL, tol = 1e-8, ...) {
   formula <- no_intercept(formula, data)
 
   mf <- model.frame(formula = formula, data = data)
-  x <- model.matrix(attr(mf, "terms"), data = mf)
+  .terms <- attr(mf, "terms")
+  x <- model.matrix(.terms, data = mf)
   y <- model.response(mf)
 
   est <- lda_pseudo.default(x = x, y = y, prior = prior)
-  est$call <- match.call()
-  est$formula <- formula
+  est$.terms <- .terms
+  est <- new_discrim_object(est, class(est))
   est
 }
 

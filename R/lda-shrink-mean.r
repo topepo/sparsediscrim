@@ -68,13 +68,16 @@ lda_shrink_mean <- function(x, ...) {
 lda_shrink_mean.default <- function(x, y, prior = NULL, ...) {
   x <- pred_to_matrix(x)
   y <- outcome_to_factor(y)
+  complete <- complete.cases(x) & complete.cases(y)
+  x <- x[complete,,drop = FALSE]
+  y <- y[complete]
 
   obj <- diag_estimates(x = x, y = y, prior = prior, pool = TRUE,
                         est_mean = "tong")
 
-  # Creates an object of type 'lda_shrink_mean' and adds the 'match.call' to the object
-  obj$call <- match.call()
-  class(obj) <- "lda_shrink_mean"
+  # Creates an object of type 'lda_shrink_mean'
+  obj$col_names <- colnames(x)
+  obj <- new_discrim_object(obj, "lda_shrink_mean")
 
   obj
 }
@@ -92,12 +95,13 @@ lda_shrink_mean.formula <- function(formula, data, prior = NULL, ...) {
   formula <- no_intercept(formula, data)
 
   mf <- model.frame(formula = formula, data = data)
-  x <- model.matrix(attr(mf, "terms"), data = mf)
+  .terms <- attr(mf, "terms")
+  x <- model.matrix(.terms, data = mf)
   y <- model.response(mf)
 
   est <- lda_shrink_mean.default(x = x, y = y, prior = prior)
-  est$call <- match.call()
-  est$formula <- formula
+  est$.terms <- .terms
+  est <- new_discrim_object(est, class(est))
   est
 }
 

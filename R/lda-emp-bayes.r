@@ -52,12 +52,15 @@ lda_emp_bayes <- function(x, ...) {
 lda_emp_bayes.default <- function(x, y, prior = NULL, ...) {
   x <- pred_to_matrix(x)
   y <- outcome_to_factor(y)
+  complete <- complete.cases(x) & complete.cases(y)
+  x <- x[complete,,drop = FALSE]
+  y <- y[complete]
 
   obj <- regdiscrim_estimates(x = x, y = y, prior = prior, cov = TRUE)
 
-  # Creates an object of type 'lda_emp_bayes' and adds the 'match.call' to the object
-  obj$call <- match.call()
-  class(obj) <- "lda_emp_bayes"
+  # Creates an object of type 'lda_emp_bayes'
+  obj$col_names <- colnames(x)
+  obj <- new_discrim_object(obj, "lda_emp_bayes")
 
   obj
 }
@@ -75,12 +78,13 @@ lda_emp_bayes.formula <- function(formula, data, prior = NULL, ...) {
   formula <- no_intercept(formula, data)
 
   mf <- model.frame(formula = formula, data = data)
-  x <- model.matrix(attr(mf, "terms"), data = mf)
+  .terms <- attr(mf, "terms")
+  x <- model.matrix(.terms, data = mf)
   y <- model.response(mf)
 
   est <- lda_emp_bayes.default(x = x, y = y, prior = prior)
-  est$call <- match.call()
-  est$formula <- formula
+  est$.terms <- .terms
+  est <- new_discrim_object(est, class(est))
   est
 }
 

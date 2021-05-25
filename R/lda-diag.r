@@ -35,12 +35,14 @@
 #'
 #' @export
 #'
-#' @param x matrix containing the training data. The rows are the sample
-#' observations, and the columns are the features.
-#' @param y vector of class labels for each training observation
-#' @param prior vector with prior probabilities for each class. If NULL
+#' @param x Matrix or data frame containing the training data. The rows are the 
+#' sample observations, and the columns are the features. Only complete data are 
+#' retained. 
+#' @param y Vector of class labels for each training observation. Only complete 
+#' data are retained. 
+#' @param prior Vector with prior probabilities for each class. If NULL
 #' (default), then equal probabilities are used. See details.
-#' @return `lda_diag` object that contains the trained DLDA classifier
+#' @return `lda_diag` Object that contains the trained DLDA classifier
 #'
 #' @references Dudoit, S., Fridlyand, J., & Speed, T. P. (2002). "Comparison of
 #' Discrimination Methods for the Classification of Tumors Using Gene Expression
@@ -63,12 +65,15 @@ lda_diag <- function(x, ...) {
 lda_diag.default <- function(x, y, prior = NULL, ...) {
   x <- pred_to_matrix(x)
   y <- outcome_to_factor(y)
+  complete <- complete.cases(x) & complete.cases(y)
+  x <- x[complete,,drop = FALSE]
+  y <- y[complete]
 
   obj <- diag_estimates(x = x, y = y, prior = prior, pool = TRUE)
 
-  # Creates an object of type 'lda_diag' and adds the 'match.call' to the object
-  obj$call <- match.call()
-  class(obj) <- "lda_diag"
+  # Creates an object of type 'lda_diag' 
+  obj$col_names <- colnames(x)
+  obj <- new_discrim_object(obj, "lda_diag")
 
   obj
 }
@@ -90,12 +95,13 @@ lda_diag.formula <- function(formula, data, prior = NULL, ...) {
   formula <- no_intercept(formula, data)
 
   mf <- model.frame(formula = formula, data = data)
-  x <- model.matrix(attr(mf, "terms"), data = mf)
+  .terms <- attr(mf, "terms")
+  x <- model.matrix(.terms, data = mf)
   y <- model.response(mf)
 
   est <- lda_diag.default(x = x, y = y, prior = prior)
-  est$call <- match.call()
-  est$formula <- formula
+  est$.terms <- .terms
+  est <- new_discrim_object(est, class(est))
   est
 }
 
@@ -135,7 +141,9 @@ predict.lda_diag <- function(object, newdata, ...) {
   if (is.vector(newdata)) {
     newdata <- as.matrix(newdata)
   }
+  newdata <- process_newdata(object, newdata)
 
+  newdata <- newdata[, names(object$est$xbar)]
   scores <- apply(newdata, 1, function(obs) {
     sapply(object$est, function(class_est) {
       with(class_est, sum((obs - xbar)^2 / object$var_pool) + log(prior))

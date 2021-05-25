@@ -66,6 +66,9 @@ rda_high_dim.default <- function(x, y, lambda = 1, gamma = 0,
                                  tol = 1e-6, ...) {
   x <- pred_to_matrix(x)
   y <- outcome_to_factor(y)
+  complete <- complete.cases(x) & complete.cases(y)
+  x <- x[complete,,drop = FALSE]
+  y <- y[complete]
   lambda <- as.numeric(lambda)
   gamma <- as.numeric(gamma)
   shrinkage_type <- match.arg(shrinkage_type)
@@ -158,9 +161,9 @@ rda_high_dim.default <- function(x, y, lambda = 1, gamma = 0,
     obj$est[[k]]$W_inv <- W_inv
   }
   
-  # Creates an object of type 'rda_high_dim' and adds the 'match.call' to the object
-  obj$call <- match.call()
-  class(obj) <- "rda_high_dim"
+  # Creates an object of type 'rda_high_dim'
+  obj$col_names <- colnames(x)
+  obj <- new_discrim_object(obj, "rda_high_dim")
   
   obj
 }
@@ -184,12 +187,13 @@ rda_high_dim.formula <- function(formula, data, ...) {
   formula <- no_intercept(formula, data)
   
   mf <- model.frame(formula = formula, data = data)
-  x <- model.matrix(attr(mf, "terms"), data = mf)
+  .terms <- attr(mf, "terms")
+  x <- model.matrix(.terms, data = mf)
   y <- model.response(mf)
   
   est <- rda_high_dim.default(x = x, y = y, ...)
-  est$call <- match.call()
-  est$formula <- formula
+  est$.terms <- .terms
+  est <- new_discrim_object(est, class(est))
   est
 }
 
@@ -306,6 +310,9 @@ rda_high_dim_cv <- function(x, y, num_folds = 10, num_lambda = 21, num_gamma = 8
                             shrinkage_type=c("ridge", "convex"), verbose=FALSE, ...) {
   x <- pred_to_matrix(x)
   y <- outcome_to_factor(y)
+  complete <- complete.cases(x) & complete.cases(y)
+  x <- x[complete,,drop = FALSE]
+  y <- y[complete]
   shrinkage_type <- match.arg(shrinkage_type)
   
   cv_folds <- cv_partition(y = y, num_folds = num_folds)
