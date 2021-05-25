@@ -83,7 +83,7 @@ lda_thomaz.default <- function(x, y, prior = NULL, ...) {
   }
 
   # Creates an object of type 'lda_thomaz' and adds the 'match.call' to the object
-  obj$call <- match.call()
+  obj$predictors <- colnames(x)
   class(obj) <- "lda_thomaz"
 
   obj
@@ -110,7 +110,7 @@ lda_thomaz.formula <- function(formula, data, prior = NULL, ...) {
   y <- model.response(mf)
 
   est <- lda_thomaz.default(x = x, y = y, prior = prior)
-  est$call <- match.call()
+  
   est$formula <- formula
   est
 }
@@ -153,36 +153,35 @@ print.lda_thomaz <- function(x, ...) {
 #' new observation.
 #' @param ... additional arguments
 #' @return list predicted class memberships of each row in new_data
-predict.lda_thomaz <- function(object, new_data, ...) {
-  if (!inherits(object, "lda_thomaz"))  {
-    rlang::abort("object not of class 'lda_thomaz'")
-  }
-
-  new_data <- as.matrix(new_data)
-
-  # Calculates the discriminant scores for each test observation
-  scores <- apply(new_data, 1, function(obs) {
-    sapply(object$est, function(class_est) {
-      with(class_est, quadform(object$cov_inv, obs - xbar) + log(prior))
+predict.lda_thomaz <- function(object, new_data, type = "class", ...) {
+  type <- match.arg(type, c("class", "score", "prob"))
+  
+  new_data <- process_new_data(new_data, object)
+  
+  if (type %in% c("score", "class")) {
+    res <- apply(new_data, 1, function(obs) {
+      sapply(object$est, function(class_est) {
+        with(class_est, quadform(object$cov_inv, obs - xbar) + log(prior))
+      })
     })
-  })
-
-  if (is.vector(scores)) {
-    min_scores <- which.min(scores)
-  } else {
-    min_scores <- apply(scores, 2, which.min)
   }
-
-  # Posterior probabilities via Bayes Theorem
-  means <- lapply(object$est, "[[", "xbar")
-  covs <- replicate(n=object$num_groups, object$cov_pool, simplify=FALSE)
-  priors <- lapply(object$est, "[[", "prior")
-  posterior <- posterior_probs(x=new_data,
-                               means=means,
-                               covs=covs,
-                               priors=priors)
-
-  class <- factor(object$groups[min_scores], levels = object$groups)
-
-  list(class = class, scores = scores, posterior = posterior)
+  
+  if (type == "prob") {
+    # Posterior probabilities via Bayes Theorem
+    means <- lapply(object$est, "[[", "xbar")
+    covs <- replicate(n = object$num_groups, object$cov_pool, simplify = FALSE)
+    priors <- lapply(object$est, "[[", "prior")
+    res <- posterior_probs(x = new_data, means = means, covs = covs, priors = priors)
+  } 
+  
+  if (type == "class") {
+    if (is.vector(res)) {
+      min_scores <- which.min(res)
+    } else {
+      min_scores <- apply(res, 2, which.min)
+    }
+    res <- factor(object$groups[min_scores], levels = object$groups)
+  }
+  
+  format_predictions(res, type)
 }

@@ -29,24 +29,26 @@
 #'
 #' @export
 #'
-#' @param x matrix containing the training data. The rows are the sample
-#' observations, and the columns are the features.
-#' @param y vector of class labels for each training observation
-#' @param prior vector with prior probabilities for each class. If NULL
-#' (default), then equal probabilities are used. See details.
-#' @return \code{lda_emp_bayes} object that contains the trained MDEB classifier
+#' @inheritParams lda_diag
 #' @examples
-#' n <- nrow(iris)
-#' train <- sample(seq_len(n), n / 2)
-#' mdeb_out <- lda_emp_bayes(Species ~ ., data = iris[train, ])
-#' predicted <- predict(mdeb_out, iris[-train, -5])$class
-#'
-#' mdeb_out2 <- lda_emp_bayes(x = iris[train, -5], y = iris[train, 5])
-#' predicted2 <- predict(mdeb_out2, iris[-train, -5])$class
-#' all.equal(predicted, predicted2)
-#' @references Srivastava, M. and Kubokawa, T. (2007). "Comparison of
-#' Discrimination Methods for High Dimensional Data," Journal of the Japanese
-#' Statistical Association, 37, 1, 123-134.
+#' data(cells, package = "modeldata")
+#' 
+#' cells$case <- NULL
+#' 
+#' cell_train <- cells[-(1:500), ]
+#' cell_test  <- cells[  1:500 , ]
+#' 
+#' mod <- lda_emp_bayes(class ~ ., data = cell_train)
+#' mod
+#' 
+#' # ------------------------------------------------------------------------------
+#' 
+#' table(
+#'    predict(mod, cell_test)$.pred_class, 
+#'    cell_test$class
+#' )
+#' 
+#' predict(mod, head(cell_test), type = "prob") 
 lda_emp_bayes <- function(x, ...) {
   UseMethod("lda_emp_bayes")
 }
@@ -60,17 +62,12 @@ lda_emp_bayes.default <- function(x, y, prior = NULL, ...) {
   obj <- regdiscrim_estimates(x = x, y = y, prior = prior, cov = TRUE)
 
   # Creates an object of type 'lda_emp_bayes' and adds the 'match.call' to the object
-  obj$call <- match.call()
+  obj$predictors <- colnames(x)
   class(obj) <- "lda_emp_bayes"
 
   obj
 }
 
-#' @param formula A formula of the form \code{groups ~ x1 + x2 + ...} That is,
-#' the response is the grouping factor and the right hand side specifies the
-#' (non-factor) discriminators.
-#' @param data data frame from which variables specified in \code{formula} are
-#' preferentially to be taken.
 #' @rdname lda_emp_bayes
 #' @importFrom stats model.frame model.matrix model.response
 #' @export
@@ -87,7 +84,7 @@ lda_emp_bayes.formula <- function(formula, data, prior = NULL, ...) {
   y <- model.response(mf)
 
   est <- lda_emp_bayes.default(x = x, y = y, prior = prior)
-  est$call <- match.call()
+  
   est$formula <- formula
   est
 }
@@ -118,49 +115,40 @@ print.lda_emp_bayes <- function(x, ...) {
 #'
 #' @rdname lda_emp_bayes
 #' @export
-#'
-#' @references Srivastava, M. and Kubokawa, T. (2007). "Comparison of
-#' Discrimination Methods for High Dimensional Data," Journal of the Japanese
-#' Statistical Association, 37, 1, 123-134.
-#' @param object trained lda_emp_bayes object
-#' @param new_data matrix of observations to predict. Each row corresponds to a new observation.
-#' @param ... additional arguments
-#' @return list predicted class memberships of each row in new_data
-predict.lda_emp_bayes <- function(object, new_data, ...) {
-  if (!inherits(object, "lda_emp_bayes"))  {
-    rlang::abort("object not of class 'lda_emp_bayes'")
-  }
-
-  new_data <- as.matrix(new_data)
-
+predict.lda_emp_bayes <- function(object, new_data, type = "class", ...) {
+  type <- match.arg(type, c("class", "score", "prob"))
+  
+  new_data <- process_new_data(new_data, object)
+  
   # Calculates the MDEB shrinkage constant and then computes the inverse of the
   # MDEB covariance matrix estimator
   shrink <- with(object, sum(diag(cov_pool)) / min(N, p))
   cov_pool <- with(object, cov_pool + shrink * diag(p))
-
-  # Calculates the discriminant scores for each test observation
-  scores <- apply(new_data, 1, function(obs) {
-    sapply(object$est, function(class_est) {
-      with(class_est, quadform_inv(cov_pool, obs - xbar) + log(prior))
+  
+  if (type %in% c("score", "class")) {
+    res <- apply(new_data, 1, function(obs) {
+      sapply(object$est, function(class_est) {
+        with(class_est, quadform_inv(cov_pool, obs - xbar) + log(prior))
+      })
     })
-  })
-
-  if (is.vector(scores)) {
-    min_scores <- which.min(scores)
-  } else {
-    min_scores <- apply(scores, 2, which.min)
   }
-
-  # Posterior probabilities via Bayes Theorem
-  means <- lapply(object$est, "[[", "xbar")
-  covs <- replicate(n=object$num_groups, cov_pool, simplify=FALSE)
-  priors <- lapply(object$est, "[[", "prior")
-  posterior <- posterior_probs(x=new_data,
-                               means=means,
-                               covs=covs,
-                               priors=priors)
-
-  class <- factor(object$groups[min_scores], levels = object$groups)
-
-  list(class = class, scores = scores, posterior = posterior)
+  
+  if (type == "prob") {
+    # Posterior probabilities via Bayes Theorem
+    means <- lapply(object$est, "[[", "xbar")
+    covs <- replicate(n = object$num_groups, cov_pool, simplify = FALSE)
+    priors <- lapply(object$est, "[[", "prior")
+    res <- posterior_probs(x = new_data, means = means, covs = covs, priors = priors)
+  } 
+  
+  if (type == "class") {
+    if (is.vector(res)) {
+      min_scores <- which.min(res)
+    } else {
+      min_scores <- apply(res, 2, which.min)
+    }
+    res <- factor(object$groups[min_scores], levels = object$groups)
+  }
+  
+  format_predictions(res, type)
 }

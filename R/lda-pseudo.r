@@ -30,24 +30,29 @@
 #'
 #' @export
 #'
-#' @param x matrix containing the training data. The rows are the sample
-#' observations, and the columns are the features.
-#' @param y vector of class labels for each training observation
-#' @param prior vector with prior probabilities for each class. If NULL
-#' (default), then equal probabilities are used. See details.
+#' @inheritParams lda_diag
 #' @param tol tolerance value below which eigenvalues are considered numerically
 #' equal to 0
-#' @return \code{lda_pseudo} object that contains the trained lda_pseudo
-#' classifier
 #' @examples
-#' n <- nrow(iris)
-#' train <- sample(seq_len(n), n / 2)
-#' lda_pseudo_out <- lda_pseudo(Species ~ ., data = iris[train, ])
-#' predicted <- predict(lda_pseudo_out, iris[-train, -5])$class
-#'
-#' lda_pseudo_out2 <- lda_pseudo(x = iris[train, -5], y = iris[train, 5])
-#' predicted2 <- predict(lda_pseudo_out2, iris[-train, -5])$class
-#' all.equal(predicted, predicted2)
+#' data(cells, package = "modeldata")
+#' 
+#' cells$case <- NULL
+#' 
+#' cell_train <- cells[-(1:500), ]
+#' cell_test  <- cells[  1:500 , ]
+#' 
+#' mod <- lda_pseudo(class ~ ., data = cell_train)
+#' mod
+#' 
+#' # ------------------------------------------------------------------------------
+#' 
+#' table(
+#'    predict(mod, cell_test)$.pred_class, 
+#'    cell_test$class
+#' )
+#' 
+#' predict(mod, head(cell_test), type = "prob") 
+
 lda_pseudo <- function(x, ...) {
   UseMethod("lda_pseudo")
 }
@@ -79,17 +84,12 @@ lda_pseudo.default <- function(x, y, prior = NULL, tol = 1e-8, ...) {
                         tcrossprod(vectors %*% as.matrix(evals_inv), vectors))
   }
   # Creates an object of type 'lda_pseudo' and adds the 'match.call' to the object
-  obj$call <- match.call()
+  obj$predictors <- colnames(x)
   class(obj) <- "lda_pseudo"
 
   obj
 }
 
-#' @param formula A formula of the form \code{groups ~ x1 + x2 + ...} That is,
-#' the response is the grouping factor and the right hand side specifies the
-#' (non-factor) discriminators.
-#' @param data data frame from which variables specified in \code{formula} are
-#' preferentially to be taken.
 #' @rdname lda_pseudo
 #' @importFrom stats model.frame model.matrix model.response
 #' @export
@@ -106,7 +106,7 @@ lda_pseudo.formula <- function(formula, data, prior = NULL, tol = 1e-8, ...) {
   y <- model.response(mf)
 
   est <- lda_pseudo.default(x = x, y = y, prior = prior)
-  est$call <- match.call()
+  
   est$formula <- formula
   est
 }
@@ -138,42 +138,35 @@ print.lda_pseudo <- function(x, ...) {
 #'
 #' @rdname lda_pseudo
 #' @export
-#'
-#' @param object trained lda_pseudo object
-#' @param new_data matrix of observations to predict. Each row corresponds to a
-#' new observation.
-#' @param ... additional arguments
-#' @return list predicted class memberships of each row in new_data
-predict.lda_pseudo <- function(object, new_data, ...) {
-  if (!inherits(object, "lda_pseudo"))  {
-    rlang::abort("object not of class 'lda_pseudo'")
-  }
-
-  new_data <- as.matrix(new_data)
-
-  # Calculates the discriminant scores for each test observation
-  scores <- apply(new_data, 1, function(obs) {
-    sapply(object$est, function(class_est) {
-      with(class_est, quadform(object$cov_inv, obs - xbar) + log(prior))
+predict.lda_pseudo <- function(object, new_data, type = "class", ...) {
+  type <- match.arg(type, c("class", "score", "prob"))
+  
+  new_data <- process_new_data(new_data, object)
+  
+  if (type %in% c("score", "class")) {
+    res <- apply(new_data, 1, function(obs) {
+      sapply(object$est, function(class_est) {
+        with(class_est, quadform(object$cov_inv, obs - xbar) + log(prior))
+      })
     })
-  })
-
-  if (is.vector(scores)) {
-    min_scores <- which.min(scores)
-  } else {
-    min_scores <- apply(scores, 2, which.min)
   }
-
-  # Posterior probabilities via Bayes Theorem
-  means <- lapply(object$est, "[[", "xbar")
-  covs <- replicate(n=object$num_groups, object$cov_pool, simplify=FALSE)
-  priors <- lapply(object$est, "[[", "prior")
-  posterior <- posterior_probs(x=new_data,
-                               means=means,
-                               covs=covs,
-                               priors=priors)
-
-  class <- factor(object$groups[min_scores], levels = object$groups)
-
-  list(class = class, scores = scores, posterior = posterior)
+  
+  if (type == "prob") {
+    # Posterior probabilities via Bayes Theorem
+    means <- lapply(object$est, "[[", "xbar")
+    covs <- replicate(n = object$num_groups, object$cov_pool, simplify = FALSE)
+    priors <- lapply(object$est, "[[", "prior")
+    res <- posterior_probs(x = new_data, means = means, covs = covs, priors = priors)
+  } 
+  
+  if (type == "class") {
+    if (is.vector(res)) {
+      min_scores <- which.min(res)
+    } else {
+      min_scores <- apply(res, 2, which.min)
+    }
+    res <- factor(object$groups[min_scores], levels = object$groups)
+  }
+  
+  format_predictions(res, type)
 }

@@ -38,15 +38,9 @@
 #'
 #' @export
 #'
-#' @param x matrix containing the training data. The rows are the sample
-#' observations, and the columns are the features.
-#' @param y vector of class labels for each training observation
-#' @param prior vector with prior probabilities for each class. If NULL
-#' (default), then equal probabilities are used. See details.
+#' @inheritParams lda_diag
 #' @param num_alphas the number of values used to find the optimal amount of
 #' shrinkage
-#' @return \code{lda_shrink_cov} object that contains the trained SDLDA classifier
-#'
 #' @references Dudoit, S., Fridlyand, J., & Speed, T. P. (2002). "Comparison of
 #' Discrimination Methods for the Classification of Tumors Using Gene Expression
 #' Data," Journal of the American Statistical Association, 97, 457, 77-87.
@@ -54,14 +48,24 @@
 #' Discriminant Analysis and Its Applications in High-Dimensional Data,"
 #' Biometrics, 65, 4, 1021-1029.
 #' @examples
-#' n <- nrow(iris)
-#' train <- sample(seq_len(n), n / 2)
-#' sdlda_out <- lda_shrink_cov(Species ~ ., data = iris[train, ])
-#' predicted <- predict(sdlda_out, iris[-train, -5])$class
-#'
-#' sdlda_out2 <- lda_shrink_cov(x = iris[train, -5], y = iris[train, 5])
-#' predicted2 <- predict(sdlda_out2, iris[-train, -5])$class
-#' all.equal(predicted, predicted2)
+#' data(cells, package = "modeldata")
+#' 
+#' cells$case <- NULL
+#' 
+#' cell_train <- cells[-(1:500), ]
+#' cell_test  <- cells[  1:500 , ]
+#' 
+#' mod <- lda_shrink_cov(class ~ ., data = cell_train)
+#' mod
+#' 
+#' # ------------------------------------------------------------------------------
+#' 
+#' table(
+#'    predict(mod, cell_test)$.pred_class, 
+#'    cell_test$class
+#' )
+#' 
+#' predict(mod, head(cell_test), type = "prob") 
 lda_shrink_cov <- function(x, ...) {
   UseMethod("lda_shrink_cov")
 }
@@ -84,17 +88,12 @@ lda_shrink_cov.default <- function(x, y, prior = NULL, num_alphas = 101, ...) {
   )
 
   # Creates an object of type 'lda_shrink_cov' and adds the 'match.call' to the object
-  obj$call <- match.call()
+  obj$predictors <- colnames(x)
   class(obj) <- "lda_shrink_cov"
 
   obj
 }
 
-#' @param formula A formula of the form \code{groups ~ x1 + x2 + ...} That is,
-#' the response is the grouping factor and the right hand side specifies the
-#' (non-factor) discriminators.
-#' @param data data frame from which variables specified in \code{formula} are
-#' preferentially to be taken.
 #' @rdname lda_shrink_cov
 #' @importFrom stats model.frame model.matrix model.response
 #' @export
@@ -112,7 +111,7 @@ lda_shrink_cov.formula <- function(formula, data, prior = NULL, num_alphas = 101
 
   est <- lda_shrink_cov.default(x = x, y = y, prior = prior, num_alphas = num_alphas)
 
-  est$call <- match.call()
+  
   est$formula <- formula
   est
 }
@@ -139,47 +138,41 @@ print.lda_shrink_cov <- function(x, ...) {
 #' 
 #' @rdname lda_shrink_cov
 #' @export
-#'
-#' @param object trained SDLDA object
-#' @param new_data matrix of observations to predict. Each row corresponds to a
-#' new observation.
-#' @param ... additional arguments
 #' @references Dudoit, S., Fridlyand, J., & Speed, T. P. (2002). "Comparison of
 #' Discrimination Methods for the Classification of Tumors Using Gene Expression
 #' Data," Journal of the American Statistical Association, 97, 457, 77-87.
 #' @references Pang, H., Tong, T., & Zhao, H. (2009). "Shrinkage-based Diagonal
 #' Discriminant Analysis and Its Applications in High-Dimensional Data,"
 #' Biometrics, 65, 4, 1021-1029.
-#' @return list predicted class memberships of each row in new_data
-predict.lda_shrink_cov <- function(object, new_data, ...) {
-  if (!inherits(object, "lda_shrink_cov"))  {
-    rlang::abort("object not of class 'lda_shrink_cov'")
-  }
-
-  new_data <- as.matrix(new_data)
-
-  scores <- apply(new_data, 1, function(obs) {
-    sapply(object$est, function(class_est) {
-      with(class_est, sum((obs - xbar)^2 / object$var_shrink) + log(prior))
+predict.lda_shrink_cov <- function(object, new_data, type = "class", ...) {
+  type <- match.arg(type, c("class", "score", "prob"))
+  
+  new_data <- process_new_data(new_data, object)
+  
+  if (type %in% c("score", "class")) {
+    res <- apply(new_data, 1, function(obs) {
+      sapply(object$est, function(class_est) {
+        with(class_est, sum((obs - xbar)^2 / object$var_shrink) + log(prior))
+      })
     })
-  })
-
-  if (is.vector(scores)) {
-    min_scores <- which.min(scores)
-  } else {
-    min_scores <- apply(scores, 2, which.min)
   }
-
-  # Posterior probabilities via Bayes Theorem
-  means <- lapply(object$est, "[[", "xbar")
-  covs <- replicate(n=object$num_groups, object$var_shrink, simplify=FALSE)
-  priors <- lapply(object$est, "[[", "prior")
-  posterior <- posterior_probs(x=new_data,
-                               means=means,
-                               covs=covs,
-                               priors=priors)
-
-  class <- factor(object$groups[min_scores], levels = object$groups)
-
-  list(class = class, scores = scores, posterior = posterior)
+  
+  if (type == "prob") {
+    # Posterior probabilities via Bayes Theorem
+    means <- lapply(object$est, "[[", "xbar")
+    covs <- replicate(n = object$num_groups, object$var_shrink, simplify = FALSE)
+    priors <- lapply(object$est, "[[", "prior")
+    res <- posterior_probs(x = new_data, means = means, covs = covs, priors = priors)
+  } 
+  
+  if (type == "class") {
+    if (is.vector(res)) {
+      min_scores <- which.min(res)
+    } else {
+      min_scores <- apply(res, 2, which.min)
+    }
+    res <- factor(object$groups[min_scores], levels = object$groups)
+  }
+  
+  format_predictions(res, type)
 }

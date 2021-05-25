@@ -113,31 +113,40 @@ dmvnorm_diag <- function(x, mean, sigma) {
 #' @return matrix of posterior probabilities for each observation
 posterior_probs <- function(x, means, covs, priors) {
   if (is.vector(x)) {
-    x <- matrix(x, nrow=1)
+    x <- matrix(x, nrow = 1)
   }
   x <- pred_to_matrix(x)
 
-  posterior <- mapply(function(xbar_k, cov_k, prior_k) {
-    if (is.vector(cov_k)) {
-      post_k <- apply(x, 1, function(obs) {
-        dmvnorm_diag(x=obs, mean=xbar_k, sigma=cov_k)
-      })
-    } else {
-      post_k <- dmvnorm(x=x, mean=xbar_k, sigma=cov_k)
-    }
-    prior_k * post_k
-  }, means, covs, priors)
-
-  if (is.vector(posterior)) {
-    posterior <- posterior / sum(posterior)
-  } else {
-    posterior <- posterior / rowSums(posterior)
-  }
-
-  posterior
+  res <- purrr::map2(means, covs, ~ Pr_x_given_y(.x, .y, x = x))
+  res <- purrr::map2_dfc(res, priors, ~ .x * .y)
+  res <- res/rowSums(res)
+  res <- tibble::as_tibble(res)
+  res
 }
 
+Pr_x_given_y <- function(xbar_k, cov_k, x) {
+  if (is.vector(cov_k)) {
+    cov_k <- diag(cov_k)
+  } 
+  mvtnorm:::dmvnorm(x = x, mean = xbar_k, sigma = cov_k)
+}
 
+# ------------------------------------------------------------------------------
+
+format_predictions <- function(x, type) {
+  if (type == "prob") {
+    x <- tibble::as_tibble(x, rownames = NULL)
+    colnames(x) <- paste0(".pred_", colnames(x))
+  } else if (type == "score") {
+    x <- tibble::as_tibble(t(x), rownames = NULL)
+    colnames(x) <- paste0(".pred_", colnames(x))
+  } else {
+    x <- tibble::tibble(.pred_class = x)
+  }
+  x
+}
+
+# ------------------------------------------------------------------------------
 
 pred_to_matrix <- function(x) {
   if (!is.matrix(x)) {
@@ -168,6 +177,13 @@ outcome_to_factor <- function(y) {
   }
   y
 }
+
+process_new_data <- function(new_data, x) {
+  new_data <- new_data[, x$predictors, drop = FALSE]
+  pred_to_matrix(new_data)
+}
+
+# ------------------------------------------------------------------------------
 
 format_priors <- function(x) {
   priors <- vapply(x$est, function(x) x$prior, numeric(1))

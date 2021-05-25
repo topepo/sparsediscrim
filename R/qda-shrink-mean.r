@@ -73,7 +73,7 @@ qda_shrink_mean.default <- function(x, y, prior = NULL, ...) {
                         est_mean = "tong")
 
   # Creates an object of type 'qda_shrink_mean' and adds the 'match.call' to the object
-  obj$call <- match.call()
+  obj$predictors <- colnames(x)
   class(obj) <- "qda_shrink_mean"
 
   obj
@@ -100,7 +100,7 @@ qda_shrink_mean.formula <- function(formula, data, prior = NULL, ...) {
   y <- model.response(mf)
 
   est <- qda_shrink_mean.default(x = x, y = y, prior = prior)
-  est$call <- match.call()
+  
   est$formula <- formula
   est
 }
@@ -135,35 +135,35 @@ print.qda_shrink_mean <- function(x, ...) {
 #' Discrimination Methods for the Classification of Tumors Using Gene Expression
 #' Data," Journal of the American Statistical Association, 97, 457, 77-87.
 #' @return list predicted class memberships of each row in new_data
-predict.qda_shrink_mean <- function(object, new_data, ...) {
-  if (!inherits(object, "qda_shrink_mean"))  {
-    rlang::abort("object not of class 'qda_shrink_mean'")
-  }
-
-  new_data <- as.matrix(new_data)
-
-  scores <- apply(new_data, 1, function(obs) {
-    sapply(object$est, function(class_est) {
-      with(class_est, sum((obs - xbar)^2 / var + log(var)) + log(prior))
+predict.qda_shrink_mean <- function(object, new_data, type = "class", ...) {
+  type <- match.arg(type, c("class", "score", "prob"))
+  
+  new_data <- process_new_data(new_data, object)
+  
+  if (type %in% c("score", "class")) {
+    res <- apply(new_data, 1, function(obs) {
+      sapply(object$est, function(class_est) {
+        with(class_est, sum((obs - xbar)^2 / var + log(var)) + log(prior))
+      })
     })
-  })
-
-  if (is.vector(scores)) {
-    min_scores <- which.min(scores)
-  } else {
-    min_scores <- apply(scores, 2, which.min)
   }
-
-  # Posterior probabilities via Bayes Theorem
-  means <- lapply(object$est, "[[", "xbar")
-  covs <- lapply(object$est, "[[", "var")
-  priors <- lapply(object$est, "[[", "prior")
-  posterior <- posterior_probs(x=new_data,
-                               means=means,
-                               covs=covs,
-                               priors=priors)
-
-  class <- factor(object$groups[min_scores], levels = object$groups)
-
-  list(class = class, scores = scores, posterior = posterior)
+  
+  if (type == "prob") {
+    # Posterior probabilities via Bayes Theorem
+    means <- lapply(object$est, "[[", "xbar")
+    covs <- lapply(object$est, "[[", "var")
+    priors <- lapply(object$est, "[[", "prior")
+    res <- posterior_probs(x = new_data, means = means, covs = covs, priors = priors)
+  } 
+  
+  if (type == "class") {
+    if (is.vector(res)) {
+      min_scores <- which.min(res)
+    } else {
+      min_scores <- apply(res, 2, which.min)
+    }
+    res <- factor(object$groups[min_scores], levels = object$groups)
+  }
+  
+  format_predictions(res, type)
 }

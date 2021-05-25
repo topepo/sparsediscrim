@@ -35,25 +35,41 @@
 #'
 #' @export
 #'
-#' @param x matrix containing the training data. The rows are the sample
-#' observations, and the columns are the features.
+#' @param x matrix or data frame containing the training data. The rows are
+#'  the sample observations, and the columns are the features. If a data frame
+#'  is used, all columns should be numeric.
 #' @param y vector of class labels for each training observation
 #' @param prior vector with prior probabilities for each class. If NULL
 #' (default), then equal probabilities are used. See details.
-#' @return \code{lda_diag} object that contains the trained DLDA classifier
+#' @return The modeling function returns object that contains the trained
+#'  classifier. 
+#'  
+#'  The predict method always returns a tibble. When `type = "class"`, the 
+#'  tibble has a single column names `.pred_class`. For the other
+#'  types, there are columns in the tibble with names `.pred_{class-level}`.
 #'
 #' @references Dudoit, S., Fridlyand, J., & Speed, T. P. (2002). "Comparison of
 #' Discrimination Methods for the Classification of Tumors Using Gene Expression
 #' Data," Journal of the American Statistical Association, 97, 457, 77-87.
 #' @examples
-#' n <- nrow(iris)
-#' train <- sample(seq_len(n), n / 2)
-#' dlda_out <- lda_diag(Species ~ ., data = iris[train, ])
-#' predicted <- predict(dlda_out, iris[-train, -5])$class
-#'
-#' dlda_out2 <- lda_diag(x = iris[train, -5], y = iris[train, 5])
-#' predicted2 <- predict(dlda_out2, iris[-train, -5])$class
-#' all.equal(predicted, predicted2)
+#' data(cells, package = "modeldata")
+#' 
+#' cells$case <- NULL
+#' 
+#' cell_train <- cells[-(1:500), ]
+#' cell_test  <- cells[  1:500 , ]
+#' 
+#' mod <- lda_diag(class ~ ., data = cell_train)
+#' mod
+#' 
+#' # ------------------------------------------------------------------------------
+#' 
+#' table(
+#'    predict(mod, cell_test)$.pred_class, 
+#'    cell_test$class
+#' )
+#' 
+#' predict(mod, head(cell_test), type = "prob") 
 lda_diag <- function(x, ...) {
   UseMethod("lda_diag")
 }
@@ -67,17 +83,12 @@ lda_diag.default <- function(x, y, prior = NULL, ...) {
   obj <- diag_estimates(x = x, y = y, prior = prior, pool = TRUE)
 
   # Creates an object of type 'lda_diag' and adds the 'match.call' to the object
-  obj$call <- match.call()
+  obj$predictors <- colnames(x)
   class(obj) <- "lda_diag"
 
   obj
 }
 
-#' @param formula A formula of the form \code{groups ~ x1 + x2 + ...} That is,
-#' the response is the grouping factor and the right hand side specifies the
-#' (non-factor) discriminators.
-#' @param data data frame from which variables specified in \code{formula} are
-#' preferentially to be taken.
 #' @rdname lda_diag
 #' @importFrom stats model.frame model.matrix model.response
 #' @export
@@ -94,7 +105,7 @@ lda_diag.formula <- function(formula, data, prior = NULL, ...) {
   y <- model.response(mf)
 
   est <- lda_diag.default(x = x, y = y, prior = prior)
-  est$call <- match.call()
+  
   est$formula <- formula
   est
 }
@@ -121,43 +132,38 @@ print.lda_diag <- function(x, ...) {
 #' @rdname lda_diag
 #' @export
 #'
-#' @param object trained DLDA object
+#' @param object trained model object
 #' @param new_data matrix of observations to predict. Each row corresponds to a new observation.
 #' @param ... additional arguments
-#' @references Dudoit, S., Fridlyand, J., & Speed, T. P. (2002). "Comparison of
-#' Discrimination Methods for the Classification of Tumors Using Gene Expression
-#' Data," Journal of the American Statistical Association, 97, 457, 77-87.
-#' @return list predicted class memberships of each row in new_data
-predict.lda_diag <- function(object, new_data, ...) {
-  if (!inherits(object, "lda_diag"))  {
-    rlang::abort("object not of class 'lda_diag'")
-  }
-  if (is.vector(new_data)) {
-    new_data <- as.matrix(new_data)
-  }
+predict.lda_diag <- function(object, new_data, type = "class", ...) {
+  type <- match.arg(type, c("class", "score", "prob"))
 
-  scores <- apply(new_data, 1, function(obs) {
-    sapply(object$est, function(class_est) {
-      with(class_est, sum((obs - xbar)^2 / object$var_pool) + log(prior))
+  new_data <- process_new_data(new_data, object)
+
+  if (type %in% c("score", "class")) {
+    res <- apply(new_data, 1, function(obs) {
+      sapply(object$est, function(class_est) {
+        with(class_est, sum((obs - xbar)^2 / object$var_pool) + log(prior))
+      })
     })
-  })
-
-  if (is.vector(scores)) {
-    min_scores <- which.min(scores)
-  } else {
-    min_scores <- apply(scores, 2, which.min)
   }
 
-  # Posterior probabilities via Bayes Theorem
-  means <- lapply(object$est, "[[", "xbar")
-  covs <- replicate(n=object$num_groups, object$var_pool, simplify=FALSE)
-  priors <- lapply(object$est, "[[", "prior")
-  posterior <- posterior_probs(x=new_data,
-                               means=means,
-                               covs=covs,
-                               priors=priors)
+  if (type == "prob") {
+    # Posterior probabilities via Bayes Theorem
+    means <- lapply(object$est, "[[", "xbar")
+    covs <- replicate(n=object$num_groups, object$var_pool, simplify=FALSE)
+    priors <- lapply(object$est, "[[", "prior")
+    res <- posterior_probs(x = new_data, means = means, covs = covs, priors = priors)
+  } 
+  
+  if (type == "class") {
+    if (is.vector(res)) {
+      min_scores <- which.min(res)
+    } else {
+      min_scores <- apply(res, 2, which.min)
+    }
+    res <- factor(object$groups[min_scores], levels = object$groups)
+  }
 
-  class <- factor(object$groups[min_scores], levels = object$groups)
-
-  list(class = class, scores = scores, posterior = posterior)
+  format_predictions(res, type)
 }

@@ -160,7 +160,7 @@ rda_high_dim.default <- function(x, y, lambda = 1, gamma = 0,
   }
   
   # Creates an object of type 'rda_high_dim' and adds the 'match.call' to the object
-  obj$call <- match.call()
+  obj$predictors <- colnames(x)
   class(obj) <- "rda_high_dim"
   
   obj
@@ -189,7 +189,7 @@ rda_high_dim.formula <- function(formula, data, ...) {
   y <- model.response(mf)
   
   est <- rda_high_dim.default(x = x, y = y, ...)
-  est$call <- match.call()
+  
   est$formula <- formula
   est
 }
@@ -227,10 +227,12 @@ print.rda_high_dim <- function(x, ...) {
 #' speed when the linear transformation has already been performed.
 #' @return list with predicted class and discriminant scores for each of the K
 #' classes
-predict.rda_high_dim <- function(object, new_data, projected = FALSE, ...) {
-  new_data <- as.matrix(new_data)
+predict.rda_high_dim <- function(object, new_data, projected = FALSE, type = "class", ...) {
+  type <- match.arg(type, c("class", "score", "prob"))
   
-  scores <- sapply(object$est, function(class_est) {
+  new_data <- process_new_data(new_data, object)
+  
+  res <- sapply(object$est, function(class_est) {
     if (object$lambda == 0 && object$gamma == 0) {
       # Want: log(det(W_k)) = -log(det(W_k_inv))
       log_det <- -log_determinant(class_est$W_inv)
@@ -258,26 +260,30 @@ predict.rda_high_dim <- function(object, new_data, projected = FALSE, ...) {
     quad_forms + log_det - 2 * log(class_est$prior)
   })
   
-  if (is.vector(scores)) {
-    # When sapply above returns a vector, the naming is thrown off.
-    # Hence, we rename it to the groups.
-    names(scores) <- object$groups
-    
-    min_scores <- which.min(scores)
-    posterior <- exp(-(scores - min(scores)))
-    posterior <- posterior / sum(posterior)
-  } else {
-    min_scores <- apply(scores, 1, which.min)
-    # Grabbed code to calculate 'posterior' from MASS:::predict.qda, which
-    # handles numerical overflow unlike the more direct:
-    # exp(scores) / (1 + exp(sum(scores)))
-    posterior <- exp(-(scores - apply(scores, 1, min)))
-    posterior <- posterior / rowSums(posterior)
+  if (type %in% c("class", "prob")) {
+    if (is.vector(res)) {
+      # When sapply above returns a vector, the naming is thrown off.
+      # Hence, we rename it to the groups.
+      names(res) <- object$groups
+      
+      min_scores <- which.min(res)
+      res <- exp(-(res - min(res)))
+      res <- res / sum(res)
+    } else {
+      min_scores <- apply(res, 1, which.min)
+      # Grabbed code to calculate 'posterior' from MASS:::predict.qda, which
+      # handles numerical overflow unlike the more direct:
+      # exp(res) / (1 + exp(sum(res)))
+      res <- exp(-(res - apply(res, 1, min)))
+      res <- res / rowSums(res)
+    }
   }
   
-  class <- with(object, factor(groups[min_scores], levels = groups))
+  if (type == "class") {
+    res <- factor(object$groups[min_scores], levels = object$groups)
+  }
   
-  list(class = class, scores = scores, posterior = posterior)
+  format_predictions(res, type)
 }
 
 #' Helper function to optimize the HDRDA classifier via cross-validation
