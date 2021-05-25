@@ -17,5 +17,5 @@ dmvnorm_diag(x, mean, sigma)
 multivariate normal density
 }
 \description{
-Alternative to \code{mvtnorm::dmvnorm}
+Alternative to `mvtnorm::dmvnorm`
 }

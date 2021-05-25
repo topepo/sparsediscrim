@@ -1,21 +1,21 @@
 #' Computes the maximum likelihood estimator for the sample covariance matrix
 #' under the assumption of multivariate normality.
 #'
-#' For a sample matrix, \code{x}, we compute the sample covariance matrix of the
+#' For a sample matrix, `x`, we compute the sample covariance matrix of the
 #' data as the maximum likelihood estimator (MLE) of the population covariance
 #' matrix.
 #'
-#' If the \code{diag} option is set to \code{TRUE}, then we assume the population
+#' If the `diag` option is set to `TRUE`, then we assume the population
 #' covariance matrix is diagonal, and the MLE is computed under this assumption.
-#' In this case, we return a vector of length \code{p} instead.
+#' In this case, we return a vector of length `p` instead.
 #'
 #' @export
 #' @importFrom stats var cov
-#' @param x data matrix with \code{n} observations and \code{p} feature vectors
+#' @param x data matrix with `n` observations and `p` feature vectors
 #' @param diag logical value. If TRUE, assumes the population covariance matrix
-#' is diagonal. By default, we assume that \code{diag} is \code{FALSE}.
-#' @return sample covariance matrix of size \eqn{p \times p}. If \code{diag} is
-#' \code{TRUE}, then a vector of length \code{p} is returned instead.
+#' is diagonal. By default, we assume that `diag` is `FALSE`.
+#' @return sample covariance matrix of size \eqn{p \times p}. If `diag` is
+#' `TRUE`, then a vector of length `p` is returned instead.
 cov_mle <- function(x, diag = FALSE) {
   x <- as.matrix(x)
   n <- nrow(x)
@@ -29,14 +29,14 @@ cov_mle <- function(x, diag = FALSE) {
 #' Computes the pooled maximum likelihood estimator (MLE) for the common
 #' covariance matrix
 #'
-#' For the matrix \code{x}, we compute the MLE for the population covariance
+#' For the matrix `x`, we compute the MLE for the population covariance
 #' matrix under the assumption that the data are sampled from \eqn{K}
 #' multivariate normal populations having equal covariance matrices.
 #'
 #' @export
 #' @importFrom stats cov
-#' @param x data matrix with \code{n} observations and \code{p} feature vectors
-#' @param y class labels for observations (rows) in \code{x}
+#' @param x data matrix with `n` observations and `p` feature vectors
+#' @param y class labels for observations (rows) in `x`
 #' @return pooled sample covariance matrix of size \eqn{p \times p}
 #' @examples
 #' cov_pool(iris[, -5], iris$Species)
@@ -54,13 +54,13 @@ cov_pool <- function(x, y) {
 #' Computes the covariance-matrix maximum likelihood estimators for each class
 #' and returns a list.
 #'
-#' For a sample matrix, \code{x}, we compute the MLE for the covariance matrix
-#' for each class given in the vector, \code{y}.
+#' For a sample matrix, `x`, we compute the MLE for the covariance matrix
+#' for each class given in the vector, `y`.
 #' @export
-#' @param x data matrix with \code{n} observations and \code{p} feature vectors
-#' @param y class labels for observations (rows) in \code{x}
+#' @param x data matrix with `n` observations and `p` feature vectors
+#' @param y class labels for observations (rows) in `x`
 #' @return list of the sample covariance matrices of size \eqn{p \times p} for
-#' each class given in \code{y}.
+#' each class given in `y`.
 cov_list <- function(x, y) {
   x <- as.matrix(x)
   y <- as.factor(y)
@@ -72,28 +72,28 @@ cov_list <- function(x, y) {
 #' Computes the eigenvalue decomposition of the maximum likelihood estimators
 #' (MLE) of the covariance matrices for the given data matrix
 #'
-#' For the classes given in the vector \code{y}, we compute the eigenvalue
+#' For the classes given in the vector `y`, we compute the eigenvalue
 #' (spectral) decomposition of the class sample covariance matrices (MLEs) using
-#' the data matrix \code{x}.
+#' the data matrix `x`.
 #'
-#' If the \code{fast} argument is selected, we utilize the so-called Fast
+#' If the `fast` argument is selected, we utilize the so-called Fast
 #' Singular Value Decomposition (SVD) to quickly compute the eigenvalue
-#' decomposition. To compute the Fast SVD, we use the \code{\link{fast.svd}}
-#' function, which employs a well-known trick for tall data (large \code{n},
-#' small \code{p}) and wide data (large \code{p}, small \code{n}) to compute the
+#' decomposition. To compute the Fast SVD, we use the `\link{fast.svd`}
+#' function, which employs a well-known trick for tall data (large `n`,
+#' small `p`) and wide data (large `p`, small `n`) to compute the
 #' SVD corresponding to the nonzero singular values. For more information about
-#' the Fast SVD, see \code{\link[corpcor]{fast.svd}}.
+#' the Fast SVD, see `\link[corpcor]{fast.svd`}.
 #' 
 #' @importFrom corpcor fast.svd
 #' @export
-#' @param x data matrix with \code{n} observations and \code{p} feature vectors
-#' @param y class labels for observations (rows) in \code{x}
+#' @param x data matrix with `n` observations and `p` feature vectors
+#' @param y class labels for observations (rows) in `x`
 #' @param pool logical. Should the sample covariance matrices be pooled?
 #' @param fast logical. Should the Fast SVD be used? See details.
-#' @param tol tolerance value below which the singular values of \code{x} are
+#' @param tol tolerance value below which the singular values of `x` are
 #' considered zero.
 #' @return a list containing the eigendecomposition for each class. If
-#' \code{pool = TRUE}, then a single list is returned.
+#' `pool = TRUE`, then a single list is returned.
 #' @examples
 #' cov_eigen(x = iris[, -5], y = iris[, 5])
 #' cov_eigen(x = iris[, -5], y = iris[, 5], pool = TRUE)
@@ -155,14 +155,14 @@ cov_eigen <- function(x, y, pool = FALSE, fast = FALSE, tol = 1e-6) {
 #' Computes the observation weights for each class for the HDRDA classifier
 #'
 #' This function calculates the weight for each observation in the data matrix
-#' \code{x} in order to calculate the covariance matrices employed in the HDRDA
-#' classifier, implemented in \code{\link{rda_high_dim}}.
+#' `x` in order to calculate the covariance matrices employed in the HDRDA
+#' classifier, implemented in `\link{rda_high_dim`}.
 #'
 #' @param x matrix containing the training data. The rows are the sample
 #' observations, and the columns are the features.
 #' @param y vector of class labels for each training observation
 #' @param lambda the RDA pooling parameter. Must be between 0 and 1, inclusively.
-#' @return list containing the observations for each class given in \code{y}
+#' @return list containing the observations for each class given in `y`
 #'
 #' @references Ramey, J. A., Stein, C. K., and Young, D. M. (2013),
 #' "High-Dimensional Regularized Discriminant Analysis."
@@ -179,16 +179,16 @@ rda_weights <- function(x, y, lambda = 1) {
 
 #' Calculates the RDA covariance-matrix estimators for each class
 #'
-#' For the classes given in the vector \code{y}, this function calculates the
+#' For the classes given in the vector `y`, this function calculates the
 #' class covariance-matrix estimators employed in the HDRDA classifier,
-#' implemented in \code{\link{rda_high_dim}}.
+#' implemented in `\link{rda_high_dim`}.
 #'
 #' @param x matrix containing the training data. The rows are the sample
 #' observations, and the columns are the features.
 #' @param y vector of class labels for each training observation
 #' @param lambda the RDA pooling parameter. Must be between 0 and 1, inclusively.
 #' @return list containing the RDA covariance-matrix estimators for each class
-#' given in \code{y}
+#' given in `y`
 #'
 #' @references Ramey, J. A., Stein, C. K., and Young, D. M. (2013),
 #' "High-Dimensional Regularized Discriminant Analysis."
@@ -204,7 +204,7 @@ rda_cov <- function(x, y, lambda = 1) {
 #' Computes a shrunken version of the maximum likelihood estimator for the
 #' sample covariance matrix under the assumption of multivariate normality.
 #'
-#' For a sample matrix, \code{x}, we compute the sample covariance matrix as the
+#' For a sample matrix, `x`, we compute the sample covariance matrix as the
 #' maximum likelihood estimator (MLE) of the population covariance matrix and
 #' shrink it towards its diagonal.
 #'
@@ -222,7 +222,7 @@ rda_cov <- function(x, y, lambda = 1) {
 #' al. (2008) text.
 #'
 #' @export
-#' @param x data matrix with \code{n} observations and \code{p} feature vectors
+#' @param x data matrix with `n` observations and `p` feature vectors
 #' @param gamma the shrinkage parameter. Must be between 0 and 1, inclusively.
 #' By default, the shrinkage parameter is 1, which simply yields the MLE.
 #' @return shrunken sample covariance matrix of size \eqn{p \times p}

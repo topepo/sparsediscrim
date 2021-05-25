@@ -31,24 +31,24 @@ of features, etc.
 }
 \details{
 This function computes the common estimates and ancillary information used in
-all of the regularized discriminant classifiers in the \code{sparsediscrim}
+all of the regularized discriminant classifiers in the `sparsediscrim`
 package.
 
-The matrix of training observations are given in \code{x}. The rows of \code{x}
+The matrix of training observations are given in `x`. The rows of `x`
 contain the sample observations, and the columns contain the features for each
 training observation.
 
-The vector of class labels given in \code{y} are coerced to a \code{factor}.
-The length of \code{y} should match the number of rows in \code{x}.
+The vector of class labels given in `y` are coerced to a `factor`.
+The length of `y` should match the number of rows in `x`.
 
 An error is thrown if a given class has less than 2 observations because the
 variance for each feature within a class cannot be estimated with less than 2
 observations.
 
-The vector, \code{prior}, contains the \emph{a priori} class membership for
-each class. If \code{prior} is NULL (default), the class membership
+The vector, `prior`, contains the _a priori_ class membership for
+each class. If `prior` is NULL (default), the class membership
 probabilities are estimated as the sample proportion of observations belonging
-to each class. Otherwise, \code{prior} should be a vector with the same length
-as the number of classes in \code{y}. The \code{prior} probabilities should be
+to each class. Otherwise, `prior` should be a vector with the same length
+as the number of classes in `y`. The `prior` probabilities should be
 nonnegative and sum to one.
 }

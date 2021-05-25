@@ -11,10 +11,10 @@ solve_chol(x)
 \item{x}{symmetric, positive-definite matrix}
 }
 \value{
-the inverse of \code{x}
+the inverse of `x`
 }
 \description{
-This often faster than \code{\link{solve}} for larger matrices.
+This often faster than `\link{solve`} for larger matrices.
 See, for example:
 \url{http://blog.phytools.org/2012/12/faster-inversion-of-square-symmetric.html}
 and

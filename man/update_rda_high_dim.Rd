@@ -7,18 +7,18 @@
 update_rda_high_dim(obj, lambda = 1, gamma = 0)
 }
 \arguments{
-\item{obj}{a \code{rda_high_dim} object}
+\item{obj}{a `rda_high_dim` object}
 
 \item{lambda}{a numeric value between 0 and 1, inclusively}
 
 \item{gamma}{a numeric value (nonnegative)}
 }
 \value{
-a \code{rda_high_dim} object with updated estimates
+a `rda_high_dim` object with updated estimates
 }
 \description{
 This function updates some of the quantities in the HDRDA classifier based on
-updated values of \code{lambda} and \code{gamma}. The update can greatly
-expedite cross-validation to examine a large grid of values for \code{lambda}
-and \code{gamma}.
+updated values of `lambda` and `gamma`. The update can greatly
+expedite cross-validation to examine a large grid of values for `lambda`
+and `gamma`.
 }

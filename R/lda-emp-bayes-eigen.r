@@ -8,24 +8,24 @@
 #' pooled covariance matrix, where only the largest 95% of the eigenvalues and
 #' their corresponding eigenvectors are kept. The resulting covariance matrix is
 #' then shrunken towards a scaled identity matrix. The value of 95% is the
-#' default and can be changed via the \code{eigen_pct} argument.
+#' default and can be changed via the `eigen_pct` argument.
 #'
-#' The matrix of training observations are given in \code{x}. The rows of \code{x}
+#' The matrix of training observations are given in `x`. The rows of `x`
 #' contain the sample observations, and the columns contain the features for each
 #' training observation.
 #'
-#' The vector of class labels given in \code{y} are coerced to a \code{factor}.
-#' The length of \code{y} should match the number of rows in \code{x}.
+#' The vector of class labels given in `y` are coerced to a `factor`.
+#' The length of `y` should match the number of rows in `x`.
 #'
 #' An error is thrown if a given class has less than 2 observations because the
 #' variance for each feature within a class cannot be estimated with less than 2
 #' observations.
 #'
-#' The vector, \code{prior}, contains the \emph{a priori} class membership for
-#' each class. If \code{prior} is NULL (default), the class membership
+#' The vector, `prior`, contains the _a priori_ class membership for
+#' each class. If `prior` is NULL (default), the class membership
 #' probabilities are estimated as the sample proportion of observations belonging
-#' to each class. Otherwise, \code{prior} should be a vector with the same length
-#' as the number of classes in \code{y}. The \code{prior} probabilities should be
+#' to each class. Otherwise, `prior` should be a vector with the same length
+#' as the number of classes in `y`. The `prior` probabilities should be
 #' nonnegative and sum to one.
 #'
 #' @export
@@ -36,7 +36,7 @@
 #' @param prior vector with prior probabilities for each class. If NULL
 #' (default), then equal probabilities are used. See details.
 #' @param eigen_pct the percentage of eigenvalues kept
-#' @return \code{lda_emp_bayes_eigen} object that contains the trained MDMEB classifier
+#' @return `lda_emp_bayes_eigen` object that contains the trained MDMEB classifier
 #' @examples
 #' n <- nrow(iris)
 #' train <- sample(seq_len(n), n / 2)
@@ -87,10 +87,10 @@ lda_emp_bayes_eigen.default <- function(x, y, prior = NULL, eigen_pct = 0.95, ..
   obj
 }
 
-#' @param formula A formula of the form \code{groups ~ x1 + x2 + ...} That is,
+#' @param formula A formula of the form `groups ~ x1 + x2 + ...` That is,
 #' the response is the grouping factor and the right hand side specifies the
 #' (non-factor) discriminators.
-#' @param data data frame from which variables specified in \code{formula} are
+#' @param data data frame from which variables specified in `formula` are
 #' preferentially to be taken.
 #' @rdname lda_emp_bayes_eigen
 #' @importFrom stats model.frame model.matrix model.response

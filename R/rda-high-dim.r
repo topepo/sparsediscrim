@@ -9,30 +9,30 @@
 #' The HDRDA classifier utilizes a covariance-matrix estimator that is a convex
 #' combination of the covariance-matrix estimators used in the Linear
 #' Discriminant Analysis (LDA) and Quadratic Discriminant Analysis (QDA)
-#' classifiers. For each of the \code{K} classes given in \code{y},
+#' classifiers. For each of the `K` classes given in `y`,
 #' \eqn{(k = 1, \ldots, K)}, we first define this convex combination as
 #' \deqn{\hat{\Sigma}_k(\lambda) = (1 - \lambda) \hat{\Sigma}_k
 #' + \lambda \hat{\Sigma},}
-#' where \eqn{\lambda \in [0, 1]} is the \emph{pooling} parameter. We then
+#' where \eqn{\lambda \in [0, 1]} is the _pooling_ parameter. We then
 #' calculate the covariance-matrix estimator
 #' \deqn{\tilde{\Sigma}_k = \alpha_k \hat{\Sigma}_k(\lambda) + \gamma I_p,}
 #' where \eqn{I_p} is the \eqn{p \times p} identity matrix. The matrix
 #' \eqn{\tilde{\Sigma}_k} is substituted into the HDRDA classifier. See Ramey et
 #' al. (2017) for more details.
 #'
-#' The matrix of training observations are given in \code{x}. The rows of
-#' \code{x} contain the sample observations, and the columns contain the features
-#' for each training observation. The vector of class labels given in \code{y}
-#' are coerced to a \code{factor}. The length of \code{y} should match the number
-#' of rows in \code{x}.
+#' The matrix of training observations are given in `x`. The rows of
+#' `x` contain the sample observations, and the columns contain the features
+#' for each training observation. The vector of class labels given in `y`
+#' are coerced to a `factor`. The length of `y` should match the number
+#' of rows in `x`.
 #'
-#' The vector \code{prior} contains the \emph{a priori} class membership for
-#' each class. If \code{prior} is \code{NULL} (default), the class membership
+#' The vector `prior` contains the _a priori_ class membership for
+#' each class. If `prior` is `NULL` (default), the class membership
 #' probabilities are estimated as the sample proportion of observations
-#' belonging to each class. Otherwise, \code{prior} should be a vector with the
-#' same length as the number of classes in \code{y}. The \code{prior}
+#' belonging to each class. Otherwise, `prior` should be a vector with the
+#' same length as the number of classes in `y`. The `prior`
 #' probabilities should be nonnegative and sum to one. The order of the prior
-#' probabilities is assumed to match the levels of \code{factor(y)}.
+#' probabilities is assumed to match the levels of `factor(y)`.
 #'
 #' @export
 #' @references Ramey, J. A., Stein, C. K., and Young, D. M. (2017),
@@ -48,14 +48,14 @@
 #' inclusively.
 #' @param gamma a numeric values used for the shrinkage parameter.
 #' @param shrinkage_type the type of covariance-matrix shrinkage to apply. By
-#' default, a ridge-like shrinkage is applied. If \code{convex} is given, then
+#' default, a ridge-like shrinkage is applied. If `convex` is given, then
 #' shrinkage similar to Friedman (1989) is applied. See Ramey et al. (2017) for
 #' details.
-#' @param prior vector with prior probabilities for each class. If \code{NULL}
+#' @param prior vector with prior probabilities for each class. If `NULL`
 #' (default), then the sample proportion of observations belonging to each class
 #' equal probabilities are used. See details.
 #' @param tol a threshold for determining nonzero eigenvalues.
-#' @return \code{rda_high_dim} object that contains the trained HDRDA classifier
+#' @return `rda_high_dim` object that contains the trained HDRDA classifier
 rda_high_dim <- function(x, ...) {
   UseMethod("rda_high_dim")
 }
@@ -166,12 +166,12 @@ rda_high_dim.default <- function(x, y, lambda = 1, gamma = 0,
   obj
 }
 
-#' @param formula A formula of the form \code{groups ~ x1 + x2 + ...} That is,
+#' @param formula A formula of the form `groups ~ x1 + x2 + ...` That is,
 #' the response is the grouping factor and the right hand side specifies the
 #' feature vectors.
-#' @param data data frame from which variables specified in \code{formula} are
+#' @param data data frame from which variables specified in `formula` are
 #' preferentially to be taken.
-#' @param ... arguments passed from the \code{formula} to the \code{default}
+#' @param ... arguments passed from the `formula` to the `default`
 #' method
 #' @rdname rda_high_dim
 #' @importFrom stats model.frame model.matrix model.response
@@ -213,16 +213,16 @@ print.rda_high_dim <- function(x, ...) {
 #' Predicts the class membership of a matrix of unlabeled observations with a
 #' trained HDRDA classifier.
 #'
-#' For a given \code{rda_high_dim} object, we predict the class of each observation
-#' (row) of the the matrix given in \code{newdata}.
+#' For a given `rda_high_dim` object, we predict the class of each observation
+#' (row) of the the matrix given in `newdata`.
 #'
 #' @rdname rda_high_dim
 #' @export
-#' @param object object of type \code{rda_high_dim} that contains the trained HDRDA
+#' @param object object of type `rda_high_dim` that contains the trained HDRDA
 #' classifier
 #' @param newdata matrix containing the unlabeled observations to classify. Each
 #' row corresponds to a new observation.
-#' @param projected logical indicating whether \code{newdata} have already been
+#' @param projected logical indicating whether `newdata` have already been
 #' projected to a q-dimensional subspace. This argument can yield large gains in
 #' speed when the linear transformation has already been performed.
 #' @return list with predicted class and discriminant scores for each of the K
@@ -285,7 +285,7 @@ predict.rda_high_dim <- function(object, newdata, projected = FALSE, ...) {
 #' For a given data set, we apply cross-validation (cv) to select the optimal
 #' HDRDA tuning parameters.
 #'
-#' The number of cross-validation folds is given in \code{num_folds}.
+#' The number of cross-validation folds is given in `num_folds`.
 #'
 #' @export
 #' @importFrom dplyr arrange
@@ -293,17 +293,17 @@ predict.rda_high_dim <- function(object, newdata, projected = FALSE, ...) {
 #' observations, and the columns are the features.
 #' @param y vector of class labels for each training observation
 #' @param num_folds the number of cross-validation folds.
-#' @param num_lambda The number of values of \code{lambda} to consider
-#' @param num_gamma The number of values of \code{gamma} to consider
+#' @param num_lambda The number of values of `lambda` to consider
+#' @param num_gamma The number of values of `gamma` to consider
 #' @param shrinkage_type the type of covariance-matrix shrinkage to apply. By
-#' default, a ridge-like shrinkage is applied. If \code{convex} is given, then
+#' default, a ridge-like shrinkage is applied. If `convex` is given, then
 #' shrinkage similar to Friedman (1989) is applied. See Ramey et al. (2017) for
 #' details.
-#' @param verbose If set to \code{TRUE}, summary information will be outputted
+#' @param verbose If set to `TRUE`, summary information will be outputted
 #' as the optimal model is being determined.
-#' @param ... Additional arguments passed to \code{\link{rda_high_dim}}.
+#' @param ... Additional arguments passed to `\link{rda_high_dim`}.
 #' @return list containing the HDRDA model that minimizes cross-validation as
-#' well as a \code{data.frame} that summarizes the cross-validation results.
+#' well as a `data.frame` that summarizes the cross-validation results.
 rda_high_dim_cv <- function(x, y, num_folds = 10, num_lambda = 21, num_gamma = 8,
                             shrinkage_type=c("ridge", "convex"), verbose=FALSE, ...) {
   x <- pred_to_matrix(x)
@@ -385,7 +385,7 @@ rda_high_dim_cv <- function(x, y, num_folds = 10, num_lambda = 21, num_gamma = 8
 
 #' Plots a heatmap of cross-validation error grid for a HDRDA classifier object.
 #'
-#' Uses \code{\link[ggplot2]{ggplot}} to plot a heatmap of the training error
+#' Uses `\link[ggplot2]{ggplot`} to plot a heatmap of the training error
 #' grid.
 #'
 #' @param x object to plot
@@ -419,14 +419,14 @@ plot.rda_high_dim_cv <- function(x, ...) {
 #' Helper function to update tuning parameters for the HDRDA classifier
 #'
 #' This function updates some of the quantities in the HDRDA classifier based on
-#' updated values of \code{lambda} and \code{gamma}. The update can greatly
-#' expedite cross-validation to examine a large grid of values for \code{lambda}
-#' and \code{gamma}.
+#' updated values of `lambda` and `gamma`. The update can greatly
+#' expedite cross-validation to examine a large grid of values for `lambda`
+#' and `gamma`.
 #'
-#' @param obj a \code{rda_high_dim} object
+#' @param obj a `rda_high_dim` object
 #' @param lambda a numeric value between 0 and 1, inclusively
 #' @param gamma a numeric value (nonnegative)
-#' @return a \code{rda_high_dim} object with updated estimates
+#' @return a `rda_high_dim` object with updated estimates
 update_rda_high_dim <- function(obj, lambda = 1, gamma = 0) {
   # In the special case that (lambda, gamma) = (0, 0), the improvements to
   # HDRDA's speed via the Sherman-Woodbury formula are not applicable because

@@ -10,7 +10,7 @@ log_determinant(x)
 \item{x}{matrix}
 }
 \value{
-log determinant of \code{x}
+log determinant of `x`
 }
 \description{
 Computes the log determinant of a matrix.

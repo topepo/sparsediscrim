@@ -47,10 +47,10 @@ h <- function(nu, p, t = -1) {
 #' \url{http://onlinelibrary.wiley.com/doi/10.1111/j.1541-0420.2009.01200.x/abstract}
 #' @return list with
 #' \itemize{
-#'   \item \code{alpha}: the alpha that minimizes the average risk under a Stein
+#'   \item `alpha`: the alpha that minimizes the average risk under a Stein
 #'    loss function. If the minimum is not unique, we randomly select an
-#'    \code{alpha} from the minimizers.
-#'   \item \code{risk}: the minimum average risk attained.
+#'    `alpha` from the minimizers.
+#'   \item `risk`: the minimum average risk attained.
 #' }
 risk_stein <- function(N, K, var_feature, num_alphas = 101, t = -1) {
   nu <- N - K

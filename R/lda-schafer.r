@@ -7,24 +7,24 @@
 #' pooled sample covariance matrix is singular, the linear discriminant function
 #' is incalculable. This function replaces the inverse of pooled sample
 #' covariance matrix with an estimator proposed by Schafer and Strimmer
-#' (2005). The estimator is calculated via \code{\link[corpcor]{invcov.shrink}}.
+#' (2005). The estimator is calculated via `\link[corpcor]{invcov.shrink`}.
 #'
-#' The matrix of training observations are given in \code{x}. The rows of \code{x}
+#' The matrix of training observations are given in `x`. The rows of `x`
 #' contain the sample observations, and the columns contain the features for each
 #' training observation.
 #'
-#' The vector of class labels given in \code{y} are coerced to a \code{factor}.
-#' The length of \code{y} should match the number of rows in \code{x}.
+#' The vector of class labels given in `y` are coerced to a `factor`.
+#' The length of `y` should match the number of rows in `x`.
 #'
 #' An error is thrown if a given class has less than 2 observations because the
 #' variance for each feature within a class cannot be estimated with less than 2
 #' observations.
 #'
-#' The vector, \code{prior}, contains the \emph{a priori} class membership for
-#' each class. If \code{prior} is NULL (default), the class membership
+#' The vector, `prior`, contains the _a priori_ class membership for
+#' each class. If `prior` is NULL (default), the class membership
 #' probabilities are estimated as the sample proportion of observations belonging
-#' to each class. Otherwise, \code{prior} should be a vector with the same length
-#' as the number of classes in \code{y}. The \code{prior} probabilities should be
+#' to each class. Otherwise, `prior` should be a vector with the same length
+#' as the number of classes in `y`. The `prior` probabilities should be
 #' nonnegative and sum to one.
 #'
 #' @importFrom corpcor cov.shrink invcov.shrink
@@ -36,8 +36,8 @@
 #' @param prior vector with prior probabilities for each class. If NULL
 #' (default), then equal probabilities are used. See details.
 #' @param ... additional arguments passed to
-#' \code{\link[corpcor]{invcov.shrink}}
-#' @return \code{lda_schafer} object that contains the trained classifier
+#' `\link[corpcor]{invcov.shrink`}
+#' @return `lda_schafer` object that contains the trained classifier
 #' @examples
 #' n <- nrow(iris)
 #' train <- sample(seq_len(n), n / 2)
@@ -84,10 +84,10 @@ lda_schafer.default <- function(x, y, prior = NULL, ...) {
   obj
 }
 
-#' @param formula A formula of the form \code{groups ~ x1 + x2 + ...} That is,
+#' @param formula A formula of the form `groups ~ x1 + x2 + ...` That is,
 #' the response is the grouping factor and the right hand side specifies the
 #' (non-factor) discriminators.
-#' @param data data frame from which variables specified in \code{formula} are
+#' @param data data frame from which variables specified in `formula` are
 #' preferentially to be taken.
 #' @rdname lda_schafer
 #' @importFrom stats model.frame model.matrix model.response
