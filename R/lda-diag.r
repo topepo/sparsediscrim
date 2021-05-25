@@ -139,9 +139,7 @@ predict.lda_diag <- function(object, newdata, ...) {
   if (!inherits(object, "lda_diag"))  {
     rlang::abort("object not of class 'lda_diag'")
   }
-  if (is.vector(newdata)) {
-    newdata <- as.matrix(newdata)
-  }
+
   newdata <- process_newdata(object, newdata)
 
   scores <- apply(newdata, 1, function(obs) {
@@ -160,10 +158,10 @@ predict.lda_diag <- function(object, newdata, ...) {
   means <- lapply(object$est, "[[", "xbar")
   covs <- replicate(n = object$num_groups, object$var_pool, simplify = FALSE)
   priors <- lapply(object$est, "[[", "prior")
-  posterior <- posterior_probs(x=newdata,
-                               means=means,
-                               covs=covs,
-                               priors=priors)
+  posterior <- posterior_probs(x = newdata, 
+                               means = means, 
+                               covs = covs, 
+                               priors = priors)
 
   class <- factor(object$groups[min_scores], levels = object$groups)
 

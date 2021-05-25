@@ -215,15 +215,14 @@ process_newdata <- function(object, x) {
   if (has_terms) {
     .terms <- object$.terms
     .terms <- stats::delete.response(.terms)
-    x <- stats::model.frame(.terms, x, na.action = stats::na.exclude) #, xlev = object$xlevels)
+    x <- stats::model.frame(.terms, x, na.action = stats::na.pass) #, xlev = object$xlevels)
     x <- model.matrix(.terms, x)
     attr(x, "contrasts") <- NULL
     attr(x, "assign") <- NULL
-  } else {
-    x <- x[, object$col_names, drop = FALSE]
-    x <- as.matrix(x)
-  }
-  x
+  } 
+  x <- x[, object$col_names, drop = FALSE]
+  as.matrix(x)
+  
 }
 
 
