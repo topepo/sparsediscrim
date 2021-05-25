@@ -226,29 +226,4 @@ process_newdata <- function(object, x) {
   x
 }
 
-check_for_zero_vars <- function(x, warn = TRUE) {
-  var_est <- lapply(x, function(x) x$var == 0)
-  is_zv <- do.call("rbind", var_est)
-  any_zv <- apply(is_zv, 2, any)
-  if (all(any_zv)) {
-    rlang::abort("All predictors have zero variance.")
-  }
-  if (any(any_zv)) {
-    if (warn) {
-      nms <- paste0(names(any_zv)[any_zv], collapse = ", ")
-      nms <- paste("The following predictors had zero variance (possibly with ",
-                   "a class) and were removed from the analysis:", nms)
-      rlang::warn(nms)
-    }
-    x <- lapply(x, reduce_elem, retain = names(any_zv)[!any_zv], "xbar")
-    x <- lapply(x, reduce_elem, retain = names(any_zv)[!any_zv], "var")
-  }
-  x
-}
-
-reduce_elem <- function(x, retain, col) {
-  x[[col]] <- x[[col]][retain]
-  x
-}
-
 

@@ -72,7 +72,8 @@ lda_diag.default <- function(x, y, prior = NULL, ...) {
   obj <- diag_estimates(x = x, y = y, prior = prior, pool = TRUE)
 
   # Creates an object of type 'lda_diag' 
-  obj$col_names <- colnames(x)
+  # Use columns that pass filters
+  obj$col_names <- names(obj$est[[1]]$xbar)
   obj <- new_discrim_object(obj, "lda_diag")
 
   obj
@@ -143,7 +144,6 @@ predict.lda_diag <- function(object, newdata, ...) {
   }
   newdata <- process_newdata(object, newdata)
 
-  newdata <- newdata[, names(object$est$xbar)]
   scores <- apply(newdata, 1, function(obs) {
     sapply(object$est, function(class_est) {
       with(class_est, sum((obs - xbar)^2 / object$var_pool) + log(prior))
@@ -153,12 +153,12 @@ predict.lda_diag <- function(object, newdata, ...) {
   if (is.vector(scores)) {
     min_scores <- which.min(scores)
   } else {
-    min_scores <- apply(scores, 2, which.min)
+    min_scores <- unlist(apply(scores, 2, which.min))
   }
 
   # Posterior probabilities via Bayes Theorem
   means <- lapply(object$est, "[[", "xbar")
-  covs <- replicate(n=object$num_groups, object$var_pool, simplify=FALSE)
+  covs <- replicate(n = object$num_groups, object$var_pool, simplify = FALSE)
   priors <- lapply(object$est, "[[", "prior")
   posterior <- posterior_probs(x=newdata,
                                means=means,

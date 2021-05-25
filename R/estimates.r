@@ -17,7 +17,8 @@
 #'
 #' An error is thrown if a given class has less than 2 observations because the
 #' variance for each feature within a class cannot be estimated with less than 2
-#' observations.
+#' observations. If other data have zero variances, these will be removed with
+#' a warning. 
 #'
 #' The vector, `prior`, contains the _a priori_ class membership for
 #' each class. If `prior` is NULL (default), the class membership
@@ -86,6 +87,9 @@ diag_estimates <- function(x, y, prior = NULL, pool = FALSE,
     stats$var <- with(stats, (n - 1) / n * apply(x[i, , drop = FALSE], 2, var))
     stats
   })
+  
+  # Check to see if any predictors had zero variances
+  obj$est <- check_for_zero_vars(obj$est)
 
   # Calculates the pooled variance across all classes.
   if (pool) {
@@ -98,6 +102,33 @@ diag_estimates <- function(x, y, prior = NULL, pool = FALSE,
   }
   obj
 }
+
+
+check_for_zero_vars <- function(x, warn = TRUE) {
+  var_est <- lapply(x, function(x) x$var == 0)
+  is_zv <- do.call("rbind", var_est)
+  any_zv <- apply(is_zv, 2, any)
+  if (all(any_zv)) {
+    rlang::abort("All predictors have zero variance.")
+  }
+  if (any(any_zv)) {
+    if (warn) {
+      nms <- paste0(names(any_zv)[any_zv], collapse = ", ")
+      nms <- paste("The following predictors had zero variance (possibly within ",
+                   "a class) and were removed from the analysis:", nms)
+      rlang::warn(nms)
+    }
+    x <- lapply(x, reduce_elem, retain = names(any_zv)[!any_zv], "xbar")
+    x <- lapply(x, reduce_elem, retain = names(any_zv)[!any_zv], "var")
+  }
+  x
+}
+
+reduce_elem <- function(x, retain, col) {
+  x[[col]] <- x[[col]][retain]
+  x
+}
+
 
 #' Computes estimates and ancillary information for regularized discriminant
 #' classifiers
