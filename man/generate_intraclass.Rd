@@ -2,40 +2,40 @@
 % Please edit documentation in R/data-intraclass.r
 \name{generate_intraclass}
 \alias{generate_intraclass}
-\title{Generates data from \code{K} multivariate normal data populations, where each
+\title{Generates data from `K` multivariate normal data populations, where each
 population (class) has an intraclass covariance matrix.}
 \usage{
 generate_intraclass(n, p, rho, mu, sigma2 = rep(1, K))
 }
 \arguments{
-\item{n}{vector of the sample sizes of each class. The length of \code{n}
-determines the number of classes \code{K}.}
+\item{n}{vector of the sample sizes of each class. The length of `n`
+determines the number of classes `K`.}
 
 \item{p}{the number of features (variables) in the data}
 
 \item{rho}{vector of the values of the off-diagonal elements for each
-intraclass covariance matrix. Must equal the length of \code{n}.}
+intraclass covariance matrix. Must equal the length of `n`.}
 
 \item{mu}{vector containing the mean for each class. Must equal the length of
-\code{n} (i.e., equal to \code{K}).}
+`n` (i.e., equal to `K`).}
 
 \item{sigma2}{vector of variances for each class. Must equal the length of
-\code{n}. Default is 1 for each class.}
+`n`. Default is 1 for each class.}
 }
 \value{
 named list with elements:
 \itemize{
-  \item \code{x}: matrix of observations with \code{n} rows and \code{p}
+  \item `x`: matrix of observations with `n` rows and `p`
 columns
-  \item \code{y}: vector of class labels that indicates class membership for
-each observation (row) in \code{x}.
+  \item `y`: vector of class labels that indicates class membership for
+each observation (row) in `x`.
 }
 }
 \description{
-This function generates \code{K} multivariate normal data sets, where each
+This function generates `K` multivariate normal data sets, where each
 class is generated with a constant mean vector and an intraclass covariance
-matrix. The data are returned as a single matrix \code{x} along with a vector
-of class labels \code{y} that indicates class membership.
+matrix. The data are returned as a single matrix `x` along with a vector
+of class labels `y` that indicates class membership.
 }
 \details{
 For simplicity, we assume that a class mean vector is constant for each
@@ -50,13 +50,13 @@ where \eqn{J_p} is the \eqn{p \times p} matrix of ones and \eqn{I_p} is the
 
 By default, with \eqn{\sigma_k^2 = 1}, the diagonal elements of the intraclass
 covariance matrix are all 1, while the off-diagonal elements of the matrix
-are all \code{rho}.
+are all `rho`.
 
-The values of \code{rho} must be between \eqn{1 / (1 - p)} and 1,
+The values of `rho` must be between \eqn{1 / (1 - p)} and 1,
 exclusively, to ensure that the covariance matrix is positive definite.
 
-The number of classes \code{K} is determined with lazy evaluation as the
-length of \code{n}.
+The number of classes `K` is determined with lazy evaluation as the
+length of `n`.
 }
 \examples{
 # Generates data from K = 3 classes.

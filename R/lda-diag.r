@@ -15,22 +15,22 @@
 #' classifiers is that they are fast and have much fewer parameters to estimate,
 #' especially when the number of features is quite large.
 #'
-#' The matrix of training observations are given in \code{x}. The rows of \code{x}
+#' The matrix of training observations are given in `x`. The rows of `x`
 #' contain the sample observations, and the columns contain the features for each
 #' training observation.
 #'
-#' The vector of class labels given in \code{y} are coerced to a \code{factor}.
-#' The length of \code{y} should match the number of rows in \code{x}.
+#' The vector of class labels given in `y` are coerced to a `factor`.
+#' The length of `y` should match the number of rows in `x`.
 #'
 #' An error is thrown if a given class has less than 2 observations because the
 #' variance for each feature within a class cannot be estimated with less than 2
 #' observations.
 #'
-#' The vector, \code{prior}, contains the \emph{a priori} class membership for
-#' each class. If \code{prior} is NULL (default), the class membership
+#' The vector, `prior`, contains the _a priori_ class membership for
+#' each class. If `prior` is NULL (default), the class membership
 #' probabilities are estimated as the sample proportion of observations belonging
-#' to each class. Otherwise, \code{prior} should be a vector with the same length
-#' as the number of classes in \code{y}. The \code{prior} probabilities should be
+#' to each class. Otherwise, `prior` should be a vector with the same length
+#' as the number of classes in `y`. The `prior` probabilities should be
 #' nonnegative and sum to one.
 #'
 #' @export
@@ -40,7 +40,7 @@
 #' @param y vector of class labels for each training observation
 #' @param prior vector with prior probabilities for each class. If NULL
 #' (default), then equal probabilities are used. See details.
-#' @return \code{lda_diag} object that contains the trained DLDA classifier
+#' @return `lda_diag` object that contains the trained DLDA classifier
 #'
 #' @references Dudoit, S., Fridlyand, J., & Speed, T. P. (2002). "Comparison of
 #' Discrimination Methods for the Classification of Tumors Using Gene Expression
@@ -73,10 +73,10 @@ lda_diag.default <- function(x, y, prior = NULL, ...) {
   obj
 }
 
-#' @param formula A formula of the form \code{groups ~ x1 + x2 + ...} That is,
+#' @param formula A formula of the form `groups ~ x1 + x2 + ...` That is,
 #' the response is the grouping factor and the right hand side specifies the
 #' (non-factor) discriminators.
-#' @param data data frame from which variables specified in \code{formula} are
+#' @param data data frame from which variables specified in `formula` are
 #' preferentially to be taken.
 #' @rdname lda_diag
 #' @importFrom stats model.frame model.matrix model.response

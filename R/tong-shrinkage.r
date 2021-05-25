@@ -9,12 +9,12 @@
 #' Estimation and Its Application to Diagonal Discriminant Analysis,"
 #' Bioinformatics, 28, 4, 531-537.
 #' \url{http://bioinformatics.oxfordjournals.org/content/28/4/531.long}
-#' @param x a matrix with \code{n} rows and \code{p} columns.
-#' @param r_opt the shrinkage coefficient. If \code{NULL} (default), we calculate
+#' @param x a matrix with `n` rows and `p` columns.
+#' @param r_opt the shrinkage coefficient. If `NULL` (default), we calculate
 #' the shrinkage coefficient with the formula given just above Equation 5 on page
 #' 533 and denoted by \eqn{\hat{r}_{opt}}. We allow the user to specify an
 #' alternative value to investigate better approximations.
-#' @return vector of length \code{p} with the shrunken mean estimator
+#' @return vector of length `p` with the shrunken mean estimator
 tong_mean_shrinkage <- function(x, r_opt = NULL) {
   n <- nrow(x)
   p <- ncol(x)

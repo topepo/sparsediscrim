@@ -27,11 +27,11 @@ observations, and the columns are the features.}
 \item{prior}{vector with prior probabilities for each class. If NULL
 (default), then equal probabilities are used. See details.}
 
-\item{formula}{A formula of the form \code{groups ~ x1 + x2 + ...} That is,
+\item{formula}{A formula of the form `groups ~ x1 + x2 + ...` That is,
 the response is the grouping factor and the right hand side specifies the
 (non-factor) discriminators.}
 
-\item{data}{data frame from which variables specified in \code{formula} are
+\item{data}{data frame from which variables specified in `formula` are
 preferentially to be taken.}
 
 \item{object}{trained SmDLDA object}
@@ -40,7 +40,7 @@ preferentially to be taken.}
 new observation.}
 }
 \value{
-\code{lda_shrink_mean} object that contains the trained SmDLDA classifier
+`lda_shrink_mean` object that contains the trained SmDLDA classifier
 
 list predicted class memberships of each row in newdata
 }
@@ -49,7 +49,7 @@ Given a set of training data, this function builds the Shrinkage-mean-based
 Diagonal Linear Discriminant Analysis (SmDLDA) classifier from Tong, Chen,
 and Zhao (2012). The SmDLDA classifier incorporates a Lindley-type shrunken
 mean estimator into the DLDA classifier from Dudoit et al. (2002). For more
-about the DLDA classifier, see \code{\link{lda_diag}}.
+about the DLDA classifier, see [lda_diag()].
 
 The SmDLDA classifier is a modification to LDA, where the off-diagonal
 elements of the pooled sample covariance matrix are set to zero.
@@ -68,22 +68,22 @@ notable attribute of the Naive Bayes classifier family. The benefit of these
 classifiers is that they are fast and have much fewer parameters to estimate,
 especially when the number of features is quite large.
 
-The matrix of training observations are given in \code{x}. The rows of \code{x}
+The matrix of training observations are given in `x`. The rows of `x`
 contain the sample observations, and the columns contain the features for each
 training observation.
 
-The vector of class labels given in \code{y} are coerced to a \code{factor}.
-The length of \code{y} should match the number of rows in \code{x}.
+The vector of class labels given in `y` are coerced to a `factor`.
+The length of `y` should match the number of rows in `x`.
 
 An error is thrown if a given class has less than 2 observations because the
 variance for each feature within a class cannot be estimated with less than 2
 observations.
 
-The vector, \code{prior}, contains the \emph{a priori} class membership for
-each class. If \code{prior} is NULL (default), the class membership
+The vector, `prior`, contains the _a priori_ class membership for
+each class. If `prior` is NULL (default), the class membership
 probabilities are estimated as the sample proportion of observations belonging
-to each class. Otherwise, \code{prior} should be a vector with the same length
-as the number of classes in \code{y}. The \code{prior} probabilities should be
+to each class. Otherwise, `prior` should be a vector with the same length
+as the number of classes in `y`. The `prior` probabilities should be
 nonnegative and sum to one.
 }
 \examples{

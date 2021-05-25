@@ -10,34 +10,30 @@
 #' when the pooled sample covariance matrix is nonsingular, it is equal to the
 #' pseudo-inverse.
 #'
-#' The matrix of training observations are given in \code{x}. The rows of \code{x}
+#' The matrix of training observations are given in `x`. The rows of `x`
 #' contain the sample observations, and the columns contain the features for each
 #' training observation.
 #'
-#' The vector of class labels given in \code{y} are coerced to a \code{factor}.
-#' The length of \code{y} should match the number of rows in \code{x}.
+#' The vector of class labels given in `y` are coerced to a `factor`.
+#' The length of `y` should match the number of rows in `x`.
 #'
 #' An error is thrown if a given class has less than 2 observations because the
 #' variance for each feature within a class cannot be estimated with less than 2
 #' observations.
 #'
-#' The vector, \code{prior}, contains the \emph{a priori} class membership for
-#' each class. If \code{prior} is NULL (default), the class membership
+#' The vector, `prior`, contains the _a priori_ class membership for
+#' each class. If `prior` is NULL (default), the class membership
 #' probabilities are estimated as the sample proportion of observations belonging
-#' to each class. Otherwise, \code{prior} should be a vector with the same length
-#' as the number of classes in \code{y}. The \code{prior} probabilities should be
+#' to each class. Otherwise, `prior` should be a vector with the same length
+#' as the number of classes in `y`. The `prior` probabilities should be
 #' nonnegative and sum to one.
 #'
 #' @export
 #'
-#' @param x matrix containing the training data. The rows are the sample
-#' observations, and the columns are the features.
-#' @param y vector of class labels for each training observation
-#' @param prior vector with prior probabilities for each class. If NULL
-#' (default), then equal probabilities are used. See details.
+#' @inheritParams lda_diag
 #' @param tol tolerance value below which eigenvalues are considered numerically
 #' equal to 0
-#' @return \code{lda_pseudo} object that contains the trained lda_pseudo
+#' @return `lda_pseudo` object that contains the trained lda_pseudo
 #' classifier
 #' @examples
 #' n <- nrow(iris)
@@ -85,11 +81,7 @@ lda_pseudo.default <- function(x, y, prior = NULL, tol = 1e-8, ...) {
   obj
 }
 
-#' @param formula A formula of the form \code{groups ~ x1 + x2 + ...} That is,
-#' the response is the grouping factor and the right hand side specifies the
-#' (non-factor) discriminators.
-#' @param data data frame from which variables specified in \code{formula} are
-#' preferentially to be taken.
+#' @inheritParams lda_diag.formula
 #' @rdname lda_pseudo
 #' @importFrom stats model.frame model.matrix model.response
 #' @export
