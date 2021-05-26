@@ -225,4 +225,10 @@ process_newdata <- function(object, x) {
   
 }
 
-
+min_index <- function(x) {
+  if (any(is.na(x))) {
+    NA_integer_
+  } else {
+    which.min(x)
+  }
+}

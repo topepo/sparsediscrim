@@ -144,12 +144,12 @@ predict.lda_diag <- function(object, newdata, ...) {
       with(class_est, sum((obs - xbar)^2 / object$var_pool) + log(prior))
     })
   })
-  ic <- !complete.cases(scores)
 
   if (is.vector(scores)) {
     min_scores <- min_index(scores)
   } else {
     min_scores <- apply(scores, 2, min_index)
+    
   }
 
   # Posterior probabilities via Bayes Theorem
@@ -165,7 +165,6 @@ predict.lda_diag <- function(object, newdata, ...) {
   colnames(scores) <- object$groups
   
   class <- factor(object$groups[min_scores], levels = object$groups)
-  class[ic] <- NA
 
   list(class = class, scores = scores, posterior = posterior)
 }
