@@ -272,9 +272,15 @@ predict.rda_high_dim <- function(object, newdata, projected = FALSE, ...) {
     posterior <- posterior / rowSums(posterior)
   }
   
-  class <- with(object, factor(groups[min_scores], levels = groups))
-  
-  list(class = class, scores = scores, posterior = posterior)
+  if (type == "prob") {
+    res <- as.data.frame(posterior)
+  } else if (type == "class") {
+    res <- with(object, factor(groups[min_scores], levels = groups))
+  } else {
+    res <- t(scores)
+    res <- as.data.frame(res)
+  }
+  res
 }
 
 #' Helper function to optimize the HDRDA classifier via cross-validation

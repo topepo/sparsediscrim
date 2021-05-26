@@ -35,10 +35,10 @@
 #' n <- nrow(iris)
 #' train <- sample(seq_len(n), n / 2)
 #' mdeb_out <- lda_emp_bayes(Species ~ ., data = iris[train, ])
-#' predicted <- predict(mdeb_out, iris[-train, -5])$class
+#' predicted <- predict(mdeb_out, iris[-train, -5], type = "class")
 #'
 #' mdeb_out2 <- lda_emp_bayes(x = iris[train, -5], y = iris[train, 5])
-#' predicted2 <- predict(mdeb_out2, iris[-train, -5])$class
+#' predicted2 <- predict(mdeb_out2, iris[-train, -5], type = "class")
 #' all.equal(predicted, predicted2)
 #' @references Srivastava, M. and Kubokawa, T. (2007). "Comparison of
 #' Discrimination Methods for High Dimensional Data," Journal of the Japanese
@@ -117,7 +117,8 @@ print.lda_emp_bayes <- function(x, ...) {
 #' @export
 #' @inheritParams predict.lda_diag
 
-predict.lda_emp_bayes <- function(object, newdata, ...) {
+predict.lda_emp_bayes <- function(object, newdata, type = c("class", "prob", "score"), ...) {
+  type <- rlang::arg_match0(type, c("class", "prob", "score"), arg_nm = "type")
   newdata <- process_newdata(object, newdata)
 
   # Calculates the MDEB shrinkage constant and then computes the inverse of the
@@ -131,17 +132,20 @@ predict.lda_emp_bayes <- function(object, newdata, ...) {
       with(class_est, quadform_inv(cov_pool, obs - xbar) + log(prior))
     })
   })
-
-  # Posterior probabilities via Bayes Theorem
-  means <- lapply(object$est, "[[", "xbar")
-  covs <- replicate(n=object$num_groups, cov_pool, simplify=FALSE)
-  priors <- lapply(object$est, "[[", "prior")
-  posterior <- posterior_probs(x=newdata,
-                               means=means,
-                               covs=covs,
-                               priors=priors)
-
-  class <- score_to_class(scores, object)
-
-  list(class = class, scores = scores, posterior = posterior)
+  
+  if (type == "prob") {
+    # Posterior probabilities via Bayes Theorem
+    means <- lapply(object$est, "[[", "xbar")
+    covs <- replicate(n=object$num_groups, cov_pool, simplify=FALSE)
+    priors <- lapply(object$est, "[[", "prior")
+    res <- posterior_probs(x = newdata, means = means, covs = covs, priors = priors)
+    res <- as.data.frame(res)
+    
+  } else if (type == "class") {
+    res <- score_to_class(scores, object)
+  } else {
+    res <- t(scores)
+    res <- as.data.frame(res)
+  }
+  res
 }

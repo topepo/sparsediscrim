@@ -13,7 +13,7 @@ lda_shrink_cov(x, ...)
 
 \method{lda_shrink_cov}{formula}(formula, data, prior = NULL, num_alphas = 101, ...)
 
-\method{predict}{lda_shrink_cov}(object, newdata, ...)
+\method{predict}{lda_shrink_cov}(object, newdata, type = c("class", "prob", "score"), ...)
 }
 \arguments{
 \item{x}{Matrix or data frame containing the training data. The rows are the 
@@ -42,6 +42,8 @@ preferentially to be taken.}
 
 \item{newdata}{Matrix or data frame of observations to predict. Each row 
 corresponds to a new observation.}
+
+\item{type}{Prediction type: either `"class"`, `"prob"`, or `"score"`.}
 }
 \value{
 `lda_shrink_cov` object that contains the trained SDLDA classifier
@@ -93,10 +95,10 @@ probabilities should be nonnegative and sum to one.
 n <- nrow(iris)
 train <- sample(seq_len(n), n / 2)
 sdlda_out <- lda_shrink_cov(Species ~ ., data = iris[train, ])
-predicted <- predict(sdlda_out, iris[-train, -5])$class
+predicted <- predict(sdlda_out, iris[-train, -5], type = "class")
 
 sdlda_out2 <- lda_shrink_cov(x = iris[train, -5], y = iris[train, 5])
-predicted2 <- predict(sdlda_out2, iris[-train, -5])$class
+predicted2 <- predict(sdlda_out2, iris[-train, -5], type = "class")
 all.equal(predicted, predicted2)
 }
 \references{

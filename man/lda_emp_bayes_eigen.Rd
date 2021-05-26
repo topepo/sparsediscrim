@@ -13,7 +13,7 @@ lda_emp_bayes_eigen(x, ...)
 
 \method{lda_emp_bayes_eigen}{formula}(formula, data, prior = NULL, ...)
 
-\method{predict}{lda_emp_bayes_eigen}(object, newdata, ...)
+\method{predict}{lda_emp_bayes_eigen}(object, newdata, type = c("class", "prob", "score"), ...)
 }
 \arguments{
 \item{x}{Matrix or data frame containing the training data. The rows are the 
@@ -41,6 +41,8 @@ preferentially to be taken.}
 
 \item{newdata}{Matrix or data frame of observations to predict. Each row 
 corresponds to a new observation.}
+
+\item{type}{Prediction type: either `"class"`, `"prob"`, or `"score"`.}
 }
 \value{
 `lda_emp_bayes_eigen` object that contains the trained MDMEB classifier
@@ -87,10 +89,10 @@ nonnegative and sum to one.
 n <- nrow(iris)
 train <- sample(seq_len(n), n / 2)
 mdmeb_out <- lda_emp_bayes_eigen(Species ~ ., data = iris[train, ])
-predicted <- predict(mdmeb_out, iris[-train, -5])$class
+predicted <- predict(mdmeb_out, iris[-train, -5], type = "class")
 
 mdmeb_out2 <- lda_emp_bayes_eigen(x = iris[train, -5], y = iris[train, 5])
-predicted2 <- predict(mdmeb_out2, iris[-train, -5])$class
+predicted2 <- predict(mdmeb_out2, iris[-train, -5], type = "class")
 all.equal(predicted, predicted2)
 }
 \references{

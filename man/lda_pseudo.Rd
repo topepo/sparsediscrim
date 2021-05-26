@@ -13,7 +13,7 @@ lda_pseudo(x, ...)
 
 \method{lda_pseudo}{formula}(formula, data, prior = NULL, tol = 1e-08, ...)
 
-\method{predict}{lda_pseudo}(object, newdata, ...)
+\method{predict}{lda_pseudo}(object, newdata, type = c("class", "prob", "score"), ...)
 }
 \arguments{
 \item{x}{Matrix or data frame containing the training data. The rows are the 
@@ -42,6 +42,8 @@ preferentially to be taken.}
 
 \item{newdata}{Matrix or data frame of observations to predict. Each row 
 corresponds to a new observation.}
+
+\item{type}{Prediction type: either `"class"`, `"prob"`, or `"score"`.}
 }
 \value{
 `lda_pseudo` object that contains the trained lda_pseudo
@@ -90,9 +92,9 @@ nonnegative and sum to one.
 n <- nrow(iris)
 train <- sample(seq_len(n), n / 2)
 lda_pseudo_out <- lda_pseudo(Species ~ ., data = iris[train, ])
-predicted <- predict(lda_pseudo_out, iris[-train, -5])$class
+predicted <- predict(lda_pseudo_out, iris[-train, -5], type = "class")
 
 lda_pseudo_out2 <- lda_pseudo(x = iris[train, -5], y = iris[train, 5])
-predicted2 <- predict(lda_pseudo_out2, iris[-train, -5])$class
+predicted2 <- predict(lda_pseudo_out2, iris[-train, -5], type = "class")
 all.equal(predicted, predicted2)
 }

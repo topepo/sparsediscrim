@@ -14,7 +14,7 @@ lda_schafer(x, ...)
 
 \method{lda_schafer}{formula}(formula, data, prior = NULL, ...)
 
-\method{predict}{lda_schafer}(object, newdata, ...)
+\method{predict}{lda_schafer}(object, newdata, type = c("class", "prob", "score"), ...)
 }
 \arguments{
 \item{x}{Matrix or data frame containing the training data. The rows are the 
@@ -40,6 +40,8 @@ preferentially to be taken.}
 
 \item{newdata}{Matrix or data frame of observations to predict. Each row 
 corresponds to a new observation.}
+
+\item{type}{Prediction type: either `"class"`, `"prob"`, or `"score"`.}
 }
 \value{
 `lda_schafer` object that contains the trained classifier
@@ -83,10 +85,10 @@ nonnegative and sum to one.
 n <- nrow(iris)
 train <- sample(seq_len(n), n / 2)
 lda_schafer_out <- lda_schafer(Species ~ ., data = iris[train, ])
-predicted <- predict(lda_schafer_out, iris[-train, -5])$class
+predicted <- predict(lda_schafer_out, iris[-train, -5], type = "class")
 
 lda_schafer_out2 <- lda_schafer(x = iris[train, -5], y = iris[train, 5])
-predicted2 <- predict(lda_schafer_out2, iris[-train, -5])$class
+predicted2 <- predict(lda_schafer_out2, iris[-train, -5], type = "class")
 all.equal(predicted, predicted2)
 }
 \references{

@@ -14,7 +14,7 @@ qda_shrink_mean(x, ...)
 
 \method{qda_shrink_mean}{formula}(formula, data, prior = NULL, ...)
 
-\method{predict}{qda_shrink_mean}(object, newdata, ...)
+\method{predict}{qda_shrink_mean}(object, newdata, type = c("class", "prob", "score"), ...)
 }
 \arguments{
 \item{x}{Matrix or data frame containing the training data. The rows are the 
@@ -40,6 +40,8 @@ preferentially to be taken.}
 
 \item{newdata}{Matrix or data frame of observations to predict. Each row 
 corresponds to a new observation.}
+
+\item{type}{Prediction type: either `"class"`, `"prob"`, or `"score"`.}
 }
 \value{
 `qda_shrink_mean` object that contains the trained SmDQDA classifier
@@ -86,10 +88,10 @@ nonnegative and sum to one.
 n <- nrow(iris)
 train <- sample(seq_len(n), n / 2)
 smdqda_out <- qda_shrink_mean(Species ~ ., data = iris[train, ])
-predicted <- predict(smdqda_out, iris[-train, -5])$class
+predicted <- predict(smdqda_out, iris[-train, -5], type = "class")
 
 smdqda_out2 <- qda_shrink_mean(x = iris[train, -5], y = iris[train, 5])
-predicted2 <- predict(smdqda_out2, iris[-train, -5])$class
+predicted2 <- predict(smdqda_out2, iris[-train, -5], type = "class")
 all.equal(predicted, predicted2)
 }
 \references{

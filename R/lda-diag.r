@@ -52,10 +52,10 @@
 #' n <- nrow(iris)
 #' train <- sample(seq_len(n), n / 2)
 #' dlda_out <- lda_diag(Species ~ ., data = iris[train, ])
-#' predicted <- predict(dlda_out, iris[-train, -5])$class
+#' predicted <- predict(dlda_out, iris[-train, -5], type = "class")
 #'
 #' dlda_out2 <- lda_diag(x = iris[train, -5], y = iris[train, 5])
-#' predicted2 <- predict(dlda_out2, iris[-train, -5])$class
+#' predicted2 <- predict(dlda_out2, iris[-train, -5], type = "class")
 #' all.equal(predicted, predicted2)
 lda_diag <- function(x, ...) {
   UseMethod("lda_diag")

@@ -37,10 +37,10 @@
 #' n <- nrow(iris)
 #' train <- sample(seq_len(n), n / 2)
 #' lda_thomaz_out <- lda_thomaz(Species ~ ., data = iris[train, ])
-#' predicted <- predict(lda_thomaz_out, iris[-train, -5])$class
+#' predicted <- predict(lda_thomaz_out, iris[-train, -5], type = "class")
 #'
 #' lda_thomaz_out2 <- lda_thomaz(x = iris[train, -5], y = iris[train, 5])
-#' predicted2 <- predict(lda_thomaz_out2, iris[-train, -5])$class
+#' predicted2 <- predict(lda_thomaz_out2, iris[-train, -5], type = "class")
 #' all.equal(predicted, predicted2)
 #' @references Thomaz, C. E., Kitani, E. C., and Gillies, D. F. (2006). "A
 #' maximum uncertainty LDA-based approach for limited sample size problems with
@@ -143,7 +143,8 @@ print.lda_thomaz <- function(x, ...) {
 #' @export
 #' @inheritParams predict.lda_diag
 
-predict.lda_thomaz <- function(object, newdata, ...) {
+predict.lda_thomaz <- function(object, newdata, type = c("class", "prob", "score"), ...) {
+  type <- rlang::arg_match0(type, c("class", "prob", "score"), arg_nm = "type")
   newdata <- process_newdata(object, newdata)
 
   # Calculates the discriminant scores for each test observation
@@ -152,17 +153,20 @@ predict.lda_thomaz <- function(object, newdata, ...) {
       with(class_est, quadform(object$cov_inv, obs - xbar) + log(prior))
     })
   })
-
-  # Posterior probabilities via Bayes Theorem
-  means <- lapply(object$est, "[[", "xbar")
-  covs <- replicate(n=object$num_groups, object$cov_pool, simplify=FALSE)
-  priors <- lapply(object$est, "[[", "prior")
-  posterior <- posterior_probs(x=newdata,
-                               means=means,
-                               covs=covs,
-                               priors=priors)
-
-  class <- score_to_class(scores, object)
-
-  list(class = class, scores = scores, posterior = posterior)
+  
+  if (type == "prob") {
+    # Posterior probabilities via Bayes Theorem
+    means <- lapply(object$est, "[[", "xbar")
+    covs <- replicate(n=object$num_groups, object$cov_pool, simplify=FALSE)
+    priors <- lapply(object$est, "[[", "prior")
+    res <- posterior_probs(x = newdata, means = means, covs = covs, priors = priors)
+    res <- as.data.frame(res)
+    
+  } else if (type == "class") {
+    res <- score_to_class(scores, object)
+  } else {
+    res <- t(scores)
+    res <- as.data.frame(res)
+  }
+  res
 }

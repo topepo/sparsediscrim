@@ -50,10 +50,10 @@
 #' n <- nrow(iris)
 #' train <- sample(seq_len(n), n / 2)
 #' smdqda_out <- qda_shrink_mean(Species ~ ., data = iris[train, ])
-#' predicted <- predict(smdqda_out, iris[-train, -5])$class
+#' predicted <- predict(smdqda_out, iris[-train, -5], type = "class")
 #'
 #' smdqda_out2 <- qda_shrink_mean(x = iris[train, -5], y = iris[train, 5])
-#' predicted2 <- predict(smdqda_out2, iris[-train, -5])$class
+#' predicted2 <- predict(smdqda_out2, iris[-train, -5], type = "class")
 #' all.equal(predicted, predicted2)
 qda_shrink_mean <- function(x, ...) {
   UseMethod("qda_shrink_mean")
@@ -126,7 +126,8 @@ print.qda_shrink_mean <- function(x, ...) {
 #' @export
 #' @inheritParams predict.lda_diag
 
-predict.qda_shrink_mean <- function(object, newdata, ...) {
+predict.qda_shrink_mean <- function(object, newdata, type = c("class", "prob", "score"), ...) {
+  type <- rlang::arg_match0(type, c("class", "prob", "score"), arg_nm = "type")
   newdata <- process_newdata(object, newdata)
 
   scores <- apply(newdata, 1, function(obs) {
@@ -134,17 +135,20 @@ predict.qda_shrink_mean <- function(object, newdata, ...) {
       with(class_est, sum((obs - xbar)^2 / var + log(var)) + log(prior))
     })
   })
-
-  # Posterior probabilities via Bayes Theorem
-  means <- lapply(object$est, "[[", "xbar")
-  covs <- lapply(object$est, "[[", "var")
-  priors <- lapply(object$est, "[[", "prior")
-  posterior <- posterior_probs(x=newdata,
-                               means=means,
-                               covs=covs,
-                               priors=priors)
-
-  class <- score_to_class(scores, object)
-
-  list(class = class, scores = scores, posterior = posterior)
+  
+  if (type == "prob") {
+    # Posterior probabilities via Bayes Theorem
+    means <- lapply(object$est, "[[", "xbar")
+    covs <- lapply(object$est, "[[", "var")
+    priors <- lapply(object$est, "[[", "prior")
+    res <- posterior_probs(x = newdata, means = means, covs = covs, priors = priors)
+    res <- as.data.frame(res)
+    
+  } else if (type == "class") {
+    res <- score_to_class(scores, object)
+  } else {
+    res <- t(scores)
+    res <- as.data.frame(res)
+  }
+  res
 }
