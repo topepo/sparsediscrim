@@ -22,9 +22,9 @@ autocorrelated covariance matrix
 }
 \description{
 This function generates a \eqn{p \times p} covariance matrix with
-autocorrelated blocks. The autocorrelation parameter is `rho`.
-There are `num_blocks` blocks each with size, `block_size`.
-The variance, `sigma2`, is constant for each feature and defaulted to 1.
+autocorrelated blocks. The autocorrelation parameter is \code{rho}.
+There are \code{num_blocks} blocks each with size, \code{block_size}.
+The variance, \code{sigma2}, is constant for each feature and defaulted to 1.
 }
 \details{
 The autocorrelated covariance matrix is defined as:
@@ -35,9 +35,9 @@ The autocorrelated covariance matrix is defined as:
 
 The matrix \eqn{\Sigma^{(\rho)}} is the autocorrelated block discussed above.
 
-The value of `rho` must be such that \eqn{|\rho| < 1} to ensure that
+The value of \code{rho} must be such that \eqn{|\rho| < 1} to ensure that
 the covariance matrix is positive definite.
 
 The size of the resulting matrix is \eqn{p \times p}, where
-`p = num_blocks * block_size`.
+\code{p = num_blocks * block_size}.
 }

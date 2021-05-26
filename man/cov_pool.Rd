@@ -8,15 +8,15 @@ covariance matrix}
 cov_pool(x, y)
 }
 \arguments{
-\item{x}{data matrix with `n` observations and `p` feature vectors}
+\item{x}{data matrix with \code{n} observations and \code{p} feature vectors}
 
-\item{y}{class labels for observations (rows) in `x`}
+\item{y}{class labels for observations (rows) in \code{x}}
 }
 \value{
 pooled sample covariance matrix of size \eqn{p \times p}
 }
 \description{
-For the matrix `x`, we compute the MLE for the population covariance
+For the matrix \code{x}, we compute the MLE for the population covariance
 matrix under the assumption that the data are sampled from \eqn{K}
 multivariate normal populations having equal covariance matrices.
 }

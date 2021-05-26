@@ -8,15 +8,15 @@ and returns a list.}
 cov_list(x, y)
 }
 \arguments{
-\item{x}{data matrix with `n` observations and `p` feature vectors}
+\item{x}{data matrix with \code{n} observations and \code{p} feature vectors}
 
-\item{y}{class labels for observations (rows) in `x`}
+\item{y}{class labels for observations (rows) in \code{x}}
 }
 \value{
 list of the sample covariance matrices of size \eqn{p \times p} for
-each class given in `y`.
+each class given in \code{y}.
 }
 \description{
-For a sample matrix, `x`, we compute the MLE for the covariance matrix
-for each class given in the vector, `y`.
+For a sample matrix, \code{x}, we compute the MLE for the covariance matrix
+for each class given in the vector, \code{y}.
 }

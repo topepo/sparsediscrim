@@ -8,7 +8,7 @@ sample covariance matrix under the assumption of multivariate normality.}
 cov_shrink_diag(x, gamma = 1)
 }
 \arguments{
-\item{x}{data matrix with `n` observations and `p` feature vectors}
+\item{x}{data matrix with \code{n} observations and \code{p} feature vectors}
 
 \item{gamma}{the shrinkage parameter. Must be between 0 and 1, inclusively.
 By default, the shrinkage parameter is 1, which simply yields the MLE.}
@@ -17,7 +17,7 @@ By default, the shrinkage parameter is 1, which simply yields the MLE.}
 shrunken sample covariance matrix of size \eqn{p \times p}
 }
 \description{
-For a sample matrix, `x`, we compute the sample covariance matrix as the
+For a sample matrix, \code{x}, we compute the sample covariance matrix as the
 maximum likelihood estimator (MLE) of the population covariance matrix and
 shrink it towards its diagonal.
 }

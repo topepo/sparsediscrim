@@ -8,22 +8,22 @@ under the assumption of multivariate normality.}
 cov_mle(x, diag = FALSE)
 }
 \arguments{
-\item{x}{data matrix with `n` observations and `p` feature vectors}
+\item{x}{data matrix with \code{n} observations and \code{p} feature vectors}
 
 \item{diag}{logical value. If TRUE, assumes the population covariance matrix
-is diagonal. By default, we assume that `diag` is `FALSE`.}
+is diagonal. By default, we assume that \code{diag} is \code{FALSE}.}
 }
 \value{
-sample covariance matrix of size \eqn{p \times p}. If `diag` is
-`TRUE`, then a vector of length `p` is returned instead.
+sample covariance matrix of size \eqn{p \times p}. If \code{diag} is
+\code{TRUE}, then a vector of length \code{p} is returned instead.
 }
 \description{
-For a sample matrix, `x`, we compute the sample covariance matrix of the
+For a sample matrix, \code{x}, we compute the sample covariance matrix of the
 data as the maximum likelihood estimator (MLE) of the population covariance
 matrix.
 }
 \details{
-If the `diag` option is set to `TRUE`, then we assume the population
+If the \code{diag} option is set to \code{TRUE}, then we assume the population
 covariance matrix is diagonal, and the MLE is computed under this assumption.
-In this case, we return a vector of length `p` instead.
+In this case, we return a vector of length \code{p} instead.
 }

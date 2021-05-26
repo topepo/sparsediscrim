@@ -10,7 +10,7 @@ cv_partition(y, num_folds = 10, hold_out = NULL, seed = NULL)
 \item{y}{a vector of class labels}
 
 \item{num_folds}{the number of cross-validation folds. Ignored if
-`hold_out` is not `NULL`. See Details.}
+\code{hold_out} is not \code{NULL}. See Details.}
 
 \item{hold_out}{the hold-out size for cross-validation. See Details.}
 
@@ -23,16 +23,16 @@ list the indices of the training and test observations for each fold.
 For a vector of training labels, we return a list of cross-validation folds,
 where each fold has the indices of the observations to leave out in the fold.
 In terms of classification error rate estimation, one can think of a fold as a
-the observations to hold out as a test sample set. Either the `hold_out`
-size or the number of folds, `num_folds`, can be specified. The number
-of folds defaults to 10, but if the `hold_out` size is specified, then
-`num_folds` is ignored.
+the observations to hold out as a test sample set. Either the \code{hold_out}
+size or the number of folds, \code{num_folds}, can be specified. The number
+of folds defaults to 10, but if the \code{hold_out} size is specified, then
+\code{num_folds} is ignored.
 }
 \details{
-We partition the vector `y` based on its length, which we treat as the
-sample size, 'n'. If an object other than a vector is used in `y`, its
+We partition the vector \code{y} based on its length, which we treat as the
+sample size, 'n'. If an object other than a vector is used in \code{y}, its
 length can yield unexpected results. For example, the output of
-`length(diag(3))` is 9.
+\code{length(diag(3))} is 9.
 }
 \examples{
 # The following three calls to `cv_partition` yield the same partitions.
