@@ -6,8 +6,8 @@ context("Data conversion")
 test_that("Bad predictor input", {
    
    expect_error(
-     sparsediscrim:::pred_to_matrix(iris), 
-     "the matrix was no longer numeric"
+      sparsediscrim:::pred_to_matrix(iris), 
+      "the matrix was no longer numeric"
    )
    
    

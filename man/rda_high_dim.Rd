@@ -25,11 +25,11 @@ rda_high_dim(x, ...)
 \method{predict}{rda_high_dim}(object, newdata, projected = FALSE, ...)
 }
 \arguments{
-\item{x}{matrix containing the training data. The rows are the sample
-observations, and the columns are the features.}
+\item{x}{Matrix or data frame containing the training data. The rows are the 
+sample observations, and the columns are the features. Only complete data are 
+retained.}
 
-\item{...}{arguments passed from the `formula` to the `default`
-method}
+\item{...}{additional arguments}
 
 \item{y}{vector of class labels for each training observation}
 
@@ -51,16 +51,16 @@ equal probabilities are used. See details.}
 
 \item{formula}{A formula of the form `groups ~ x1 + x2 + ...` That is,
 the response is the grouping factor and the right hand side specifies the
-feature vectors.}
+(non-factor) discriminators.}
 
 \item{data}{data frame from which variables specified in `formula` are
 preferentially to be taken.}
 
-\item{object}{object of type `rda_high_dim` that contains the trained HDRDA
+\item{object}{Object of type `rda_high_dim` that contains the trained HDRDA
 classifier}
 
-\item{newdata}{matrix containing the unlabeled observations to classify. Each
-row corresponds to a new observation.}
+\item{newdata}{Matrix or data frame of observations to predict. Each row 
+corresponds to a new observation.}
 
 \item{projected}{logical indicating whether `newdata` have already been
 projected to a q-dimensional subspace. This argument can yield large gains in

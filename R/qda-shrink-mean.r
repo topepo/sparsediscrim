@@ -64,18 +64,21 @@ qda_shrink_mean <- function(x, ...) {
 qda_shrink_mean.default <- function(x, y, prior = NULL, ...) {
   x <- pred_to_matrix(x)
   y <- outcome_to_factor(y)
+  complete <- complete.cases(x) & complete.cases(y)
+  x <- x[complete,,drop = FALSE]
+  y <- y[complete]
 
   obj <- diag_estimates(x = x, y = y, prior = prior, pool = FALSE,
                         est_mean = "tong")
 
-  # Creates an object of type 'qda_shrink_mean' and adds the 'match.call' to the object
-  obj$call <- match.call()
-  class(obj) <- "qda_shrink_mean"
+  # Creates an object of type 'qda_shrink_mean'
+  obj$col_names <- colnames(x)
+  obj <- new_discrim_object(obj, "qda_shrink_mean")
 
   obj
 }
 
-#' @inheritParams lda_diag.formula
+#' @inheritParams lda_diag
 #' @rdname qda_shrink_mean
 #' @importFrom stats model.frame model.matrix model.response
 #' @export
@@ -88,12 +91,14 @@ qda_shrink_mean.formula <- function(formula, data, prior = NULL, ...) {
   formula <- no_intercept(formula, data)
   
   mf <- model.frame(formula = formula, data = data)
-  x <- model.matrix(attr(mf, "terms"), data = mf)
+  .terms <- attr(mf, "terms")
+  x <- model.matrix(.terms, data = mf)
   y <- model.response(mf)
 
   est <- qda_shrink_mean.default(x = x, y = y, prior = prior)
-  est$call <- match.call()
-  est$formula <- formula
+  est$.terms <- .terms
+  est <- new_discrim_object(est, class(est))
+  
   est
 }
 
@@ -118,33 +123,16 @@ print.qda_shrink_mean <- function(x, ...) {
 #' 
 #' @rdname qda_shrink_mean
 #' @export
-#'
-#' @param object trained SmDQDA object
-#' @param newdata matrix of observations to predict. Each row corresponds to a
-#' new observation.
-#' @param ... additional arguments
-#' @references Dudoit, S., Fridlyand, J., & Speed, T. P. (2002). "Comparison of
-#' Discrimination Methods for the Classification of Tumors Using Gene Expression
-#' Data," Journal of the American Statistical Association, 97, 457, 77-87.
-#' @return list predicted class memberships of each row in newdata
-predict.qda_shrink_mean <- function(object, newdata, ...) {
-  if (!inherits(object, "qda_shrink_mean"))  {
-    rlang::abort("object not of class 'qda_shrink_mean'")
-  }
+#' @inheritParams predict.lda_diag
 
-  newdata <- as.matrix(newdata)
+predict.qda_shrink_mean <- function(object, newdata, ...) {
+  newdata <- process_newdata(object, newdata)
 
   scores <- apply(newdata, 1, function(obs) {
     sapply(object$est, function(class_est) {
       with(class_est, sum((obs - xbar)^2 / var + log(var)) + log(prior))
     })
   })
-
-  if (is.vector(scores)) {
-    min_scores <- which.min(scores)
-  } else {
-    min_scores <- apply(scores, 2, which.min)
-  }
 
   # Posterior probabilities via Bayes Theorem
   means <- lapply(object$est, "[[", "xbar")
@@ -155,7 +143,7 @@ predict.qda_shrink_mean <- function(object, newdata, ...) {
                                covs=covs,
                                priors=priors)
 
-  class <- factor(object$groups[min_scores], levels = object$groups)
+  class <- score_to_class(scores, object)
 
   list(class = class, scores = scores, posterior = posterior)
 }

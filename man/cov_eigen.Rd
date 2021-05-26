@@ -53,6 +53,7 @@ x <- lapply(seq_len(num_classes), function(k) {
   replicate(p, rnorm(n, mean = k))
 })
 x <- do.call(rbind, x)
+colnames(x) <- paste0("x", 1:ncol(x))
 y <- gl(num_classes, n)
 cov_eigen(x = x, y = y, fast = TRUE)
 cov_eigen(x = x, y = y, pool = TRUE, fast = TRUE)

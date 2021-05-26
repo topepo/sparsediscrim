@@ -53,6 +53,9 @@ lda_eigen <- function(x, ...) {
 lda_eigen.default <- function(x, y, prior = NULL, eigen_pct = 0.95, ...) {
   x <- pred_to_matrix(x)
   y <- outcome_to_factor(y)
+  complete <- complete.cases(x) & complete.cases(y)
+  x <- x[complete,,drop = FALSE]
+  y <- y[complete]
 
   obj <- regdiscrim_estimates(x = x, y = y, prior = prior, cov = TRUE)
 
@@ -72,14 +75,14 @@ lda_eigen.default <- function(x, y, prior = NULL, eigen_pct = 0.95, ...) {
                       tcrossprod(vectors[, kept_evals] %*% diag(evals_inv),
                                  vectors[, kept_evals]))
 
-  # Creates an object of type 'lda_eigen' and adds the 'match.call' to the object
-  obj$call <- match.call()
-  class(obj) <- "lda_eigen"
+  # Creates an object of type 'lda_eigen'
+  obj$col_names <- colnames(x)
+  obj <- new_discrim_object(obj, "lda_eigen")
 
   obj
 }
 
-#' @inheritParams lda_diag.formula
+#' @inheritParams lda_diag
 #' @rdname lda_eigen
 #' @importFrom stats model.frame model.matrix model.response
 #' @export
@@ -92,12 +95,13 @@ lda_eigen.formula <- function(formula, data, prior = NULL, ...) {
   formula <- no_intercept(formula, data)
 
   mf <- model.frame(formula = formula, data = data)
-  x <- model.matrix(attr(mf, "terms"), data = mf)
+  .terms <- attr(mf, "terms")
+  x <- model.matrix(.terms, data = mf)
   y <- model.response(mf)
 
   est <- lda_eigen.default(x = x, y = y, prior = prior)
-  est$call <- match.call()
-  est$formula <- formula
+  est$.terms <- .terms
+  est <- new_discrim_object(est, class(est))
   est
 }
 
@@ -126,20 +130,10 @@ print.lda_eigen <- function(x, ...) {
 #'
 #' @rdname lda_eigen
 #' @export
-#'
-#' @references Srivastava, M. and Kubokawa, T. (2007). "Comparison of
-#' Discrimination Methods for High Dimensional Data," Journal of the Japanese
-#' Statistical Association, 37, 1, 123-134.
-#' @param object trained lda_eigen object
-#' @param newdata matrix of observations to predict. Each row corresponds to a new observation.
-#' @param ... additional arguments
-#' @return list predicted class memberships of each row in newdata
-predict.lda_eigen <- function(object, newdata, ...) {
-  if (!inherits(object, "lda_eigen"))  {
-    rlang::abort("object not of class 'lda_eigen'")
-  }
+#' @inheritParams predict.lda_diag
 
-  newdata <- as.matrix(newdata)
+predict.lda_eigen <- function(object, newdata, ...) {
+  newdata <- process_newdata(object, newdata)
 
   # Calculates the discriminant scores for each test observation
   scores <- apply(newdata, 1, function(obs) {
@@ -147,12 +141,6 @@ predict.lda_eigen <- function(object, newdata, ...) {
       with(class_est, quadform(object$cov_inv, obs - xbar) + log(prior))
     })
   })
-
-  if (is.vector(scores)) {
-    min_scores <- which.min(scores)
-  } else {
-    min_scores <- apply(scores, 2, which.min)
-  }
 
   # Posterior probabilities via Bayes Theorem
   means <- lapply(object$est, "[[", "xbar")
@@ -163,7 +151,7 @@ predict.lda_eigen <- function(object, newdata, ...) {
                                covs=covs,
                                priors=priors)
 
-  class <- factor(object$groups[min_scores], levels = object$groups)
+  class <- score_to_class(scores, object)
 
   list(class = class, scores = scores, posterior = posterior)
 }

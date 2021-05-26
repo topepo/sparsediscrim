@@ -26,15 +26,12 @@ test_that("The MDMEB classifier works properly on the iris data set", {
 test_that("The MDMEB classifier works properly when 1 feature used", {
   require('MASS')
 
-  set.seed(42)
-  n <- nrow(iris)
-  train <- sample(seq_len(n), n / 2)
-  n_test <- n - length(train)
+  train <- seq(1, 150, by = 3)
 
-  mdmeb_out <- lda_emp_bayes_eigen(x = iris[train, 1], y = iris[train, 5])
-  predicted <- predict(mdmeb_out, iris[-train, 1])
+  mdmeb_out <- lda_emp_bayes_eigen(x = iris[train, 1, drop = FALSE], y = iris[train, 5])
+  predicted <- predict(mdmeb_out, iris[-train, 1, drop = FALSE])
 
-  expect_equal(length(predicted$class), n_test)
+  expect_equal(length(predicted$class), 150 - length(train))
   expect_is(predicted$posterior, "matrix")
-  expect_equal(dim(predicted$posterior), c(n_test, nlevels(iris$Species)))
+  expect_equal(dim(predicted$posterior), c(150 - length(train), nlevels(iris$Species)))
 })

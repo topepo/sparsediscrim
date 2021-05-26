@@ -7,12 +7,14 @@
 diag_estimates(x, y, prior = NULL, pool = FALSE, est_mean = c("mle", "tong"))
 }
 \arguments{
-\item{x}{matrix containing the training data. The rows are the sample
-observations, and the columns are the features.}
+\item{x}{Matrix or data frame containing the training data. The rows are the 
+sample observations, and the columns are the features. Only complete data are 
+retained.}
 
-\item{y}{vector of class labels for each training observation}
+\item{y}{Vector of class labels for each training observation. Only complete 
+data are retained.}
 
-\item{prior}{vector with prior probabilities for each class. If NULL
+\item{prior}{Vector with prior probabilities for each class. If NULL
 (default), then equal probabilities are used. See details.}
 
 \item{pool}{logical value. If TRUE, calculates the pooled sample variances
@@ -45,7 +47,8 @@ The length of `y` should match the number of rows in `x`.
 
 An error is thrown if a given class has less than 2 observations because the
 variance for each feature within a class cannot be estimated with less than 2
-observations.
+observations. If other data have zero variances, these will be removed with
+a warning. 
 
 The vector, `prior`, contains the _a priori_ class membership for
 each class. If `prior` is NULL (default), the class membership

@@ -16,8 +16,9 @@ rda_high_dim_cv(
 )
 }
 \arguments{
-\item{x}{matrix containing the training data. The rows are the sample
-observations, and the columns are the features.}
+\item{x}{Matrix or data frame containing the training data. The rows are the 
+sample observations, and the columns are the features. Only complete data are 
+retained.}
 
 \item{y}{vector of class labels for each training observation}
 
@@ -35,7 +36,7 @@ details.}
 \item{verbose}{If set to `TRUE`, summary information will be outputted
 as the optimal model is being determined.}
 
-\item{...}{Additional arguments passed to [rda_high_dim()].}
+\item{...}{Options passed to [rda_high_dim()].}
 }
 \value{
 list containing the HDRDA model that minimizes cross-validation as

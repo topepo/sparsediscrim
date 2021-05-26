@@ -16,14 +16,16 @@ lda_emp_bayes_eigen(x, ...)
 \method{predict}{lda_emp_bayes_eigen}(object, newdata, ...)
 }
 \arguments{
-\item{x}{matrix containing the training data. The rows are the sample
-observations, and the columns are the features.}
+\item{x}{Matrix or data frame containing the training data. The rows are the 
+sample observations, and the columns are the features. Only complete data are 
+retained.}
 
 \item{...}{additional arguments}
 
-\item{y}{vector of class labels for each training observation}
+\item{y}{Vector of class labels for each training observation. Only complete 
+data are retained.}
 
-\item{prior}{vector with prior probabilities for each class. If NULL
+\item{prior}{Vector with prior probabilities for each class. If NULL
 (default), then equal probabilities are used. See details.}
 
 \item{eigen_pct}{the percentage of eigenvalues kept}
@@ -35,15 +37,13 @@ the response is the grouping factor and the right hand side specifies the
 \item{data}{data frame from which variables specified in `formula` are
 preferentially to be taken.}
 
-\item{object}{trained lda_emp_bayes_eigen object}
+\item{object}{Fitted model object}
 
-\item{newdata}{matrix of observations to predict. Each row corresponds to a
-new observation.}
+\item{newdata}{Matrix or data frame of observations to predict. Each row 
+corresponds to a new observation.}
 }
 \value{
 `lda_emp_bayes_eigen` object that contains the trained MDMEB classifier
-
-list predicted class memberships of each row in newdata
 }
 \description{
 Given a set of training data, this function builds the MDMEB classifier from
@@ -94,10 +94,6 @@ predicted2 <- predict(mdmeb_out2, iris[-train, -5])$class
 all.equal(predicted, predicted2)
 }
 \references{
-Srivastava, M. and Kubokawa, T. (2007). "Comparison of
-Discrimination Methods for High Dimensional Data," Journal of the Japanese
-Statistical Association, 37, 1, 123-134.
-
 Srivastava, M. and Kubokawa, T. (2007). "Comparison of
 Discrimination Methods for High Dimensional Data," Journal of the Japanese
 Statistical Association, 37, 1, 123-134.

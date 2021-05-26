@@ -52,17 +52,20 @@ lda_emp_bayes <- function(x, ...) {
 lda_emp_bayes.default <- function(x, y, prior = NULL, ...) {
   x <- pred_to_matrix(x)
   y <- outcome_to_factor(y)
+  complete <- complete.cases(x) & complete.cases(y)
+  x <- x[complete,,drop = FALSE]
+  y <- y[complete]
 
   obj <- regdiscrim_estimates(x = x, y = y, prior = prior, cov = TRUE)
 
-  # Creates an object of type 'lda_emp_bayes' and adds the 'match.call' to the object
-  obj$call <- match.call()
-  class(obj) <- "lda_emp_bayes"
+  # Creates an object of type 'lda_emp_bayes'
+  obj$col_names <- colnames(x)
+  obj <- new_discrim_object(obj, "lda_emp_bayes")
 
   obj
 }
 
-#' @inheritParams lda_diag.formula
+#' @inheritParams lda_diag
 #' @rdname lda_emp_bayes
 #' @importFrom stats model.frame model.matrix model.response
 #' @export
@@ -75,12 +78,13 @@ lda_emp_bayes.formula <- function(formula, data, prior = NULL, ...) {
   formula <- no_intercept(formula, data)
 
   mf <- model.frame(formula = formula, data = data)
-  x <- model.matrix(attr(mf, "terms"), data = mf)
+  .terms <- attr(mf, "terms")
+  x <- model.matrix(.terms, data = mf)
   y <- model.response(mf)
 
   est <- lda_emp_bayes.default(x = x, y = y, prior = prior)
-  est$call <- match.call()
-  est$formula <- formula
+  est$.terms <- .terms
+  est <- new_discrim_object(est, class(est))
   est
 }
 
@@ -110,20 +114,10 @@ print.lda_emp_bayes <- function(x, ...) {
 #'
 #' @rdname lda_emp_bayes
 #' @export
-#'
-#' @references Srivastava, M. and Kubokawa, T. (2007). "Comparison of
-#' Discrimination Methods for High Dimensional Data," Journal of the Japanese
-#' Statistical Association, 37, 1, 123-134.
-#' @param object trained lda_emp_bayes object
-#' @param newdata matrix of observations to predict. Each row corresponds to a new observation.
-#' @param ... additional arguments
-#' @return list predicted class memberships of each row in newdata
-predict.lda_emp_bayes <- function(object, newdata, ...) {
-  if (!inherits(object, "lda_emp_bayes"))  {
-    rlang::abort("object not of class 'lda_emp_bayes'")
-  }
+#' @inheritParams predict.lda_diag
 
-  newdata <- as.matrix(newdata)
+predict.lda_emp_bayes <- function(object, newdata, ...) {
+  newdata <- process_newdata(object, newdata)
 
   # Calculates the MDEB shrinkage constant and then computes the inverse of the
   # MDEB covariance matrix estimator
@@ -137,12 +131,6 @@ predict.lda_emp_bayes <- function(object, newdata, ...) {
     })
   })
 
-  if (is.vector(scores)) {
-    min_scores <- which.min(scores)
-  } else {
-    min_scores <- apply(scores, 2, which.min)
-  }
-
   # Posterior probabilities via Bayes Theorem
   means <- lapply(object$est, "[[", "xbar")
   covs <- replicate(n=object$num_groups, cov_pool, simplify=FALSE)
@@ -152,7 +140,7 @@ predict.lda_emp_bayes <- function(object, newdata, ...) {
                                covs=covs,
                                priors=priors)
 
-  class <- factor(object$groups[min_scores], levels = object$groups)
+  class <- score_to_class(scores, object)
 
   list(class = class, scores = scores, posterior = posterior)
 }

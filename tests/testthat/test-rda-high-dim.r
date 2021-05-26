@@ -95,6 +95,7 @@ test_that("HDRDA's statistics match manual values when (lambda, gamma) = (0, 0)"
   x3 <- rmvnorm(n3, mean=rep(-3, p), sigma=sigma3)
 
   x <- rbind(x1, x2, x3)
+  colnames(x) <- paste0("x", 1:ncol(x))
   y <- c(rep(1, n1), rep(2, n2), rep(3, n3))
   y_fac <- factor(letters[y])
 
@@ -191,6 +192,7 @@ test_that("HDRDA's statistics match manual values when (lambda, gamma) = (1, 0)"
   x3 <- rmvnorm(n3, mean=rep(-3, p), sigma=sigma3)
 
   x <- rbind(x1, x2, x3)
+  colnames(x) <- paste0("x", 1:ncol(x))
   y <- c(rep(1, n1), rep(2, n2), rep(3, n3))
   y_fac <- factor(letters[y])
   
@@ -279,6 +281,7 @@ test_that("HDRDA's statistics match manual values when (lambda, gamma) = (0.5, 0
   x3 <- rmvnorm(n3, mean=rep(-3, p), sigma=sigma3)
 
   x <- rbind(x1, x2, x3)
+  colnames(x) <- paste0("x", 1:ncol(x))
   y <- c(rep(1, n1), rep(2, n2), rep(3, n3))
   y_fac <- factor(letters[y])
   
@@ -382,6 +385,7 @@ test_that("HDRDA's statistics match manual values when (lambda, gamma) = (0.5, 0
   x3 <- rmvnorm(n3, mean=rep(-3, p), sigma=sigma3)
 
   x <- rbind(x1, x2, x3)
+  colnames(x) <- paste0("x", 1:ncol(x))
   y <- c(rep(1, n1), rep(2, n2), rep(3, n3))
   y_fac <- factor(letters[y])
   
@@ -494,15 +498,12 @@ test_that("HDRDA correctly predicts one observation. (Issue #34)", {
 test_that("The HDRDA classifier works properly when 1 feature used", {
   require('MASS')
 
-  set.seed(42)
-  n <- nrow(iris)
-  train <- sample(seq_len(n), n / 2)
-  n_test <- n - length(train)
+  train <- seq(1, 150, by = 3)
 
-  hdrda_out <- rda_high_dim(x = iris[train, 1], y = iris[train, 5], lambda=0.5, gamma=0.5)
-  predicted <- predict(hdrda_out, iris[-train, 1])
+  hdrda_out <- rda_high_dim(x = iris[train, 1, drop = FALSE], y = iris[train, 5], lambda=0.5, gamma=0.5)
+  predicted <- predict(hdrda_out, iris[-train, 1, drop = FALSE])
 
-  expect_equal(length(predicted$class), n_test)
+  expect_equal(length(predicted$class), 150 - length(train))
   expect_is(predicted$posterior, "matrix")
-  expect_equal(dim(predicted$posterior), c(n_test, nlevels(iris$Species)))
+  expect_equal(dim(predicted$posterior), c(150 - length(train), nlevels(iris$Species)))
 })

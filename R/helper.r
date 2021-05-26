@@ -48,6 +48,9 @@ quadform_inv <- function(A, x) {
 center_data <- function(x, y) {
   x <- pred_to_matrix(x)
   y <- outcome_to_factor(y)
+  complete <- complete.cases(x) & complete.cases(y)
+  x <- x[complete,,drop = FALSE]
+  y <- y[complete]
 
   # Notice that the resulting centered data are sorted by class and do not
   # preserve the original ordering of the data.
@@ -139,6 +142,13 @@ posterior_probs <- function(x, means, covs, priors) {
 
 
 pred_to_matrix <- function(x) {
+  if (is.vector(x)) {
+    rlang::abort("'x' should be a matrix or data frame.")
+  }
+  
+  if (is.null(colnames(x))) {
+    rlang::abort("'x' should have column names.")
+  }
   if (!is.matrix(x)) {
    x <- as.matrix(x)
    if (is.character(x)) {
@@ -178,5 +188,57 @@ print_basics <- function(x, ...) {
   cat("Number of Features:", x$p, "\n\n")
   cat("Classes and Prior Probabilities:\n  ")
   cat(format_priors(x), "\n")
+}
+
+no_form_env <- function(x) {
+  attr(x, ".Environment") <- rlang::base_env()
+  x
+}
+
+
+new_discrim_object <- function(x, cls) {
+  class(x) <- cls
+  has_terms <- any(names(x) == ".terms")
+  
+  if (has_terms) {
+    attr(x$.terms, ".Environment") <- rlang::base_env()
+    class(x) <- c(paste0(cls, "_formula"), cls)
+  }
+  x
+}
+
+process_newdata <- function(object, x) {
+  if (is.null(colnames(x))) {
+    rlang::abort("'newdata' should have column names.")
+  }
+  has_terms <- any(names(object) == ".terms")
+  if (has_terms) {
+    .terms <- object$.terms
+    .terms <- stats::delete.response(.terms)
+    x <- stats::model.frame(.terms, x, na.action = stats::na.pass) #, xlev = object$xlevels)
+    x <- model.matrix(.terms, x)
+    attr(x, "contrasts") <- NULL
+    attr(x, "assign") <- NULL
+  } 
+  x <- x[, object$col_names, drop = FALSE]
+  as.matrix(x)
+  
+}
+
+min_index <- function(x) {
+  if (any(is.na(x))) {
+    NA_integer_
+  } else {
+    which.min(x)
+  }
+}
+
+score_to_class <- function(x, object) {
+  if (is.vector(x)) {
+    min_scores <- min_index(x)
+  } else {
+    min_scores <- apply(x, 2, min_index)
+  }
+  factor(object$groups[min_scores], levels = object$groups)
 }
 

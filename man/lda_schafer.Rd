@@ -17,14 +17,16 @@ lda_schafer(x, ...)
 \method{predict}{lda_schafer}(object, newdata, ...)
 }
 \arguments{
-\item{x}{matrix containing the training data. The rows are the sample
-observations, and the columns are the features.}
+\item{x}{Matrix or data frame containing the training data. The rows are the 
+sample observations, and the columns are the features. Only complete data are 
+retained.}
 
-\item{...}{additional arguments passed to [corpcor::invcov.shrink()]}
+\item{...}{Options passed to [corpcor::invcov.shrink()]}
 
-\item{y}{vector of class labels for each training observation}
+\item{y}{Vector of class labels for each training observation. Only complete 
+data are retained.}
 
-\item{prior}{vector with prior probabilities for each class. If NULL
+\item{prior}{Vector with prior probabilities for each class. If NULL
 (default), then equal probabilities are used. See details.}
 
 \item{formula}{A formula of the form `groups ~ x1 + x2 + ...` That is,
@@ -34,15 +36,13 @@ the response is the grouping factor and the right hand side specifies the
 \item{data}{data frame from which variables specified in `formula` are
 preferentially to be taken.}
 
-\item{object}{trained lda_schafer object}
+\item{object}{Fitted model object}
 
-\item{newdata}{matrix of observations to predict. Each row corresponds to a
-new observation.}
+\item{newdata}{Matrix or data frame of observations to predict. Each row 
+corresponds to a new observation.}
 }
 \value{
 `lda_schafer` object that contains the trained classifier
-
-list predicted class memberships of each row in newdata
 }
 \description{
 Given a set of training data, this function builds the Linear Discriminant
@@ -90,10 +90,6 @@ predicted2 <- predict(lda_schafer_out2, iris[-train, -5])$class
 all.equal(predicted, predicted2)
 }
 \references{
-Schafer, J., and Strimmer, K. (2005). "A shrinkage approach to
-large-scale covariance estimation and implications for functional genomics,"
-Statist. Appl. Genet. Mol. Biol. 4, 32.
-
 Schafer, J., and Strimmer, K. (2005). "A shrinkage approach to
 large-scale covariance estimation and implications for functional genomics,"
 Statist. Appl. Genet. Mol. Biol. 4, 32.

@@ -66,6 +66,9 @@ rda_high_dim.default <- function(x, y, lambda = 1, gamma = 0,
                                  tol = 1e-6, ...) {
   x <- pred_to_matrix(x)
   y <- outcome_to_factor(y)
+  complete <- complete.cases(x) & complete.cases(y)
+  x <- x[complete,,drop = FALSE]
+  y <- y[complete]
   lambda <- as.numeric(lambda)
   gamma <- as.numeric(gamma)
   shrinkage_type <- match.arg(shrinkage_type)
@@ -158,20 +161,14 @@ rda_high_dim.default <- function(x, y, lambda = 1, gamma = 0,
     obj$est[[k]]$W_inv <- W_inv
   }
   
-  # Creates an object of type 'rda_high_dim' and adds the 'match.call' to the object
-  obj$call <- match.call()
-  class(obj) <- "rda_high_dim"
+  # Creates an object of type 'rda_high_dim'
+  obj$col_names <- colnames(x)
+  obj <- new_discrim_object(obj, "rda_high_dim")
   
   obj
 }
 
-#' @param formula A formula of the form `groups ~ x1 + x2 + ...` That is,
-#' the response is the grouping factor and the right hand side specifies the
-#' feature vectors.
-#' @param data data frame from which variables specified in `formula` are
-#' preferentially to be taken.
-#' @param ... arguments passed from the `formula` to the `default`
-#' method
+#' @inheritParams lda_diag
 #' @rdname rda_high_dim
 #' @importFrom stats model.frame model.matrix model.response
 #' @export
@@ -184,12 +181,13 @@ rda_high_dim.formula <- function(formula, data, ...) {
   formula <- no_intercept(formula, data)
   
   mf <- model.frame(formula = formula, data = data)
-  x <- model.matrix(attr(mf, "terms"), data = mf)
+  .terms <- attr(mf, "terms")
+  x <- model.matrix(.terms, data = mf)
   y <- model.response(mf)
   
   est <- rda_high_dim.default(x = x, y = y, ...)
-  est$call <- match.call()
-  est$formula <- formula
+  est$.terms <- .terms
+  est <- new_discrim_object(est, class(est))
   est
 }
 
@@ -216,18 +214,17 @@ print.rda_high_dim <- function(x, ...) {
 #' (row) of the the matrix given in `newdata`.
 #'
 #' @rdname rda_high_dim
+#' @inheritParams predict.lda_diag
 #' @export
-#' @param object object of type `rda_high_dim` that contains the trained HDRDA
+#' @param object Object of type `rda_high_dim` that contains the trained HDRDA
 #' classifier
-#' @param newdata matrix containing the unlabeled observations to classify. Each
-#' row corresponds to a new observation.
 #' @param projected logical indicating whether `newdata` have already been
 #' projected to a q-dimensional subspace. This argument can yield large gains in
 #' speed when the linear transformation has already been performed.
 #' @return list with predicted class and discriminant scores for each of the K
 #' classes
 predict.rda_high_dim <- function(object, newdata, projected = FALSE, ...) {
-  newdata <- as.matrix(newdata)
+  newdata <- process_newdata(object, newdata)
   
   scores <- sapply(object$est, function(class_est) {
     if (object$lambda == 0 && object$gamma == 0) {
@@ -262,11 +259,11 @@ predict.rda_high_dim <- function(object, newdata, projected = FALSE, ...) {
     # Hence, we rename it to the groups.
     names(scores) <- object$groups
     
-    min_scores <- which.min(scores)
+    min_scores <- min_index(scores)
     posterior <- exp(-(scores - min(scores)))
     posterior <- posterior / sum(posterior)
   } else {
-    min_scores <- apply(scores, 1, which.min)
+    min_scores <- apply(scores, 1, min_index)
     # Grabbed code to calculate 'posterior' from MASS:::predict.qda, which
     # handles numerical overflow unlike the more direct:
     # exp(scores) / (1 + exp(sum(scores)))
@@ -299,13 +296,16 @@ predict.rda_high_dim <- function(object, newdata, projected = FALSE, ...) {
 #' details.
 #' @param verbose If set to `TRUE`, summary information will be outputted
 #' as the optimal model is being determined.
-#' @param ... Additional arguments passed to [rda_high_dim()].
+#' @param ... Options passed to [rda_high_dim()].
 #' @return list containing the HDRDA model that minimizes cross-validation as
 #' well as a `data.frame` that summarizes the cross-validation results.
 rda_high_dim_cv <- function(x, y, num_folds = 10, num_lambda = 21, num_gamma = 8,
                             shrinkage_type=c("ridge", "convex"), verbose=FALSE, ...) {
   x <- pred_to_matrix(x)
   y <- outcome_to_factor(y)
+  complete <- complete.cases(x) & complete.cases(y)
+  x <- x[complete,,drop = FALSE]
+  y <- y[complete]
   shrinkage_type <- match.arg(shrinkage_type)
   
   cv_folds <- cv_partition(y = y, num_folds = num_folds)
