@@ -51,13 +51,15 @@
 #' Discrimination Methods for the Classification of Tumors Using Gene Expression
 #' Data," Journal of the American Statistical Association, 97, 457, 77-87.
 #' @examples
-#' n <- nrow(iris)
-#' train <- sample(seq_len(n), n / 2)
-#' smdlda_out <- lda_shrink_mean(Species ~ ., data = iris[train, ])
-#' predicted <- predict(smdlda_out, iris[-train, -5], type = "class")
+#' library(modeldata)
+#' data(penguins)
+#' predict_rows <- seq(1, 344, by = 20)
+#' penguins <- penguins[, c("species", "body_mass_g", "flipper_length_mm")]
+#' smdlda_out <- lda_shrink_mean(species ~ ., data = penguins[-predict_rows, ])
+#' predicted <- predict(smdlda_out, penguins[predict_rows, -1], type = "class")
 #'
-#' smdlda_out2 <- lda_shrink_mean(x = iris[train, -5], y = iris[train, 5])
-#' predicted2 <- predict(smdlda_out2, iris[-train, -5], type = "class")
+#' smdlda_out2 <- lda_shrink_mean(x = penguins[-predict_rows, -1], y = penguins$species[-predict_rows])
+#' predicted2 <- predict(smdlda_out2, penguins[predict_rows, -1], type = "class")
 #' all.equal(predicted, predicted2)
 lda_shrink_mean <- function(x, ...) {
   UseMethod("lda_shrink_mean")

@@ -85,13 +85,15 @@ as the number of classes in `y`. The `prior` probabilities should be
 nonnegative and sum to one.
 }
 \examples{
-n <- nrow(iris)
-train <- sample(seq_len(n), n / 2)
-dqda_out <- qda_diag(Species ~ ., data = iris[train, ])
-predicted <- predict(dqda_out, iris[-train, -5], type = "class")
+library(modeldata)
+data(penguins)
+predict_rows <- seq(1, 344, by = 20)
+penguins <- penguins[, c("species", "body_mass_g", "flipper_length_mm")]
+dqda_out <- qda_diag(species ~ ., data = penguins[-predict_rows, ])
+predicted <- predict(dqda_out, penguins[predict_rows, -1], type = "class")
 
-dqda_out2 <- qda_diag(x = iris[train, -5], y = iris[train, 5])
-predicted2 <- predict(dqda_out2, iris[-train, -5], type = "class")
+dqda_out2 <- qda_diag(x = penguins[-predict_rows, -1], y = penguins$species[-predict_rows])
+predicted2 <- predict(dqda_out2, penguins[predict_rows, -1], type = "class")
 all.equal(predicted, predicted2)
 }
 \references{

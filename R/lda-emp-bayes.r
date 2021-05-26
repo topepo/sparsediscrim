@@ -32,13 +32,15 @@
 #' @inheritParams lda_diag
 #' @return `lda_emp_bayes` object that contains the trained MDEB classifier
 #' @examples
-#' n <- nrow(iris)
-#' train <- sample(seq_len(n), n / 2)
-#' mdeb_out <- lda_emp_bayes(Species ~ ., data = iris[train, ])
-#' predicted <- predict(mdeb_out, iris[-train, -5], type = "class")
+#' library(modeldata)
+#' data(penguins)
+#' predict_rows <- seq(1, 344, by = 20)
+#' penguins <- penguins[, c("species", "body_mass_g", "flipper_length_mm")]
+#' mdeb_out <- lda_emp_bayes(species ~ ., data = penguins[-predict_rows, ])
+#' predicted <- predict(mdeb_out, penguins[predict_rows, -1], type = "class")
 #'
-#' mdeb_out2 <- lda_emp_bayes(x = iris[train, -5], y = iris[train, 5])
-#' predicted2 <- predict(mdeb_out2, iris[-train, -5], type = "class")
+#' mdeb_out2 <- lda_emp_bayes(x = penguins[-predict_rows, -1], y = penguins$species[-predict_rows])
+#' predicted2 <- predict(mdeb_out2, penguins[predict_rows, -1], type = "class")
 #' all.equal(predicted, predicted2)
 #' @references Srivastava, M. and Kubokawa, T. (2007). "Comparison of
 #' Discrimination Methods for High Dimensional Data," Journal of the Japanese

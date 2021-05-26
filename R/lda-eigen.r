@@ -33,13 +33,15 @@
 #' @param eigen_pct the percentage of eigenvalues kept
 #' @return `lda_eigen` object that contains the trained MDMP classifier
 #' @examples
-#' n <- nrow(iris)
-#' train <- sample(seq_len(n), n / 2)
-#' mdmp_out <- lda_eigen(Species ~ ., data = iris[train, ])
-#' predicted <- predict(mdmp_out, iris[-train, -5], type = "class")
+#' library(modeldata)
+#' data(penguins)
+#' predict_rows <- seq(1, 344, by = 20)
+#' penguins <- penguins[, c("species", "body_mass_g", "flipper_length_mm")]
+#' mdmp_out <- lda_eigen(species ~ ., data = penguins[-predict_rows, ])
+#' predicted <- predict(mdmp_out, penguins[predict_rows, -1], type = "class")
 #'
-#' mdmp_out2 <- lda_eigen(x = iris[train, -5], y = iris[train, 5])
-#' predicted2 <- predict(mdmp_out2, iris[-train, -5], type = "class")
+#' mdmp_out2 <- lda_eigen(x = penguins[-predict_rows, -1], y = penguins$species[-predict_rows])
+#' predicted2 <- predict(mdmp_out2, penguins[predict_rows, -1], type = "class")
 #' all.equal(predicted, predicted2)
 #' @references Srivastava, M. and Kubokawa, T. (2007). "Comparison of
 #' Discrimination Methods for High Dimensional Data," Journal of the Japanese

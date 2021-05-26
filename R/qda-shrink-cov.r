@@ -50,14 +50,16 @@
 #' Discriminant Analysis and Its Applications in High-Dimensional Data,"
 #' Biometrics, 65, 4, 1021-1029.
 #' @examples
-#' set.seed(42)
-#' n <- nrow(iris)
-#' train <- sample(seq_len(n), n / 2)
-#' sdqda_out <- qda_shrink_cov(Species ~ ., data = iris[train, ])
-#' predicted <- predict(sdqda_out, iris[-train, -5], type = "class")
+#' library(modeldata)
+#' data(penguins)
+#' predict_rows <- seq(1, 344, by = 20)
+#' penguins <- penguins[, c("species", "body_mass_g", "flipper_length_mm")]#' set.seed(42)
+
+#' sdqda_out <- qda_shrink_cov(species ~ ., data = penguins[-predict_rows, ])
+#' predicted <- predict(sdqda_out, penguins[predict_rows, -1], type = "class")
 #'
-#' sdqda_out2 <- qda_shrink_cov(x = iris[train, -5], y = iris[train, 5])
-#' predicted2 <- predict(sdqda_out2, iris[-train, -5], type = "class")
+#' sdqda_out2 <- qda_shrink_cov(x = penguins[-predict_rows, -1], y = penguins$species[-predict_rows])
+#' predicted2 <- predict(sdqda_out2, penguins[predict_rows, -1], type = "class")
 #' all.equal(predicted, predicted2)
 qda_shrink_cov <- function(x, ...) {
   UseMethod("qda_shrink_cov")

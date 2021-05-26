@@ -34,13 +34,15 @@
 #' @param ... Options passed to [corpcor::invcov.shrink()]
 #' @return `lda_schafer` object that contains the trained classifier
 #' @examples
-#' n <- nrow(iris)
-#' train <- sample(seq_len(n), n / 2)
-#' lda_schafer_out <- lda_schafer(Species ~ ., data = iris[train, ])
-#' predicted <- predict(lda_schafer_out, iris[-train, -5], type = "class")
+#' library(modeldata)
+#' data(penguins)
+#' predict_rows <- seq(1, 344, by = 20)
+#' penguins <- penguins[, c("species", "body_mass_g", "flipper_length_mm")]
+#' lda_schafer_out <- lda_schafer(species ~ ., data = penguins[-predict_rows, ])
+#' predicted <- predict(lda_schafer_out, penguins[predict_rows, -1], type = "class")
 #'
-#' lda_schafer_out2 <- lda_schafer(x = iris[train, -5], y = iris[train, 5])
-#' predicted2 <- predict(lda_schafer_out2, iris[-train, -5], type = "class")
+#' lda_schafer_out2 <- lda_schafer(x = penguins[-predict_rows, -1], y = penguins$species[-predict_rows])
+#' predicted2 <- predict(lda_schafer_out2, penguins[predict_rows, -1], type = "class")
 #' all.equal(predicted, predicted2)
 #' @references Schafer, J., and Strimmer, K. (2005). "A shrinkage approach to
 #' large-scale covariance estimation and implications for functional genomics,"
