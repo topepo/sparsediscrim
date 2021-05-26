@@ -12,12 +12,12 @@ test_that("The HDRDA classifier works properly on the iris data set", {
   n <- nrow(iris)
   train <- sample(seq_len(n), n / 2)
   hdrda_out <- rda_high_dim(Species ~ ., data = iris[train, ])
-  predicted <- predict(hdrda_out, iris[-train, -5])$class
+  predicted <- predict(hdrda_out, iris[-train, -5], type = "prob")
 
   hdrda_out2 <- rda_high_dim(x = iris[train, -5], y = iris[train, 5])
-  predicted2 <- predict(hdrda_out2, iris[-train, -5])$class
+  predicted2 <- predict(hdrda_out2, iris[-train, -5], type = "prob")
 
-  # Tests that the same labels result from the matrix and formula versions of
+  # Tests that the same prob results from the matrix and formula versions of
   # the HDRDA classifier
   expect_equal(predicted, predicted2)
 })
@@ -44,12 +44,12 @@ test_that("LDA is a special case of HDRDA on the iris data set", {
   n <- nrow(iris)
   train <- sample(seq_len(n), n / 2)
   hdrda_out <- rda_high_dim(Species ~ ., data = iris[train, ], lambda=1, gamma=0)
-  predicted_hdrda <- predict(hdrda_out, iris[-train, -5])$class
+  predicted_hdrda <- predict(hdrda_out, iris[-train, -5], type = "prob")
 
   lda_out <- lda(x = iris[train, -5], grouping = iris[train, 5])
-  predicted_lda <- predict(lda_out, iris[-train, -5])$class
+  predicted_lda <- predict(lda_out, iris[-train, -5], type = "prob")
 
-  # Tests that the same labels result from the matrix and formula versions of
+  # Tests that the same prob results from the matrix and formula versions of
   # the HDRDA classifier
   expect_equal(predicted_hdrda, predicted_lda)
 })
@@ -59,12 +59,12 @@ test_that("QDA is a special case of HDRDA on the iris data set", {
   n <- nrow(iris)
   train <- sample(seq_len(n), n / 2)
   hdrda_out <- rda_high_dim(Species ~ ., data = iris[train, ], lambda=0, gamma=0)
-  predicted_hdrda <- predict(hdrda_out, iris[-train, -5])$class
+  predicted_hdrda <- predict(hdrda_out, iris[-train, -5], type = "prob")
 
   qda_out <- qda(x = iris[train, -5], grouping = iris[train, 5])
-  predicted_qda <- predict(qda_out, iris[-train, -5])$class
+  predicted_qda <- predict(qda_out, iris[-train, -5], type = "prob")
 
-  # Tests that the same labels result from the matrix and formula versions of
+  # Tests that the same prob results from the matrix and formula versions of
   # the HDRDA classifier
   expect_equal(predicted_hdrda, predicted_qda)
 })
@@ -469,9 +469,8 @@ test_that("HDRDA posterior probabilities sum to one. (Issue #34)", {
 
   mod <- rda_high_dim(x = as.matrix(trn[, -ncol(trn)]), y = trn$Class)
 
-  predict_out <- predict(mod, newdata=tst[, -ncol(tst)])
-  posterior_probs <- predict_out$posterior
-  scores <- predict_out$scores
+  posterior_probs <- predict(mod, newdata=tst[, -ncol(tst)], type = "prob")
+  scores <- predict(mod, newdata=tst[, -ncol(tst)], type = "score")
 
   ones <- rep(1, nrow(tst))
   expect_equal(as.vector(rowSums(posterior_probs)), ones)
@@ -485,9 +484,8 @@ test_that("HDRDA correctly predicts one observation. (Issue #34)", {
 
   mod <- rda_high_dim(x = as.matrix(trn[, -ncol(trn)]), y = trn$Class)
 
-  predict_out <- predict(mod, newdata=tst[, -ncol(tst)])
-  posterior_probs <- predict_out$posterior
-  scores <- predict_out$scores
+  posterior_probs <- predict(mod, newdata=tst[, -ncol(tst)], type = "prob")
+  scores <- predict(mod, newdata=tst[, -ncol(tst)], type = "score")
 
   expect_equal(sum(posterior_probs), 1)
   expect_equal(names(posterior_probs), levels(two_class_sim_data$Class))
@@ -501,9 +499,13 @@ test_that("The HDRDA classifier works properly when 1 feature used", {
   train <- seq(1, 150, by = 3)
 
   hdrda_out <- rda_high_dim(x = iris[train, 1, drop = FALSE], y = iris[train, 5], lambda=0.5, gamma=0.5)
-  predicted <- predict(hdrda_out, iris[-train, 1, drop = FALSE])
+  predicted_cls   <- predict(hdrda_out, iris[-train, 1, drop = FALSE])
+  predicted_prob  <- predict(hdrda_out, iris[-train, 1, drop = FALSE], type = "prob")
+  predicted_score <- predict(hdrda_out, iris[-train, 1, drop = FALSE], type = "score")
 
-  expect_equal(length(predicted$class), 150 - length(train))
-  expect_is(predicted$posterior, "matrix")
-  expect_equal(dim(predicted$posterior), c(150 - length(train), nlevels(iris$Species)))
+  expect_equal(length(predicted_cls), 150 - length(train))
+  expect_is(predicted_prob,  "data.frame")
+  expect_is(predicted_score, "data.frame")
+  expect_equal(dim(predicted_prob),  c(150 - length(train), nlevels(iris$Species)))
+  expect_equal(dim(predicted_score), c(150 - length(train), nlevels(iris$Species))) 
 })
