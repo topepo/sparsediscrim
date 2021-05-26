@@ -259,11 +259,11 @@ predict.rda_high_dim <- function(object, newdata, projected = FALSE, ...) {
     # Hence, we rename it to the groups.
     names(scores) <- object$groups
     
-    min_scores <- which.min(scores)
+    min_scores <- min_index(scores)
     posterior <- exp(-(scores - min(scores)))
     posterior <- posterior / sum(posterior)
   } else {
-    min_scores <- apply(scores, 1, which.min)
+    min_scores <- apply(scores, 1, min_index)
     # Grabbed code to calculate 'posterior' from MASS:::predict.qda, which
     # handles numerical overflow unlike the more direct:
     # exp(scores) / (1 + exp(sum(scores)))
