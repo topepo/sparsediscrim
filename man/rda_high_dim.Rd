@@ -22,7 +22,13 @@ rda_high_dim(x, ...)
 
 \method{rda_high_dim}{formula}(formula, data, ...)
 
-\method{predict}{rda_high_dim}(object, newdata, projected = FALSE, ...)
+\method{predict}{rda_high_dim}(
+  object,
+  newdata,
+  projected = FALSE,
+  type = c("class", "prob", "score"),
+  ...
+)
 }
 \arguments{
 \item{x}{Matrix or data frame containing the training data. The rows are the 
@@ -65,6 +71,8 @@ corresponds to a new observation.}
 \item{projected}{logical indicating whether `newdata` have already been
 projected to a q-dimensional subspace. This argument can yield large gains in
 speed when the linear transformation has already been performed.}
+
+\item{type}{Prediction type: either `"class"`, `"prob"`, or `"score"`.}
 }
 \value{
 `rda_high_dim` object that contains the trained HDRDA classifier

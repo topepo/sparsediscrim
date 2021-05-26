@@ -49,13 +49,13 @@
 #' @examples
 #' library(modeldata)
 #' data(penguins)
-#' predict_rows <- seq(1, 344, by = 20)
+#' pred_rows <- seq(1, 344, by = 20)
 #' penguins <- penguins[, c("species", "body_mass_g", "flipper_length_mm")]
-#' smdqda_out <- qda_shrink_mean(species ~ ., data = penguins[-predict_rows, ])
-#' predicted <- predict(smdqda_out, penguins[predict_rows, -1], type = "class")
+#' smdqda_out <- qda_shrink_mean(species ~ ., data = penguins[-pred_rows, ])
+#' predicted <- predict(smdqda_out, penguins[pred_rows, -1], type = "class")
 #'
-#' smdqda_out2 <- qda_shrink_mean(x = penguins[-predict_rows, -1], y = penguins$species[-predict_rows])
-#' predicted2 <- predict(smdqda_out2, penguins[predict_rows, -1], type = "class")
+#' smdqda_out2 <- qda_shrink_mean(x = penguins[-pred_rows, -1], y = penguins$species[-pred_rows])
+#' predicted2 <- predict(smdqda_out2, penguins[pred_rows, -1], type = "class")
 #' all.equal(predicted, predicted2)
 qda_shrink_mean <- function(x, ...) {
   UseMethod("qda_shrink_mean")

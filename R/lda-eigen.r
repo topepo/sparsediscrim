@@ -35,13 +35,13 @@
 #' @examples
 #' library(modeldata)
 #' data(penguins)
-#' predict_rows <- seq(1, 344, by = 20)
+#' pred_rows <- seq(1, 344, by = 20)
 #' penguins <- penguins[, c("species", "body_mass_g", "flipper_length_mm")]
-#' mdmp_out <- lda_eigen(species ~ ., data = penguins[-predict_rows, ])
-#' predicted <- predict(mdmp_out, penguins[predict_rows, -1], type = "class")
+#' mdmp_out <- lda_eigen(species ~ ., data = penguins[-pred_rows, ])
+#' predicted <- predict(mdmp_out, penguins[pred_rows, -1], type = "class")
 #'
-#' mdmp_out2 <- lda_eigen(x = penguins[-predict_rows, -1], y = penguins$species[-predict_rows])
-#' predicted2 <- predict(mdmp_out2, penguins[predict_rows, -1], type = "class")
+#' mdmp_out2 <- lda_eigen(x = penguins[-pred_rows, -1], y = penguins$species[-pred_rows])
+#' predicted2 <- predict(mdmp_out2, penguins[pred_rows, -1], type = "class")
 #' all.equal(predicted, predicted2)
 #' @references Srivastava, M. and Kubokawa, T. (2007). "Comparison of
 #' Discrimination Methods for High Dimensional Data," Journal of the Japanese

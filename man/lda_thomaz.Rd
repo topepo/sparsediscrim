@@ -89,13 +89,13 @@ nonnegative and sum to one.
 \examples{
 library(modeldata)
 data(penguins)
-predict_rows <- seq(1, 344, by = 20)
+pred_rows <- seq(1, 344, by = 20)
 penguins <- penguins[, c("species", "body_mass_g", "flipper_length_mm")]
-lda_thomaz_out <- lda_thomaz(species ~ ., data = penguins[-predict_rows, ])
-predicted <- predict(lda_thomaz_out, penguins[predict_rows, -1], type = "class")
+lda_thomaz_out <- lda_thomaz(species ~ ., data = penguins[-pred_rows, ])
+predicted <- predict(lda_thomaz_out, penguins[pred_rows, -1], type = "class")
 
-lda_thomaz_out2 <- lda_thomaz(x = penguins[-predict_rows, -1], y = penguins$species[-predict_rows])
-predicted2 <- predict(lda_thomaz_out2, penguins[predict_rows, -1], type = "class")
+lda_thomaz_out2 <- lda_thomaz(x = penguins[-pred_rows, -1], y = penguins$species[-pred_rows])
+predicted2 <- predict(lda_thomaz_out2, penguins[pred_rows, -1], type = "class")
 all.equal(predicted, predicted2)
 }
 \references{
