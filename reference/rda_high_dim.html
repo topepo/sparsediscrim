@@ -45,8 +45,8 @@ Ramey, Stein, and Young (2017). Specially designed for small-sample,
 high-dimensional data, the HDRDA classifier incorporates dimension reduction
 and covariance-matrix shrinkage to enable a computationally efficient
 classifier.
-For a given `rda_high_dim` object, we predict the class of each observation
-(row) of the the matrix given in `newdata`." />
+For a given rda_high_dim object, we predict the class of each observation
+(row) of the the matrix given in newdata." />
 
 
 
@@ -128,8 +128,8 @@ Ramey, Stein, and Young (2017). Specially designed for small-sample,
 high-dimensional data, the HDRDA classifier incorporates dimension reduction
 and covariance-matrix shrinkage to enable a computationally efficient
 classifier.</p>
-<p>For a given `rda_high_dim` object, we predict the class of each observation
-(row) of the the matrix given in `newdata`.</p>
+<p>For a given <code>rda_high_dim</code> object, we predict the class of each observation
+(row) of the the matrix given in <code>newdata</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>rda_high_dim</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
@@ -157,8 +157,8 @@ classifier.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>Matrix or data frame containing the training data. The rows are the 
-sample observations, and the columns are the features. Only complete data are 
+      <td><p>Matrix or data frame containing the training data. The rows are the
+sample observations, and the columns are the features. Only complete data are
 retained.</p></td>
     </tr>
     <tr>
@@ -181,13 +181,13 @@ inclusively.</p></td>
     <tr>
       <th>shrinkage_type</th>
       <td><p>the type of covariance-matrix shrinkage to apply. By
-default, a ridge-like shrinkage is applied. If `convex` is given, then
+default, a ridge-like shrinkage is applied. If <code>convex</code> is given, then
 shrinkage similar to Friedman (1989) is applied. See Ramey et al. (2017) for
 details.</p></td>
     </tr>
     <tr>
       <th>prior</th>
-      <td><p>vector with prior probabilities for each class. If `NULL`
+      <td><p>vector with prior probabilities for each class. If <code>NULL</code>
 (default), then the sample proportion of observations belonging to each class
 equal probabilities are used. See details.</p></td>
     </tr>
@@ -197,28 +197,28 @@ equal probabilities are used. See details.</p></td>
     </tr>
     <tr>
       <th>formula</th>
-      <td><p>A formula of the form `groups ~ x1 + x2 + ...` That is,
+      <td><p>A formula of the form <code>groups ~ x1 + x2 + ...</code> That is,
 the response is the grouping factor and the right hand side specifies the
 (non-factor) discriminators.</p></td>
     </tr>
     <tr>
       <th>data</th>
-      <td><p>data frame from which variables specified in `formula` are
+      <td><p>data frame from which variables specified in <code>formula</code> are
 preferentially to be taken.</p></td>
     </tr>
     <tr>
       <th>object</th>
-      <td><p>Object of type `rda_high_dim` that contains the trained HDRDA
+      <td><p>Object of type <code>rda_high_dim</code> that contains the trained HDRDA
 classifier</p></td>
     </tr>
     <tr>
       <th>newdata</th>
-      <td><p>Matrix or data frame of observations to predict. Each row 
+      <td><p>Matrix or data frame of observations to predict. Each row
 corresponds to a new observation.</p></td>
     </tr>
     <tr>
       <th>projected</th>
-      <td><p>logical indicating whether `newdata` have already been
+      <td><p>logical indicating whether <code>newdata</code> have already been
 projected to a q-dimensional subspace. This argument can yield large gains in
 speed when the linear transformation has already been performed.</p></td>
     </tr>
@@ -226,7 +226,7 @@ speed when the linear transformation has already been performed.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>`rda_high_dim` object that contains the trained HDRDA classifier</p>
+    <p><code>rda_high_dim</code> object that contains the trained HDRDA classifier</p>
 <p>list with predicted class and discriminant scores for each of the K
 classes</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -234,28 +234,28 @@ classes</p>
     <p>The HDRDA classifier utilizes a covariance-matrix estimator that is a convex
 combination of the covariance-matrix estimators used in the Linear
 Discriminant Analysis (LDA) and Quadratic Discriminant Analysis (QDA)
-classifiers. For each of the `K` classes given in `y`,
+classifiers. For each of the <code>K</code> classes given in <code>y</code>,
 \((k = 1, \ldots, K)\), we first define this convex combination as
 $$\hat{\Sigma}_k(\lambda) = (1 - \lambda) \hat{\Sigma}_k
 + \lambda \hat{\Sigma},$$
-where \(\lambda \in [0, 1]\) is the _pooling_ parameter. We then
+where \(\lambda \in [0, 1]\) is the <em>pooling</em> parameter. We then
 calculate the covariance-matrix estimator
 $$\tilde{\Sigma}_k = \alpha_k \hat{\Sigma}_k(\lambda) + \gamma I_p,$$
 where \(I_p\) is the \(p \times p\) identity matrix. The matrix
 \(\tilde{\Sigma}_k\) is substituted into the HDRDA classifier. See Ramey et
 al. (2017) for more details.</p>
-<p>The matrix of training observations are given in `x`. The rows of
-`x` contain the sample observations, and the columns contain the features
-for each training observation. The vector of class labels given in `y`
-are coerced to a `factor`. The length of `y` should match the number
-of rows in `x`.</p>
-<p>The vector `prior` contains the _a priori_ class membership for
-each class. If `prior` is `NULL` (default), the class membership
+<p>The matrix of training observations are given in <code>x</code>. The rows of
+<code>x</code> contain the sample observations, and the columns contain the features
+for each training observation. The vector of class labels given in <code>y</code>
+are coerced to a <code>factor</code>. The length of <code>y</code> should match the number
+of rows in <code>x</code>.</p>
+<p>The vector <code>prior</code> contains the <em>a priori</em> class membership for
+each class. If <code>prior</code> is <code>NULL</code> (default), the class membership
 probabilities are estimated as the sample proportion of observations
-belonging to each class. Otherwise, `prior` should be a vector with the
-same length as the number of classes in `y`. The `prior`
+belonging to each class. Otherwise, <code>prior</code> should be a vector with the
+same length as the number of classes in <code>y</code>. The <code>prior</code>
 probabilities should be nonnegative and sum to one. The order of the prior
-probabilities is assumed to match the levels of `factor(y)`.</p>
+probabilities is assumed to match the levels of <code><a href='https://rdrr.io/r/base/factor.html'>factor(y)</a></code>.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Ramey, J. A., Stein, C. K., and Young, D. M. (2017),

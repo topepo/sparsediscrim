@@ -43,9 +43,9 @@ autocorrelated blocks. — cov_block_autocorrelation • sparsediscrim</title>
 <meta property="og:title" content="Generates a \(p \times p\) block-diagonal covariance matrix with
 autocorrelated blocks. — cov_block_autocorrelation" />
 <meta property="og:description" content="This function generates a \(p \times p\) covariance matrix with
-autocorrelated blocks. The autocorrelation parameter is `rho`.
-There are `num_blocks` blocks each with size, `block_size`.
-The variance, `sigma2`, is constant for each feature and defaulted to 1." />
+autocorrelated blocks. The autocorrelation parameter is rho.
+There are num_blocks blocks each with size, block_size.
+The variance, sigma2, is constant for each feature and defaulted to 1." />
 
 
 
@@ -124,9 +124,9 @@ autocorrelated blocks.</h1>
 
     <div class="ref-description">
     <p>This function generates a \(p \times p\) covariance matrix with
-autocorrelated blocks. The autocorrelation parameter is `rho`.
-There are `num_blocks` blocks each with size, `block_size`.
-The variance, `sigma2`, is constant for each feature and defaulted to 1.</p>
+autocorrelated blocks. The autocorrelation parameter is <code>rho</code>.
+There are <code>num_blocks</code> blocks each with size, <code>block_size</code>.
+The variance, <code>sigma2</code>, is constant for each feature and defaulted to 1.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cov_block_autocorrelation</span><span class='op'>(</span><span class='va'>num_blocks</span>, <span class='va'>block_size</span>, <span class='va'>rho</span>, sigma2 <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
@@ -164,10 +164,10 @@ $$\Sigma = \Sigma^{(\rho)} \oplus \Sigma^{(-\rho)} \oplus \ldots \oplus
 \((i,j)\)th entry of \(\Sigma^{(\rho)}\) is $$\Sigma_{ij}^{(\rho)} =
 \{ \rho^{|i - j|} \}.$$</p>
 <p>The matrix \(\Sigma^{(\rho)}\) is the autocorrelated block discussed above.</p>
-<p>The value of `rho` must be such that \(|\rho| &lt; 1\) to ensure that
+<p>The value of <code>rho</code> must be such that \(|\rho| &lt; 1\) to ensure that
 the covariance matrix is positive definite.</p>
 <p>The size of the resulting matrix is \(p \times p\), where
-`p = num_blocks * block_size`.</p>
+<code>p = num_blocks * block_size</code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

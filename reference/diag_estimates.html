@@ -133,13 +133,13 @@ of features, etc.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>Matrix or data frame containing the training data. The rows are the 
-sample observations, and the columns are the features. Only complete data are 
+      <td><p>Matrix or data frame containing the training data. The rows are the
+sample observations, and the columns are the features. Only complete data are
 retained.</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>Vector of class labels for each training observation. Only complete 
+      <td><p>Vector of class labels for each training observation. Only complete
 data are retained.</p></td>
     </tr>
     <tr>
@@ -167,21 +167,21 @@ information</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function computes the common estimates and ancillary information used in
-all of the diagonal classifiers in the `sparsediscrim` package.</p>
-<p>The matrix of training observations are given in `x`. The rows of `x`
+all of the diagonal classifiers in the <code>sparsediscrim</code> package.</p>
+<p>The matrix of training observations are given in <code>x</code>. The rows of <code>x</code>
 contain the sample observations, and the columns contain the features for each
 training observation.</p>
-<p>The vector of class labels given in `y` are coerced to a `factor`.
-The length of `y` should match the number of rows in `x`.</p>
+<p>The vector of class labels given in <code>y</code> are coerced to a <code>factor</code>.
+The length of <code>y</code> should match the number of rows in <code>x</code>.</p>
 <p>An error is thrown if a given class has less than 2 observations because the
 variance for each feature within a class cannot be estimated with less than 2
 observations. If other data have zero variances, these will be removed with
 a warning.</p>
-<p>The vector, `prior`, contains the _a priori_ class membership for
-each class. If `prior` is NULL (default), the class membership
+<p>The vector, <code>prior</code>, contains the <em>a priori</em> class membership for
+each class. If <code>prior</code> is NULL (default), the class membership
 probabilities are estimated as the sample proportion of observations belonging
-to each class. Otherwise, `prior` should be a vector with the same length
-as the number of classes in `y`. The `prior` probabilities should be
+to each class. Otherwise, <code>prior</code> should be a vector with the same length
+as the number of classes in <code>y</code>. The <code>prior</code> probabilities should be
 nonnegative and sum to one.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 

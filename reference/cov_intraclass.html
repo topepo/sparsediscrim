@@ -41,7 +41,7 @@
 
 <meta property="og:title" content="Generates a \(p \times p\) intraclass covariance matrix — cov_intraclass" />
 <meta property="og:description" content="This function generates a \(p \times p\) intraclass covariance matrix with
-correlation `rho`. The variance `sigma2` is constant for each
+correlation rho. The variance sigma2 is constant for each
 feature and defaulted to 1." />
 
 
@@ -120,7 +120,7 @@ feature and defaulted to 1." />
 
     <div class="ref-description">
     <p>This function generates a \(p \times p\) intraclass covariance matrix with
-correlation `rho`. The variance `sigma2` is constant for each
+correlation <code>rho</code>. The variance <code>sigma2</code> is constant for each
 feature and defaulted to 1.</p>
     </div>
 
@@ -152,10 +152,10 @@ feature and defaulted to 1.</p>
 $$\sigma^2 * (\rho * J_p + (1 - \rho) * I_p),$$
 where \(J_p\) is the \(p \times p\) matrix of ones and \(I_p\) is the
 \(p \times p\) identity matrix.</p>
-<p>By default, with `sigma2 = 1`, the diagonal elements of the intraclass
+<p>By default, with <code>sigma2 = 1</code>, the diagonal elements of the intraclass
 covariance matrix are all 1, while the off-diagonal elements of the matrix
-are all `rho`.</p>
-<p>The value of `rho` must be between \(1 / (1 - p)\) and 1,
+are all <code>rho</code>.</p>
+<p>The value of <code>rho</code> must be between \(1 / (1 - p)\) and 1,
 exclusively, to ensure that the covariance matrix is positive definite.</p>
 
   </div>

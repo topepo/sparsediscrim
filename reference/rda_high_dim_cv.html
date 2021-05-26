@@ -138,8 +138,8 @@ HDRDA tuning parameters.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>Matrix or data frame containing the training data. The rows are the 
-sample observations, and the columns are the features. Only complete data are 
+      <td><p>Matrix or data frame containing the training data. The rows are the
+sample observations, and the columns are the features. Only complete data are
 retained.</p></td>
     </tr>
     <tr>
@@ -152,37 +152,37 @@ retained.</p></td>
     </tr>
     <tr>
       <th>num_lambda</th>
-      <td><p>The number of values of `lambda` to consider</p></td>
+      <td><p>The number of values of <code>lambda</code> to consider</p></td>
     </tr>
     <tr>
       <th>num_gamma</th>
-      <td><p>The number of values of `gamma` to consider</p></td>
+      <td><p>The number of values of <code>gamma</code> to consider</p></td>
     </tr>
     <tr>
       <th>shrinkage_type</th>
       <td><p>the type of covariance-matrix shrinkage to apply. By
-default, a ridge-like shrinkage is applied. If `convex` is given, then
+default, a ridge-like shrinkage is applied. If <code>convex</code> is given, then
 shrinkage similar to Friedman (1989) is applied. See Ramey et al. (2017) for
 details.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>If set to `TRUE`, summary information will be outputted
+      <td><p>If set to <code>TRUE</code>, summary information will be outputted
 as the optimal model is being determined.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Options passed to [rda_high_dim()].</p></td>
+      <td><p>Options passed to <code><a href='rda_high_dim.html'>rda_high_dim()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>list containing the HDRDA model that minimizes cross-validation as
-well as a `data.frame` that summarizes the cross-validation results.</p>
+well as a <code>data.frame</code> that summarizes the cross-validation results.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The number of cross-validation folds is given in `num_folds`.</p>
+    <p>The number of cross-validation folds is given in <code>num_folds</code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

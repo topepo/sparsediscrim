@@ -42,9 +42,9 @@
 
 <meta property="og:title" content="Computes the eigenvalue decomposition of the maximum likelihood estimators
 (MLE) of the covariance matrices for the given data matrix — cov_eigen" />
-<meta property="og:description" content="For the classes given in the vector `y`, we compute the eigenvalue
+<meta property="og:description" content="For the classes given in the vector y, we compute the eigenvalue
 (spectral) decomposition of the class sample covariance matrices (MLEs) using
-the data matrix `x`." />
+the data matrix x." />
 
 
 
@@ -122,9 +122,9 @@ the data matrix `x`." />
     </div>
 
     <div class="ref-description">
-    <p>For the classes given in the vector `y`, we compute the eigenvalue
+    <p>For the classes given in the vector <code>y</code>, we compute the eigenvalue
 (spectral) decomposition of the class sample covariance matrices (MLEs) using
-the data matrix `x`.</p>
+the data matrix <code>x</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cov_eigen</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, pool <span class='op'>=</span> <span class='cn'>FALSE</span>, fast <span class='op'>=</span> <span class='cn'>FALSE</span>, tol <span class='op'>=</span> <span class='fl'>1e-06</span><span class='op'>)</span></pre>
@@ -134,11 +134,11 @@ the data matrix `x`.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>data matrix with `n` observations and `p` feature vectors</p></td>
+      <td><p>data matrix with <code>n</code> observations and <code>p</code> feature vectors</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>class labels for observations (rows) in `x`</p></td>
+      <td><p>class labels for observations (rows) in <code>x</code></p></td>
     </tr>
     <tr>
       <th>pool</th>
@@ -150,7 +150,7 @@ the data matrix `x`.</p>
     </tr>
     <tr>
       <th>tol</th>
-      <td><p>tolerance value below which the singular values of `x` are
+      <td><p>tolerance value below which the singular values of <code>x</code> are
 considered zero.</p></td>
     </tr>
     </table>
@@ -158,16 +158,16 @@ considered zero.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a list containing the eigendecomposition for each class. If
-`pool = TRUE`, then a single list is returned.</p>
+<code>pool = TRUE</code>, then a single list is returned.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>If the `fast` argument is selected, we utilize the so-called Fast
+    <p>If the <code>fast</code> argument is selected, we utilize the so-called Fast
 Singular Value Decomposition (SVD) to quickly compute the eigenvalue
-decomposition. To compute the Fast SVD, we use the [corpcor::fast.svd()]
-function, which employs a well-known trick for tall data (large `n`,
-small `p`) and wide data (large `p`, small `n`) to compute the
+decomposition. To compute the Fast SVD, we use the <code><a href='https://rdrr.io/pkg/corpcor/man/fast.svd.html'>corpcor::fast.svd()</a></code>
+function, which employs a well-known trick for tall data (large <code>n</code>,
+small <code>p</code>) and wide data (large <code>p</code>, small <code>n</code>) to compute the
 SVD corresponding to the nonzero singular values. For more information about
-the Fast SVD, see [corpcor::fast.svd()].</p>
+the Fast SVD, see <code><a href='https://rdrr.io/pkg/corpcor/man/fast.svd.html'>corpcor::fast.svd()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>cov_eigen</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>iris</span><span class='op'>[</span>, <span class='op'>-</span><span class='fl'>5</span><span class='op'>]</span>, y <span class='op'>=</span> <span class='va'>iris</span><span class='op'>[</span>, <span class='fl'>5</span><span class='op'>]</span><span class='op'>)</span>

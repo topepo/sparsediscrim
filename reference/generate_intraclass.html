@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generates data from `K` multivariate normal data populations, where each
+<title>Generates data from K multivariate normal data populations, where each
 population (class) has an intraclass covariance matrix. — generate_intraclass • sparsediscrim</title>
 
 
@@ -40,12 +40,12 @@ population (class) has an intraclass covariance matrix. — generate_intraclass 
 
 
 
-<meta property="og:title" content="Generates data from `K` multivariate normal data populations, where each
+<meta property="og:title" content="Generates data from K multivariate normal data populations, where each
 population (class) has an intraclass covariance matrix. — generate_intraclass" />
-<meta property="og:description" content="This function generates `K` multivariate normal data sets, where each
+<meta property="og:description" content="This function generates K multivariate normal data sets, where each
 class is generated with a constant mean vector and an intraclass covariance
-matrix. The data are returned as a single matrix `x` along with a vector
-of class labels `y` that indicates class membership." />
+matrix. The data are returned as a single matrix x along with a vector
+of class labels y that indicates class membership." />
 
 
 
@@ -116,17 +116,17 @@ of class labels `y` that indicates class membership." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generates data from `K` multivariate normal data populations, where each
+    <h1>Generates data from <code>K</code> multivariate normal data populations, where each
 population (class) has an intraclass covariance matrix.</h1>
     <small class="dont-index">Source: <a href='https://github.com/topepo/sparsediscrim/blob/master/R/data-intraclass.r'><code>R/data-intraclass.r</code></a></small>
     <div class="hidden name"><code>generate_intraclass.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function generates `K` multivariate normal data sets, where each
+    <p>This function generates <code>K</code> multivariate normal data sets, where each
 class is generated with a constant mean vector and an intraclass covariance
-matrix. The data are returned as a single matrix `x` along with a vector
-of class labels `y` that indicates class membership.</p>
+matrix. The data are returned as a single matrix <code>x</code> along with a vector
+of class labels <code>y</code> that indicates class membership.</p>
     </div>
 
     <pre class="usage"><span class='fu'>generate_intraclass</span><span class='op'>(</span><span class='va'>n</span>, <span class='va'>p</span>, <span class='va'>rho</span>, <span class='va'>mu</span>, sigma2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='va'>K</span><span class='op'>)</span><span class='op'>)</span></pre>
@@ -136,8 +136,8 @@ of class labels `y` that indicates class membership.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>n</th>
-      <td><p>vector of the sample sizes of each class. The length of `n`
-determines the number of classes `K`.</p></td>
+      <td><p>vector of the sample sizes of each class. The length of <code>n</code>
+determines the number of classes <code>K</code>.</p></td>
     </tr>
     <tr>
       <th>p</th>
@@ -146,27 +146,27 @@ determines the number of classes `K`.</p></td>
     <tr>
       <th>rho</th>
       <td><p>vector of the values of the off-diagonal elements for each
-intraclass covariance matrix. Must equal the length of `n`.</p></td>
+intraclass covariance matrix. Must equal the length of <code>n</code>.</p></td>
     </tr>
     <tr>
       <th>mu</th>
       <td><p>vector containing the mean for each class. Must equal the length of
-`n` (i.e., equal to `K`).</p></td>
+<code>n</code> (i.e., equal to <code>K</code>).</p></td>
     </tr>
     <tr>
       <th>sigma2</th>
       <td><p>vector of variances for each class. Must equal the length of
-`n`. Default is 1 for each class.</p></td>
+<code>n</code>. Default is 1 for each class.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>named list with elements:</p><ul>
-<li><p>`x`: matrix of observations with `n` rows and `p`
+<li><p><code>x</code>: matrix of observations with <code>n</code> rows and <code>p</code>
 columns</p></li>
-<li><p>`y`: vector of class labels that indicates class membership for
-each observation (row) in `x`.</p></li>
+<li><p><code>y</code>: vector of class labels that indicates class membership for
+each observation (row) in <code>x</code>.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -181,11 +181,11 @@ where \(J_p\) is the \(p \times p\) matrix of ones and \(I_p\) is the
 \(p \times p\) identity matrix.</p>
 <p>By default, with \(\sigma_k^2 = 1\), the diagonal elements of the intraclass
 covariance matrix are all 1, while the off-diagonal elements of the matrix
-are all `rho`.</p>
-<p>The values of `rho` must be between \(1 / (1 - p)\) and 1,
+are all <code>rho</code>.</p>
+<p>The values of <code>rho</code> must be between \(1 / (1 - p)\) and 1,
 exclusively, to ensure that the covariance matrix is positive definite.</p>
-<p>The number of classes `K` is determined with lazy evaluation as the
-length of `n`.</p>
+<p>The number of classes <code>K</code> is determined with lazy evaluation as the
+length of <code>n</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Generates data from K = 3 classes.</span>

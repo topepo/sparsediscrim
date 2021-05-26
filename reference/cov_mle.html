@@ -42,7 +42,7 @@ under the assumption of multivariate normality. — cov_mle • sparsediscrim</t
 
 <meta property="og:title" content="Computes the maximum likelihood estimator for the sample covariance matrix
 under the assumption of multivariate normality. — cov_mle" />
-<meta property="og:description" content="For a sample matrix, `x`, we compute the sample covariance matrix of the
+<meta property="og:description" content="For a sample matrix, x, we compute the sample covariance matrix of the
 data as the maximum likelihood estimator (MLE) of the population covariance
 matrix." />
 
@@ -122,7 +122,7 @@ under the assumption of multivariate normality.</h1>
     </div>
 
     <div class="ref-description">
-    <p>For a sample matrix, `x`, we compute the sample covariance matrix of the
+    <p>For a sample matrix, <code>x</code>, we compute the sample covariance matrix of the
 data as the maximum likelihood estimator (MLE) of the population covariance
 matrix.</p>
     </div>
@@ -134,24 +134,24 @@ matrix.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>data matrix with `n` observations and `p` feature vectors</p></td>
+      <td><p>data matrix with <code>n</code> observations and <code>p</code> feature vectors</p></td>
     </tr>
     <tr>
       <th>diag</th>
       <td><p>logical value. If TRUE, assumes the population covariance matrix
-is diagonal. By default, we assume that `diag` is `FALSE`.</p></td>
+is diagonal. By default, we assume that <code>diag</code> is <code>FALSE</code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>sample covariance matrix of size \(p \times p\). If `diag` is
-`TRUE`, then a vector of length `p` is returned instead.</p>
+    <p>sample covariance matrix of size \(p \times p\). If <code>diag</code> is
+<code>TRUE</code>, then a vector of length <code>p</code> is returned instead.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>If the `diag` option is set to `TRUE`, then we assume the population
+    <p>If the <code>diag</code> option is set to <code>TRUE</code>, then we assume the population
 covariance matrix is diagonal, and the MLE is computed under this assumption.
-In this case, we return a vector of length `p` instead.</p>
+In this case, we return a vector of length <code>p</code> instead.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

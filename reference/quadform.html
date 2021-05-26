@@ -41,7 +41,7 @@
 
 <meta property="og:title" content="Quadratic form of a matrix and a vector — quadform" />
 <meta property="og:description" content="We compute the quadratic form of a vector and a matrix in an efficient
-manner. Let `x` be a real vector of length `p`, and let `A` be
+manner. Let x be a real vector of length p, and let A be
 a p x p real matrix. Then, we compute the quadratic form \(q = x' A x\)." />
 
 
@@ -120,7 +120,7 @@ a p x p real matrix. Then, we compute the quadratic form \(q = x' A x\)." />
 
     <div class="ref-description">
     <p>We compute the quadratic form of a vector and a matrix in an efficient
-manner. Let `x` be a real vector of length `p`, and let `A` be
+manner. Let <code>x</code> be a real vector of length <code>p</code>, and let <code>A</code> be
 a p x p real matrix. Then, we compute the quadratic form \(q = x' A x\).</p>
     </div>
 
@@ -145,7 +145,7 @@ a p x p real matrix. Then, we compute the quadratic form \(q = x' A x\).</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>A naive way to compute the quadratic form is to explicitly write
-`t(x) %*% A %*% x`, but for large `p`, this operation is
+<code>t(x) \%*\% A \%*\% x</code>, but for large <code>p</code>, this operation is
 inefficient. We provide a more efficient method below.</p>
 <p>Note that we have adapted the code from:
 <a href='http://tolstoy.newcastle.edu.au/R/help/05/11/14989.html'>http://tolstoy.newcastle.edu.au/R/help/05/11/14989.html</a></p>

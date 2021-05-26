@@ -43,10 +43,10 @@
 <meta property="og:description" content="For a vector of training labels, we return a list of cross-validation folds,
 where each fold has the indices of the observations to leave out in the fold.
 In terms of classification error rate estimation, one can think of a fold as a
-the observations to hold out as a test sample set. Either the `hold_out`
-size or the number of folds, `num_folds`, can be specified. The number
-of folds defaults to 10, but if the `hold_out` size is specified, then
-`num_folds` is ignored." />
+the observations to hold out as a test sample set. Either the hold_out
+size or the number of folds, num_folds, can be specified. The number
+of folds defaults to 10, but if the hold_out size is specified, then
+num_folds is ignored." />
 
 
 
@@ -126,10 +126,10 @@ of folds defaults to 10, but if the `hold_out` size is specified, then
     <p>For a vector of training labels, we return a list of cross-validation folds,
 where each fold has the indices of the observations to leave out in the fold.
 In terms of classification error rate estimation, one can think of a fold as a
-the observations to hold out as a test sample set. Either the `hold_out`
-size or the number of folds, `num_folds`, can be specified. The number
-of folds defaults to 10, but if the `hold_out` size is specified, then
-`num_folds` is ignored.</p>
+the observations to hold out as a test sample set. Either the <code>hold_out</code>
+size or the number of folds, <code>num_folds</code>, can be specified. The number
+of folds defaults to 10, but if the <code>hold_out</code> size is specified, then
+<code>num_folds</code> is ignored.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cv_partition</span><span class='op'>(</span><span class='va'>y</span>, num_folds <span class='op'>=</span> <span class='fl'>10</span>, hold_out <span class='op'>=</span> <span class='cn'>NULL</span>, seed <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
@@ -144,7 +144,7 @@ of folds defaults to 10, but if the `hold_out` size is specified, then
     <tr>
       <th>num_folds</th>
       <td><p>the number of cross-validation folds. Ignored if
-`hold_out` is not `NULL`. See Details.</p></td>
+<code>hold_out</code> is not <code>NULL</code>. See Details.</p></td>
     </tr>
     <tr>
       <th>hold_out</th>
@@ -161,10 +161,10 @@ of folds defaults to 10, but if the `hold_out` size is specified, then
     <p>list the indices of the training and test observations for each fold.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>We partition the vector `y` based on its length, which we treat as the
-sample size, 'n'. If an object other than a vector is used in `y`, its
+    <p>We partition the vector <code>y</code> based on its length, which we treat as the
+sample size, 'n'. If an object other than a vector is used in <code>y</code>, its
 length can yield unexpected results. For example, the output of
-`length(diag(3))` is 9.</p>
+<code><a href='https://rdrr.io/r/base/length.html'>length(diag(3))</a></code> is 9.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># The following three calls to `cv_partition` yield the same partitions.</span>
