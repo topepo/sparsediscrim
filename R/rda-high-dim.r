@@ -274,12 +274,19 @@ predict.rda_high_dim <- function(object, newdata, projected = FALSE, type = c("c
   }
   
   if (type == "prob") {
+    if (is.vector(posterior)) {
+      posterior <- matrix(posterior, nrow = 1)
+      colnames(posterior) <- object$groups
+    }
     res <- as.data.frame(posterior)
   } else if (type == "class") {
     res <- with(object, factor(groups[min_scores], levels = groups))
   } else {
-    res <- t(scores)
-    res <- as.data.frame(res)
+    if (is.vector(scores)) {
+      scores <- matrix(scores, nrow = 1)
+      colnames(scores) <- object$groups
+    }
+    res <- as.data.frame(scores)
   }
   res
 }
