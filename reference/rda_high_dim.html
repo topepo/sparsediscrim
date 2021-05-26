@@ -157,13 +157,13 @@ classifier.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>matrix containing the training data. The rows are the sample
-observations, and the columns are the features.</p></td>
+      <td><p>Matrix or data frame containing the training data. The rows are the 
+sample observations, and the columns are the features. Only complete data are 
+retained.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>arguments passed from the `formula` to the `default`
-method</p></td>
+      <td><p>additional arguments</p></td>
     </tr>
     <tr>
       <th>y</th>
@@ -199,7 +199,7 @@ equal probabilities are used. See details.</p></td>
       <th>formula</th>
       <td><p>A formula of the form `groups ~ x1 + x2 + ...` That is,
 the response is the grouping factor and the right hand side specifies the
-feature vectors.</p></td>
+(non-factor) discriminators.</p></td>
     </tr>
     <tr>
       <th>data</th>
@@ -208,13 +208,13 @@ preferentially to be taken.</p></td>
     </tr>
     <tr>
       <th>object</th>
-      <td><p>object of type `rda_high_dim` that contains the trained HDRDA
+      <td><p>Object of type `rda_high_dim` that contains the trained HDRDA
 classifier</p></td>
     </tr>
     <tr>
       <th>newdata</th>
-      <td><p>matrix containing the unlabeled observations to classify. Each
-row corresponds to a new observation.</p></td>
+      <td><p>Matrix or data frame of observations to predict. Each row 
+corresponds to a new observation.</p></td>
     </tr>
     <tr>
       <th>projected</th>

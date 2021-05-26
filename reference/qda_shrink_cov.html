@@ -158,8 +158,9 @@ et al.  (2009).</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>matrix containing the training data. The rows are the sample
-observations, and the columns are the features.</p></td>
+      <td><p>Matrix or data frame containing the training data. The rows are the 
+sample observations, and the columns are the features. Only complete data are 
+retained.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -167,11 +168,12 @@ observations, and the columns are the features.</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>vector of class labels for each training observation</p></td>
+      <td><p>Vector of class labels for each training observation. Only complete 
+data are retained.</p></td>
     </tr>
     <tr>
       <th>prior</th>
-      <td><p>vector with prior probabilities for each class. If NULL
+      <td><p>Vector with prior probabilities for each class. If NULL
 (default), then equal probabilities are used. See details.</p></td>
     </tr>
     <tr>
@@ -192,19 +194,18 @@ preferentially to be taken.</p></td>
     </tr>
     <tr>
       <th>object</th>
-      <td><p>trained SDQDA object</p></td>
+      <td><p>Fitted model object</p></td>
     </tr>
     <tr>
       <th>newdata</th>
-      <td><p>matrix of observations to predict. Each row corresponds to a
-new observation.</p></td>
+      <td><p>Matrix or data frame of observations to predict. Each row 
+corresponds to a new observation.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>`qda_shrink_cov` object that contains the trained SDQDA classifier</p>
-<p>list predicted class memberships of each row in newdata</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The DQDA classifier is a modification to the well-known QDA classifier, where
@@ -232,12 +233,6 @@ probabilities should be nonnegative and sum to one.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Dudoit, S., Fridlyand, J., &amp; Speed, T. P. (2002). "Comparison of
-Discrimination Methods for the Classification of Tumors Using Gene Expression
-Data," Journal of the American Statistical Association, 97, 457, 77-87.</p>
-<p>Pang, H., Tong, T., &amp; Zhao, H. (2009). "Shrinkage-based Diagonal
-Discriminant Analysis and Its Applications in High-Dimensional Data,"
-Biometrics, 65, 4, 1021-1029.</p>
-<p>Dudoit, S., Fridlyand, J., &amp; Speed, T. P. (2002). "Comparison of
 Discrimination Methods for the Classification of Tumors Using Gene Expression
 Data," Journal of the American Statistical Association, 97, 457, 77-87.</p>
 <p>Pang, H., Tong, T., &amp; Zhao, H. (2009). "Shrinkage-based Diagonal

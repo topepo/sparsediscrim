@@ -133,16 +133,18 @@ of features, etc.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>matrix containing the training data. The rows are the sample
-observations, and the columns are the features.</p></td>
+      <td><p>Matrix or data frame containing the training data. The rows are the 
+sample observations, and the columns are the features. Only complete data are 
+retained.</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>vector of class labels for each training observation</p></td>
+      <td><p>Vector of class labels for each training observation. Only complete 
+data are retained.</p></td>
     </tr>
     <tr>
       <th>prior</th>
-      <td><p>vector with prior probabilities for each class. If NULL
+      <td><p>Vector with prior probabilities for each class. If NULL
 (default), then equal probabilities are used. See details.</p></td>
     </tr>
     <tr>
@@ -173,7 +175,8 @@ training observation.</p>
 The length of `y` should match the number of rows in `x`.</p>
 <p>An error is thrown if a given class has less than 2 observations because the
 variance for each feature within a class cannot be estimated with less than 2
-observations.</p>
+observations. If other data have zero variances, these will be removed with
+a warning.</p>
 <p>The vector, `prior`, contains the _a priori_ class membership for
 each class. If `prior` is NULL (default), the class membership
 probabilities are estimated as the sample proportion of observations belonging

@@ -173,8 +173,9 @@ eigenvalue.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>matrix containing the training data. The rows are the sample
-observations, and the columns are the features.</p></td>
+      <td><p>Matrix or data frame containing the training data. The rows are the 
+sample observations, and the columns are the features. Only complete data are 
+retained.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -182,11 +183,12 @@ observations, and the columns are the features.</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>vector of class labels for each training observation</p></td>
+      <td><p>Vector of class labels for each training observation. Only complete 
+data are retained.</p></td>
     </tr>
     <tr>
       <th>prior</th>
-      <td><p>vector with prior probabilities for each class. If NULL
+      <td><p>Vector with prior probabilities for each class. If NULL
 (default), then equal probabilities are used. See details.</p></td>
     </tr>
     <tr>
@@ -202,19 +204,18 @@ preferentially to be taken.</p></td>
     </tr>
     <tr>
       <th>object</th>
-      <td><p>trained lda_thomaz object</p></td>
+      <td><p>Fitted model object</p></td>
     </tr>
     <tr>
       <th>newdata</th>
-      <td><p>matrix of observations to predict. Each row corresponds to a
-new observation.</p></td>
+      <td><p>Matrix or data frame of observations to predict. Each row 
+corresponds to a new observation.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>`lda_thomaz` object that contains the trained classifier</p>
-<p>list predicted class memberships of each row in newdata</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The matrix of training observations are given in `x`. The rows of `x`
@@ -234,9 +235,6 @@ nonnegative and sum to one.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Thomaz, C. E., Kitani, E. C., and Gillies, D. F. (2006). "A
-maximum uncertainty LDA-based approach for limited sample size problems with
-application to face recognition," J. Braz. Comp. Soc., 12, 2, 7-18.</p>
-<p>Thomaz, C. E., Kitani, E. C., and Gillies, D. F. (2006). "A
 maximum uncertainty LDA-based approach for limited sample size problems with
 application to face recognition," J. Braz. Comp. Soc., 12, 2, 7-18.</p>
 

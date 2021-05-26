@@ -166,8 +166,9 @@ identity matrix.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>matrix containing the training data. The rows are the sample
-observations, and the columns are the features.</p></td>
+      <td><p>Matrix or data frame containing the training data. The rows are the 
+sample observations, and the columns are the features. Only complete data are 
+retained.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -175,11 +176,12 @@ observations, and the columns are the features.</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>vector of class labels for each training observation</p></td>
+      <td><p>Vector of class labels for each training observation. Only complete 
+data are retained.</p></td>
     </tr>
     <tr>
       <th>prior</th>
-      <td><p>vector with prior probabilities for each class. If NULL
+      <td><p>Vector with prior probabilities for each class. If NULL
 (default), then equal probabilities are used. See details.</p></td>
     </tr>
     <tr>
@@ -199,19 +201,18 @@ preferentially to be taken.</p></td>
     </tr>
     <tr>
       <th>object</th>
-      <td><p>trained lda_emp_bayes_eigen object</p></td>
+      <td><p>Fitted model object</p></td>
     </tr>
     <tr>
       <th>newdata</th>
-      <td><p>matrix of observations to predict. Each row corresponds to a
-new observation.</p></td>
+      <td><p>Matrix or data frame of observations to predict. Each row 
+corresponds to a new observation.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>`lda_emp_bayes_eigen` object that contains the trained MDMEB classifier</p>
-<p>list predicted class memberships of each row in newdata</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The matrix of training observations are given in `x`. The rows of `x`
@@ -231,9 +232,6 @@ nonnegative and sum to one.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Srivastava, M. and Kubokawa, T. (2007). "Comparison of
-Discrimination Methods for High Dimensional Data," Journal of the Japanese
-Statistical Association, 37, 1, 123-134.</p>
-<p>Srivastava, M. and Kubokawa, T. (2007). "Comparison of
 Discrimination Methods for High Dimensional Data," Journal of the Japanese
 Statistical Association, 37, 1, 123-134.</p>
 
