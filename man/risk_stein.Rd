@@ -23,10 +23,10 @@ paper for more details.}
 \value{
 list with
 \itemize{
-  \item `alpha`: the alpha that minimizes the average risk under a Stein
-   loss function. If the minimum is not unique, we randomly select an
-   `alpha` from the minimizers.
-  \item `risk`: the minimum average risk attained.
+\item \code{alpha}: the alpha that minimizes the average risk under a Stein
+loss function. If the minimum is not unique, we randomly select an
+\code{alpha} from the minimizers.
+\item \code{risk}: the minimum average risk attained.
 }
 }
 \description{

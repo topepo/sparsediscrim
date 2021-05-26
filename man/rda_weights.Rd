@@ -7,8 +7,8 @@
 rda_weights(x, y, lambda = 1)
 }
 \arguments{
-\item{x}{Matrix or data frame containing the training data. The rows are the 
-sample observations, and the columns are the features. Only complete data are 
+\item{x}{Matrix or data frame containing the training data. The rows are the
+sample observations, and the columns are the features. Only complete data are
 retained.}
 
 \item{y}{vector of class labels for each training observation}
@@ -16,12 +16,12 @@ retained.}
 \item{lambda}{the RDA pooling parameter. Must be between 0 and 1, inclusively.}
 }
 \value{
-list containing the observations for each class given in `y`
+list containing the observations for each class given in \code{y}
 }
 \description{
 This function calculates the weight for each observation in the data matrix
-`x` in order to calculate the covariance matrices employed in the HDRDA
-classifier, implemented in [rda_high_dim()].
+\code{x} in order to calculate the covariance matrices employed in the HDRDA
+classifier, implemented in \code{\link[=rda_high_dim]{rda_high_dim()}}.
 }
 \references{
 Ramey, J. A., Stein, C. K., and Young, D. M. (2013),

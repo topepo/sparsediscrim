@@ -16,13 +16,13 @@ lda_eigen(x, ...)
 \method{predict}{lda_eigen}(object, newdata, ...)
 }
 \arguments{
-\item{x}{Matrix or data frame containing the training data. The rows are the 
-sample observations, and the columns are the features. Only complete data are 
+\item{x}{Matrix or data frame containing the training data. The rows are the
+sample observations, and the columns are the features. Only complete data are
 retained.}
 
 \item{...}{additional arguments}
 
-\item{y}{Vector of class labels for each training observation. Only complete 
+\item{y}{Vector of class labels for each training observation. Only complete
 data are retained.}
 
 \item{prior}{Vector with prior probabilities for each class. If NULL
@@ -30,20 +30,20 @@ data are retained.}
 
 \item{eigen_pct}{the percentage of eigenvalues kept}
 
-\item{formula}{A formula of the form `groups ~ x1 + x2 + ...` That is,
+\item{formula}{A formula of the form \code{groups ~ x1 + x2 + ...} That is,
 the response is the grouping factor and the right hand side specifies the
 (non-factor) discriminators.}
 
-\item{data}{data frame from which variables specified in `formula` are
+\item{data}{data frame from which variables specified in \code{formula} are
 preferentially to be taken.}
 
 \item{object}{Fitted model object}
 
-\item{newdata}{Matrix or data frame of observations to predict. Each row 
+\item{newdata}{Matrix or data frame of observations to predict. Each row
 corresponds to a new observation.}
 }
 \value{
-`lda_eigen` object that contains the trained MDMP classifier
+\code{lda_eigen} object that contains the trained MDMP classifier
 }
 \description{
 Given a set of training data, this function builds the MDMP classifier from
@@ -51,34 +51,34 @@ Srivistava and Kubokawa (2007). The MDMP classifier is an adaptation of the
 linear discriminant analysis (LDA) classifier that is designed for
 small-sample, high-dimensional data. Srivastava and Kubokawa (2007) have
 proposed a modification of the standard maximum likelihood estimator of the
-pooled covariance matrix, where only the largest 95% of the eigenvalues and
-their corresponding eigenvectors are kept. The value of 95% is the default
-and can be changed via the `eigen_pct` argument.
+pooled covariance matrix, where only the largest 95\% of the eigenvalues and
+their corresponding eigenvectors are kept. The value of 95\% is the default
+and can be changed via the \code{eigen_pct} argument.
 
 The MDMP classifier from Srivistava and Kubokawa (2007) is an adaptation of the
 linear discriminant analysis (LDA) classifier that is designed for
 small-sample, high-dimensional data. Srivastava and Kubokawa (2007) have
 proposed a modification of the standard maximum likelihood estimator of the
-pooled covariance matrix, where only the largest 95% of the eigenvalues and
+pooled covariance matrix, where only the largest 95\% of the eigenvalues and
 their corresponding eigenvectors are kept.
 }
 \details{
-The matrix of training observations are given in `x`. The rows of `x`
+The matrix of training observations are given in \code{x}. The rows of \code{x}
 contain the sample observations, and the columns contain the features for each
 training observation.
 
-The vector of class labels given in `y` are coerced to a `factor`.
-The length of `y` should match the number of rows in `x`.
+The vector of class labels given in \code{y} are coerced to a \code{factor}.
+The length of \code{y} should match the number of rows in \code{x}.
 
 An error is thrown if a given class has less than 2 observations because the
 variance for each feature within a class cannot be estimated with less than 2
 observations.
 
-The vector, `prior`, contains the _a priori_ class membership for
-each class. If `prior` is NULL (default), the class membership
+The vector, \code{prior}, contains the \emph{a priori} class membership for
+each class. If \code{prior} is NULL (default), the class membership
 probabilities are estimated as the sample proportion of observations belonging
-to each class. Otherwise, `prior` should be a vector with the same length
-as the number of classes in `y`. The `prior` probabilities should be
+to each class. Otherwise, \code{prior} should be a vector with the same length
+as the number of classes in \code{y}. The \code{prior} probabilities should be
 nonnegative and sum to one.
 }
 \examples{

@@ -11,8 +11,8 @@
 Example bivariate classification data from caret
 }
 \details{
-These data were generated using by invoking the `twoClassSim()` 
-function in the `caret` package.
+These data were generated using by invoking the \code{twoClassSim()}
+function in the \code{caret} package.
 }
 \examples{
 data(two_class_sim_data)
