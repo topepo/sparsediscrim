@@ -37,14 +37,13 @@ the response is the grouping factor and the right hand side specifies the
 \item{data}{data frame from which variables specified in `formula` are
 preferentially to be taken.}
 
-\item{object}{trained lda_eigen object}
+\item{object}{Fitted model object}
 
-\item{newdata}{matrix of observations to predict. Each row corresponds to a new observation.}
+\item{newdata}{Matrix or data frame of observations to predict. Each row 
+corresponds to a new observation.}
 }
 \value{
 `lda_eigen` object that contains the trained MDMP classifier
-
-list predicted class memberships of each row in newdata
 }
 \description{
 Given a set of training data, this function builds the MDMP classifier from
@@ -93,10 +92,6 @@ predicted2 <- predict(mdmp_out2, iris[-train, -5])$class
 all.equal(predicted, predicted2)
 }
 \references{
-Srivastava, M. and Kubokawa, T. (2007). "Comparison of
-Discrimination Methods for High Dimensional Data," Journal of the Japanese
-Statistical Association, 37, 1, 123-134.
-
 Srivastava, M. and Kubokawa, T. (2007). "Comparison of
 Discrimination Methods for High Dimensional Data," Journal of the Japanese
 Statistical Association, 37, 1, 123-134.

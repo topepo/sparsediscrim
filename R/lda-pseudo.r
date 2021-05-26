@@ -84,7 +84,7 @@ lda_pseudo.default <- function(x, y, prior = NULL, tol = 1e-8, ...) {
   obj
 }
 
-#' @inheritParams lda_diag.formula
+#' @inheritParams lda_diag
 #' @rdname lda_pseudo
 #' @importFrom stats model.frame model.matrix model.response
 #' @export
@@ -134,12 +134,8 @@ print.lda_pseudo <- function(x, ...) {
 #'
 #' @rdname lda_pseudo
 #' @export
-#'
-#' @param object trained lda_pseudo object
-#' @param newdata matrix of observations to predict. Each row corresponds to a
-#' new observation.
-#' @param ... additional arguments
-#' @return list predicted class memberships of each row in newdata
+#' @inheritParams predict.lda_diag
+
 predict.lda_pseudo <- function(object, newdata, ...) {
   newdata <- process_newdata(object, newdata)
 

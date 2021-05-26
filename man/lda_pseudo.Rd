@@ -38,16 +38,14 @@ the response is the grouping factor and the right hand side specifies the
 \item{data}{data frame from which variables specified in `formula` are
 preferentially to be taken.}
 
-\item{object}{trained lda_pseudo object}
+\item{object}{Fitted model object}
 
-\item{newdata}{matrix of observations to predict. Each row corresponds to a
-new observation.}
+\item{newdata}{Matrix or data frame of observations to predict. Each row 
+corresponds to a new observation.}
 }
 \value{
 `lda_pseudo` object that contains the trained lda_pseudo
 classifier
-
-list predicted class memberships of each row in newdata
 }
 \description{
 Given a set of training data, this function builds the Linear Discriminant

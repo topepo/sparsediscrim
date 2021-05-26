@@ -31,7 +31,7 @@
 #' @export
 #'
 #' @inheritParams lda_diag
-#' @param ... additional arguments passed to [corpcor::invcov.shrink()]
+#' @param ... Options passed to [corpcor::invcov.shrink()]
 #' @return `lda_schafer` object that contains the trained classifier
 #' @examples
 #' n <- nrow(iris)
@@ -82,7 +82,7 @@ lda_schafer.default <- function(x, y, prior = NULL, ...) {
   obj
 }
 
-#' @inheritParams lda_diag.formula
+#' @inheritParams lda_diag
 #' @rdname lda_schafer
 #' @importFrom stats model.frame model.matrix model.response
 #' @export
@@ -131,14 +131,8 @@ print.lda_schafer <- function(x, ...) {
 #'
 #' @rdname lda_schafer
 #' @export
-#'
-#' @references Schafer, J., and Strimmer, K. (2005). "A shrinkage approach to
-#' large-scale covariance estimation and implications for functional genomics,"
-#' Statist. Appl. Genet. Mol. Biol. 4, 32.
-#' @param object trained lda_schafer object
-#' @param newdata matrix of observations to predict. Each row corresponds to a
-#' new observation.
-#' @return list predicted class memberships of each row in newdata
+#' @inheritParams predict.lda_diag
+
 predict.lda_schafer <- function(object, newdata, ...) {
   newdata <- process_newdata(object, newdata)
 

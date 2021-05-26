@@ -89,7 +89,7 @@ lda_shrink_cov.default <- function(x, y, prior = NULL, num_alphas = 101, ...) {
   obj
 }
 
-#' @inheritParams lda_diag.formula
+#' @inheritParams lda_diag
 #' @rdname lda_shrink_cov
 #' @importFrom stats model.frame model.matrix model.response
 #' @export
@@ -135,18 +135,8 @@ print.lda_shrink_cov <- function(x, ...) {
 #' 
 #' @rdname lda_shrink_cov
 #' @export
-#'
-#' @param object trained SDLDA object
-#' @param newdata matrix of observations to predict. Each row corresponds to a
-#' new observation.
-#' @param ... additional arguments
-#' @references Dudoit, S., Fridlyand, J., & Speed, T. P. (2002). "Comparison of
-#' Discrimination Methods for the Classification of Tumors Using Gene Expression
-#' Data," Journal of the American Statistical Association, 97, 457, 77-87.
-#' @references Pang, H., Tong, T., & Zhao, H. (2009). "Shrinkage-based Diagonal
-#' Discriminant Analysis and Its Applications in High-Dimensional Data,"
-#' Biometrics, 65, 4, 1021-1029.
-#' @return list predicted class memberships of each row in newdata
+#' @inheritParams predict.lda_diag
+
 predict.lda_shrink_cov <- function(object, newdata, ...) {
   newdata <- process_newdata(object, newdata)
 

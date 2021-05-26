@@ -35,9 +35,10 @@ the response is the grouping factor and the right hand side specifies the
 \item{data}{data frame from which variables specified in `formula` are
 preferentially to be taken.}
 
-\item{object}{trained DLDA object}
+\item{object}{Fitted model object}
 
-\item{newdata}{matrix of observations to predict. Each row corresponds to a new observation.}
+\item{newdata}{Matrix or data frame of observations to predict. Each row 
+corresponds to a new observation.}
 }
 \value{
 `lda_diag` Object that contains the trained DLDA classifier
@@ -93,10 +94,6 @@ predicted2 <- predict(dlda_out2, iris[-train, -5])$class
 all.equal(predicted, predicted2)
 }
 \references{
-Dudoit, S., Fridlyand, J., & Speed, T. P. (2002). "Comparison of
-Discrimination Methods for the Classification of Tumors Using Gene Expression
-Data," Journal of the American Statistical Association, 97, 457, 77-87.
-
 Dudoit, S., Fridlyand, J., & Speed, T. P. (2002). "Comparison of
 Discrimination Methods for the Classification of Tumors Using Gene Expression
 Data," Journal of the American Statistical Association, 97, 457, 77-87.

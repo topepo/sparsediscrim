@@ -168,13 +168,7 @@ rda_high_dim.default <- function(x, y, lambda = 1, gamma = 0,
   obj
 }
 
-#' @param formula A formula of the form `groups ~ x1 + x2 + ...` That is,
-#' the response is the grouping factor and the right hand side specifies the
-#' feature vectors.
-#' @param data data frame from which variables specified in `formula` are
-#' preferentially to be taken.
-#' @param ... arguments passed from the `formula` to the `default`
-#' method
+#' @inheritParams lda_diag
 #' @rdname rda_high_dim
 #' @importFrom stats model.frame model.matrix model.response
 #' @export
@@ -220,11 +214,10 @@ print.rda_high_dim <- function(x, ...) {
 #' (row) of the the matrix given in `newdata`.
 #'
 #' @rdname rda_high_dim
+#' @inheritParams predict.lda_diag
 #' @export
-#' @param object object of type `rda_high_dim` that contains the trained HDRDA
+#' @param object Object of type `rda_high_dim` that contains the trained HDRDA
 #' classifier
-#' @param newdata matrix containing the unlabeled observations to classify. Each
-#' row corresponds to a new observation.
 #' @param projected logical indicating whether `newdata` have already been
 #' projected to a q-dimensional subspace. This argument can yield large gains in
 #' speed when the linear transformation has already been performed.
@@ -303,7 +296,7 @@ predict.rda_high_dim <- function(object, newdata, projected = FALSE, ...) {
 #' details.
 #' @param verbose If set to `TRUE`, summary information will be outputted
 #' as the optimal model is being determined.
-#' @param ... Additional arguments passed to [rda_high_dim()].
+#' @param ... Options passed to [rda_high_dim()].
 #' @return list containing the HDRDA model that minimizes cross-validation as
 #' well as a `data.frame` that summarizes the cross-validation results.
 rda_high_dim_cv <- function(x, y, num_folds = 10, num_lambda = 21, num_gamma = 8,

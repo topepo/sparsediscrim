@@ -65,7 +65,7 @@ lda_emp_bayes.default <- function(x, y, prior = NULL, ...) {
   obj
 }
 
-#' @inheritParams lda_diag.formula
+#' @inheritParams lda_diag
 #' @rdname lda_emp_bayes
 #' @importFrom stats model.frame model.matrix model.response
 #' @export
@@ -114,14 +114,8 @@ print.lda_emp_bayes <- function(x, ...) {
 #'
 #' @rdname lda_emp_bayes
 #' @export
-#'
-#' @references Srivastava, M. and Kubokawa, T. (2007). "Comparison of
-#' Discrimination Methods for High Dimensional Data," Journal of the Japanese
-#' Statistical Association, 37, 1, 123-134.
-#' @param object trained lda_emp_bayes object
-#' @param newdata matrix of observations to predict. Each row corresponds to a new observation.
-#' @param ... additional arguments
-#' @return list predicted class memberships of each row in newdata
+#' @inheritParams predict.lda_diag
+
 predict.lda_emp_bayes <- function(object, newdata, ...) {
   newdata <- process_newdata(object, newdata)
 

@@ -73,7 +73,7 @@ qda_diag.default <- function(x, y, prior = NULL, ...) {
   obj
 }
 
-#' @inheritParams lda_diag.formula
+#' @inheritParams lda_diag
 #' @rdname qda_diag
 #' @importFrom stats model.frame model.matrix model.response
 #' @export
@@ -116,15 +116,8 @@ print.qda_diag <- function(x, ...) {
 #'
 #' @rdname qda_diag
 #' @export
-#'
-#' @param object trained DQDA object
-#' @param newdata matrix of observations to predict. Each row corresponds to a
-#' new observation.
-#' @param ... additional arguments
-#' @references Dudoit, S., Fridlyand, J., & Speed, T. P. (2002). "Comparison of
-#' Discrimination Methods for the Classification of Tumors Using Gene Expression
-#' Data," Journal of the American Statistical Association, 97, 457, 77-87.
-#' @return list predicted class memberships of each row in newdata
+#' @inheritParams predict.lda_diag
+
 predict.qda_diag <- function(object, newdata, ...) {
   newdata <- process_newdata(object, newdata)
 

@@ -128,14 +128,12 @@ print.lda_diag <- function(x, ...) {
 #'
 #' @rdname lda_diag
 #' @export
-#'
-#' @param object trained DLDA object
-#' @param newdata matrix of observations to predict. Each row corresponds to a new observation.
+#' @param object Fitted model object
+#' @param newdata Matrix or data frame of observations to predict. Each row 
+#' corresponds to a new observation.
 #' @param ... additional arguments
-#' @references Dudoit, S., Fridlyand, J., & Speed, T. P. (2002). "Comparison of
-#' Discrimination Methods for the Classification of Tumors Using Gene Expression
-#' Data," Journal of the American Statistical Association, 97, 457, 77-87.
 #' @return list predicted class memberships of each row in newdata
+
 predict.lda_diag <- function(object, newdata, ...) {
   newdata <- process_newdata(object, newdata)
 

@@ -36,7 +36,7 @@ details.}
 \item{verbose}{If set to `TRUE`, summary information will be outputted
 as the optimal model is being determined.}
 
-\item{...}{Additional arguments passed to [rda_high_dim()].}
+\item{...}{Options passed to [rda_high_dim()].}
 }
 \value{
 list containing the HDRDA model that minimizes cross-validation as

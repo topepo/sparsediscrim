@@ -88,7 +88,7 @@ lda_thomaz.default <- function(x, y, prior = NULL, ...) {
   obj
 }
 
-#' @inheritParams lda_diag.formula
+#' @inheritParams lda_diag
 #' @rdname lda_thomaz
 #' @importFrom stats model.frame model.matrix model.response
 #' @export
@@ -140,15 +140,8 @@ print.lda_thomaz <- function(x, ...) {
 #'
 #' @rdname lda_thomaz
 #' @export
-#'
-#' @references Thomaz, C. E., Kitani, E. C., and Gillies, D. F. (2006). "A
-#' maximum uncertainty LDA-based approach for limited sample size problems with
-#' application to face recognition," J. Braz. Comp. Soc., 12, 2, 7-18.
-#' @param object trained lda_thomaz object
-#' @param newdata matrix of observations to predict. Each row corresponds to a
-#' new observation.
-#' @param ... additional arguments
-#' @return list predicted class memberships of each row in newdata
+#' @inheritParams predict.lda_diag
+
 predict.lda_thomaz <- function(object, newdata, ...) {
   newdata <- process_newdata(object, newdata)
 
