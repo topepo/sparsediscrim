@@ -25,8 +25,9 @@ rda_high_dim(x, ...)
 \method{predict}{rda_high_dim}(object, newdata, projected = FALSE, ...)
 }
 \arguments{
-\item{x}{matrix containing the training data. The rows are the sample
-observations, and the columns are the features.}
+\item{x}{Matrix or data frame containing the training data. The rows are the 
+sample observations, and the columns are the features. Only complete data are 
+retained.}
 
 \item{...}{arguments passed from the `formula` to the `default`
 method}

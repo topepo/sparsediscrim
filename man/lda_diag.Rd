@@ -16,14 +16,16 @@ lda_diag(x, ...)
 \method{predict}{lda_diag}(object, newdata, ...)
 }
 \arguments{
-\item{x}{matrix containing the training data. The rows are the sample
-observations, and the columns are the features.}
+\item{x}{Matrix or data frame containing the training data. The rows are the 
+sample observations, and the columns are the features. Only complete data are 
+retained.}
 
 \item{...}{additional arguments}
 
-\item{y}{vector of class labels for each training observation}
+\item{y}{Vector of class labels for each training observation. Only complete 
+data are retained.}
 
-\item{prior}{vector with prior probabilities for each class. If NULL
+\item{prior}{Vector with prior probabilities for each class. If NULL
 (default), then equal probabilities are used. See details.}
 
 \item{formula}{A formula of the form `groups ~ x1 + x2 + ...` That is,
@@ -38,7 +40,7 @@ preferentially to be taken.}
 \item{newdata}{matrix of observations to predict. Each row corresponds to a new observation.}
 }
 \value{
-`lda_diag` object that contains the trained DLDA classifier
+`lda_diag` Object that contains the trained DLDA classifier
 
 list predicted class memberships of each row in newdata
 }

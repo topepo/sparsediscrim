@@ -60,6 +60,7 @@ lda_diag <- function(x, ...) {
   UseMethod("lda_diag")
 }
 
+#' @importFrom stats complete.cases
 #' @rdname lda_diag
 #' @export
 lda_diag.default <- function(x, y, prior = NULL, ...) {
@@ -136,7 +137,6 @@ print.lda_diag <- function(x, ...) {
 #' Data," Journal of the American Statistical Association, 97, 457, 77-87.
 #' @return list predicted class memberships of each row in newdata
 predict.lda_diag <- function(object, newdata, ...) {
-
   newdata <- process_newdata(object, newdata)
 
   scores <- apply(newdata, 1, function(obs) {
@@ -144,13 +144,6 @@ predict.lda_diag <- function(object, newdata, ...) {
       with(class_est, sum((obs - xbar)^2 / object$var_pool) + log(prior))
     })
   })
-
-  if (is.vector(scores)) {
-    min_scores <- min_index(scores)
-  } else {
-    min_scores <- apply(scores, 2, min_index)
-    
-  }
 
   # Posterior probabilities via Bayes Theorem
   means <- lapply(object$est, "[[", "xbar")
@@ -161,10 +154,7 @@ predict.lda_diag <- function(object, newdata, ...) {
                                covs = covs, 
                                priors = priors)
 
-  scores <- as.data.frame(t(scores))
-  colnames(scores) <- object$groups
-  
-  class <- factor(object$groups[min_scores], levels = object$groups)
+  class <- score_to_class(scores, object)
 
   list(class = class, scores = scores, posterior = posterior)
 }

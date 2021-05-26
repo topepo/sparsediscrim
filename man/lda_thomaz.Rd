@@ -17,14 +17,16 @@ lda_thomaz(x, ...)
 \method{predict}{lda_thomaz}(object, newdata, ...)
 }
 \arguments{
-\item{x}{matrix containing the training data. The rows are the sample
-observations, and the columns are the features.}
+\item{x}{Matrix or data frame containing the training data. The rows are the 
+sample observations, and the columns are the features. Only complete data are 
+retained.}
 
 \item{...}{additional arguments}
 
-\item{y}{vector of class labels for each training observation}
+\item{y}{Vector of class labels for each training observation. Only complete 
+data are retained.}
 
-\item{prior}{vector with prior probabilities for each class. If NULL
+\item{prior}{Vector with prior probabilities for each class. If NULL
 (default), then equal probabilities are used. See details.}
 
 \item{formula}{A formula of the form `groups ~ x1 + x2 + ...` That is,

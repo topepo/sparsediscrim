@@ -148,12 +148,6 @@ predict.lda_eigen <- function(object, newdata, ...) {
     })
   })
 
-  if (is.vector(scores)) {
-    min_scores <- which.min(scores)
-  } else {
-    min_scores <- apply(scores, 2, which.min)
-  }
-
   # Posterior probabilities via Bayes Theorem
   means <- lapply(object$est, "[[", "xbar")
   covs <- replicate(n=object$num_groups, object$cov_pool, simplify=FALSE)
@@ -163,7 +157,7 @@ predict.lda_eigen <- function(object, newdata, ...) {
                                covs=covs,
                                priors=priors)
 
-  class <- factor(object$groups[min_scores], levels = object$groups)
+  class <- score_to_class(scores, object)
 
   list(class = class, scores = scores, posterior = posterior)
 }

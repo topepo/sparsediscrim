@@ -232,3 +232,13 @@ min_index <- function(x) {
     which.min(x)
   }
 }
+
+score_to_class <- function(x, object) {
+  if (is.vector(x)) {
+    min_scores <- min_index(x)
+  } else {
+    min_scores <- apply(x, 2, min_index)
+  }
+  factor(object$groups[min_scores], levels = object$groups)
+}
+

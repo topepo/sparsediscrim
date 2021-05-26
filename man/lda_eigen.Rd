@@ -16,14 +16,16 @@ lda_eigen(x, ...)
 \method{predict}{lda_eigen}(object, newdata, ...)
 }
 \arguments{
-\item{x}{matrix containing the training data. The rows are the sample
-observations, and the columns are the features.}
+\item{x}{Matrix or data frame containing the training data. The rows are the 
+sample observations, and the columns are the features. Only complete data are 
+retained.}
 
 \item{...}{additional arguments}
 
-\item{y}{vector of class labels for each training observation}
+\item{y}{Vector of class labels for each training observation. Only complete 
+data are retained.}
 
-\item{prior}{vector with prior probabilities for each class. If NULL
+\item{prior}{Vector with prior probabilities for each class. If NULL
 (default), then equal probabilities are used. See details.}
 
 \item{eigen_pct}{the percentage of eigenvalues kept}
