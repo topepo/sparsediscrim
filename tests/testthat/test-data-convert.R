@@ -1,32 +1,26 @@
-context("predictor pre-processing")
-
 library(testthat)
 library(sparsediscrim)
-library(modeldata)
 
-# ------------------------------------------------------------------------------
+context("Data conversion")
 
-data(scat, package = "modeldata")
-
-# ------------------------------------------------------------------------------
-
-test_that("formula method", {
+test_that("Bad predictor input", {
    
-   expect_warning(
-      mod <- lda_diag(Species ~ ., data = scat[1:90, ]),
-      "had zero variance"
+   expect_error(
+      sparsediscrim:::pred_to_matrix(iris), 
+      "the matrix was no longer numeric"
    )
-   expect_equal(
-      mod$N,
-      sum(complete.cases(scat[1:90, ]))
-   )
-   missing_rows <- which(!complete.cases(scat[-(1:90), -1]))
    
-   pred <- predict(mod, newdata = scat[-(1:90), -1])
-   expect_true(
-      all(!is.na(pred$posterior[-missing_rows,]))
+   
+})
+test_that("Bad outcome input", {
+   
+   expect_error(
+      sparsediscrim:::outcome_to_factor(mtcars$am), 
+      "data should be a character or factor vector"
    )
-   expect_true(
-      all(is.na(pred$posterior[missing_rows,]))
+   expect_error(
+      sparsediscrim:::outcome_to_factor(mtcars[, 1:2]), 
+      "data should be a character or factor vector"
    )
+   
 })
