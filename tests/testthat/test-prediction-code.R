@@ -22,18 +22,19 @@ test_that("formula method", {
    )
    missing_rows <- which(!complete.cases(scat[-(1:90), -1]))
    
-   pred <- predict(mod, newdata = scat[-(1:90), -1])
+   pred_cls <- predict(mod, newdata = scat[-(1:90), -1])
+   pred_prb <- predict(mod, newdata = scat[-(1:90), -1], type = "prob")
    expect_true(
-      all(!is.na(pred$posterior[-missing_rows,]))
+      all(!is.na(pred_prb[-missing_rows,]))
    )
    expect_true(
-      all(is.na(pred$class[missing_rows]))
+      all(is.na(pred_cls[missing_rows]))
    )
    expect_true(
-      all(!is.na(pred$class[-missing_rows]))
+      all(!is.na(pred_cls[-missing_rows]))
    )
    expect_true(
-      all(is.na(pred$class[missing_rows]))
+      all(is.na(pred_cls[missing_rows]))
    )
 })
 
@@ -49,17 +50,18 @@ test_that("x/y method", {
    )
    missing_rows <- which(!complete.cases(scat[-(1:90), 6:12]))
    
-   pred <- predict(mod, newdata = scat[-(1:90), 6:12])
+   pred_cls <- predict(mod, newdata = scat[-(1:90), 6:12])
+   pred_prb <- predict(mod, newdata = scat[-(1:90), 6:12], type = "prob")
    expect_true(
-      all(!is.na(pred$posterior[-missing_rows,]))
+      all(!is.na(pred_prb[-missing_rows,]))
    )
    expect_true(
-      all(is.na(pred$class[missing_rows]))
+      all(is.na(pred_cls[missing_rows]))
    )
    expect_true(
-      all(!is.na(pred$class[-missing_rows]))
+      all(!is.na(pred_cls[-missing_rows]))
    )
    expect_true(
-      all(is.na(pred$class[missing_rows]))
+      all(is.na(pred_cls[missing_rows]))
    )
 })
