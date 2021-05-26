@@ -123,7 +123,7 @@ print.lda_emp_bayes <- function(x, ...) {
 #' @param ... additional arguments
 #' @return list predicted class memberships of each row in newdata
 predict.lda_emp_bayes <- function(object, newdata, ...) {
-  newdata <- as.matrix(newdata)
+  newdata <- process_newdata(object, newdata)
 
   # Calculates the MDEB shrinkage constant and then computes the inverse of the
   # MDEB covariance matrix estimator

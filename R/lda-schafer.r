@@ -140,7 +140,7 @@ print.lda_schafer <- function(x, ...) {
 #' new observation.
 #' @return list predicted class memberships of each row in newdata
 predict.lda_schafer <- function(object, newdata, ...) {
-  newdata <- as.matrix(newdata)
+  newdata <- process_newdata(object, newdata)
 
   # Calculates the discriminant scores for each test observation
   scores <- apply(newdata, 1, function(obs) {

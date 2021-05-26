@@ -231,7 +231,7 @@ print.rda_high_dim <- function(x, ...) {
 #' @return list with predicted class and discriminant scores for each of the K
 #' classes
 predict.rda_high_dim <- function(object, newdata, projected = FALSE, ...) {
-  newdata <- as.matrix(newdata)
+  newdata <- process_newdata(object, newdata)
   
   scores <- sapply(object$est, function(class_est) {
     if (object$lambda == 0 && object$gamma == 0) {

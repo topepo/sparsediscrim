@@ -126,7 +126,7 @@ print.qda_diag <- function(x, ...) {
 #' Data," Journal of the American Statistical Association, 97, 457, 77-87.
 #' @return list predicted class memberships of each row in newdata
 predict.qda_diag <- function(object, newdata, ...) {
-  newdata <- as.matrix(newdata)
+  newdata <- process_newdata(object, newdata)
 
   scores <- apply(newdata, 1, function(obs) {
     sapply(object$est, function(class_est) {

@@ -148,7 +148,7 @@ print.lda_shrink_cov <- function(x, ...) {
 #' Biometrics, 65, 4, 1021-1029.
 #' @return list predicted class memberships of each row in newdata
 predict.lda_shrink_cov <- function(object, newdata, ...) {
-  newdata <- as.matrix(newdata)
+  newdata <- process_newdata(object, newdata)
 
   scores <- apply(newdata, 1, function(obs) {
     sapply(object$est, function(class_est) {

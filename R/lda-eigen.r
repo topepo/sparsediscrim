@@ -139,7 +139,7 @@ print.lda_eigen <- function(x, ...) {
 #' @param ... additional arguments
 #' @return list predicted class memberships of each row in newdata
 predict.lda_eigen <- function(object, newdata, ...) {
-  newdata <- as.matrix(newdata)
+  newdata <- process_newdata(object, newdata)
 
   # Calculates the discriminant scores for each test observation
   scores <- apply(newdata, 1, function(obs) {
