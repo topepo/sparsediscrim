@@ -141,10 +141,6 @@ print.lda_pseudo <- function(x, ...) {
 #' @param ... additional arguments
 #' @return list predicted class memberships of each row in newdata
 predict.lda_pseudo <- function(object, newdata, ...) {
-  if (!inherits(object, "lda_pseudo"))  {
-    rlang::abort("object not of class 'lda_pseudo'")
-  }
-
   newdata <- as.matrix(newdata)
 
   # Calculates the discriminant scores for each test observation

@@ -139,10 +139,6 @@ print.lda_eigen <- function(x, ...) {
 #' @param ... additional arguments
 #' @return list predicted class memberships of each row in newdata
 predict.lda_eigen <- function(object, newdata, ...) {
-  if (!inherits(object, "lda_eigen"))  {
-    rlang::abort("object not of class 'lda_eigen'")
-  }
-
   newdata <- as.matrix(newdata)
 
   # Calculates the discriminant scores for each test observation

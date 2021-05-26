@@ -136,9 +136,6 @@ print.lda_diag <- function(x, ...) {
 #' Data," Journal of the American Statistical Association, 97, 457, 77-87.
 #' @return list predicted class memberships of each row in newdata
 predict.lda_diag <- function(object, newdata, ...) {
-  if (!inherits(object, "lda_diag"))  {
-    rlang::abort("object not of class 'lda_diag'")
-  }
 
   newdata <- process_newdata(object, newdata)
 
@@ -147,11 +144,12 @@ predict.lda_diag <- function(object, newdata, ...) {
       with(class_est, sum((obs - xbar)^2 / object$var_pool) + log(prior))
     })
   })
+  ic <- !complete.cases(scores)
 
   if (is.vector(scores)) {
-    min_scores <- which.min(scores)
+    min_scores <- min_index(scores)
   } else {
-    min_scores <- unlist(apply(scores, 2, which.min))
+    min_scores <- apply(scores, 2, min_index)
   }
 
   # Posterior probabilities via Bayes Theorem
@@ -163,7 +161,11 @@ predict.lda_diag <- function(object, newdata, ...) {
                                covs = covs, 
                                priors = priors)
 
+  scores <- as.data.frame(t(scores))
+  colnames(scores) <- object$groups
+  
   class <- factor(object$groups[min_scores], levels = object$groups)
+  class[ic] <- NA
 
   list(class = class, scores = scores, posterior = posterior)
 }

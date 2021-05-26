@@ -133,10 +133,6 @@ print.qda_shrink_mean <- function(x, ...) {
 #' Data," Journal of the American Statistical Association, 97, 457, 77-87.
 #' @return list predicted class memberships of each row in newdata
 predict.qda_shrink_mean <- function(object, newdata, ...) {
-  if (!inherits(object, "qda_shrink_mean"))  {
-    rlang::abort("object not of class 'qda_shrink_mean'")
-  }
-
   newdata <- as.matrix(newdata)
 
   scores <- apply(newdata, 1, function(obs) {

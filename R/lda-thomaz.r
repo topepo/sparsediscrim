@@ -150,10 +150,6 @@ print.lda_thomaz <- function(x, ...) {
 #' @param ... additional arguments
 #' @return list predicted class memberships of each row in newdata
 predict.lda_thomaz <- function(object, newdata, ...) {
-  if (!inherits(object, "lda_thomaz"))  {
-    rlang::abort("object not of class 'lda_thomaz'")
-  }
-
   newdata <- as.matrix(newdata)
 
   # Calculates the discriminant scores for each test observation

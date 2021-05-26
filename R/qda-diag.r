@@ -126,10 +126,6 @@ print.qda_diag <- function(x, ...) {
 #' Data," Journal of the American Statistical Association, 97, 457, 77-87.
 #' @return list predicted class memberships of each row in newdata
 predict.qda_diag <- function(object, newdata, ...) {
-  if (!inherits(object, "qda_diag"))  {
-    rlang::abort("object not of class 'qda_diag'")
-  }
-
   newdata <- as.matrix(newdata)
 
   scores <- apply(newdata, 1, function(obs) {

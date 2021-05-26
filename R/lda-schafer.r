@@ -140,10 +140,6 @@ print.lda_schafer <- function(x, ...) {
 #' new observation.
 #' @return list predicted class memberships of each row in newdata
 predict.lda_schafer <- function(object, newdata, ...) {
-  if (!inherits(object, "lda_schafer"))  {
-    rlang::abort("object not of class 'lda_schafer'")
-  }
-
   newdata <- as.matrix(newdata)
 
   # Calculates the discriminant scores for each test observation

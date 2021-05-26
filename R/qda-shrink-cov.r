@@ -152,10 +152,6 @@ print.qda_shrink_cov <- function(x, ...) {
 #' Biometrics, 65, 4, 1021-1029.
 #' @return list predicted class memberships of each row in newdata
 predict.qda_shrink_cov <- function(object, newdata, ...) {
-  if (!inherits(object, "qda_shrink_cov"))  {
-    rlang::abort("object not of class 'qda_shrink_cov'")
-  }
-
   newdata <- as.matrix(newdata)
 
   scores <- apply(newdata, 1, function(obs) {

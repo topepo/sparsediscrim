@@ -21,7 +21,8 @@ Imports:
 Suggests:
     testthat,
     MASS,
-    covr
+    covr,
+    modeldata
 License: MIT + file LICENSE
 URL: https://github.com/topepo/sparsediscrim
 RoxygenNote: 7.1.1.9001
