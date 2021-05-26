@@ -14,3 +14,4 @@
 \description{
 Summarizes the trained DQDA classifier in a nice manner.
 }
+\keyword{internal}

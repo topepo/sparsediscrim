@@ -94,6 +94,7 @@ lda_emp_bayes.formula <- function(formula, data, prior = NULL, ...) {
 #'
 #' @param x object to print
 #' @param ... unused
+#' @keywords internal
 #' @export
 print.lda_emp_bayes <- function(x, ...) {
   cat("Minimum Distance Empirical Bayesian Estimator\n\n")

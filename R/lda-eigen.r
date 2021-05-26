@@ -111,6 +111,7 @@ lda_eigen.formula <- function(formula, data, prior = NULL, ...) {
 #'
 #' @param x object to print
 #' @param ... unused
+#' @keywords internal
 #' @export
 print.lda_eigen <- function(x, ...) {
   cat("Minimum Distance Rule using Moore-Penrose Inverse\n\n")

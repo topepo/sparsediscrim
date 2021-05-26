@@ -115,6 +115,7 @@ lda_emp_bayes_eigen.formula <- function(formula, data, prior = NULL, ...) {
 #'
 #' @param x object to print
 #' @param ... unused
+#' @keywords internal
 #' @export
 print.lda_emp_bayes_eigen <- function(x, ...) {
   cat("Minimum Distance Rule using Modified Empirical Bayes\n\n")

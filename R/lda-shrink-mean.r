@@ -111,6 +111,7 @@ lda_shrink_mean.formula <- function(formula, data, prior = NULL, ...) {
 #'
 #' @param x object to print
 #' @param ... unused
+#' @keywords internal
 #' @export
 print.lda_shrink_mean <- function(x, ...) {
   cat("Shrinkage-Mean-Based Diagonal LDA\n\n")

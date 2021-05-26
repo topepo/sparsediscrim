@@ -113,6 +113,7 @@ lda_pseudo.formula <- function(formula, data, prior = NULL, tol = 1e-8, ...) {
 #'
 #' @param x object to print
 #' @param ... unused
+#' @keywords internal
 #' @export
 print.lda_pseudo <- function(x, ...) {
   cat("LDA with the Moore-Penrose Pseudo-Inverse\n\n")

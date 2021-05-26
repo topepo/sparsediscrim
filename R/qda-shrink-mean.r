@@ -108,6 +108,7 @@ qda_shrink_mean.formula <- function(formula, data, prior = NULL, ...) {
 #'
 #' @param x object to print
 #' @param ... unused
+#' @keywords internal
 #' @export
 print.qda_shrink_mean <- function(x, ...) {
   cat("Shrinkage-Mean-Based Diagonal QDA\n\n")

@@ -117,6 +117,7 @@ lda_thomaz.formula <- function(formula, data, prior = NULL, ...) {
 #'
 #' @param x object to print
 #' @param ... unused
+#' @keywords internal
 #' @export
 print.lda_thomaz <- function(x, ...) {
   cat("LDA using the Thomaz-Kitani-Gillies Covariance Matrix Estimator\n\n")

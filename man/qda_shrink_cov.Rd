@@ -20,7 +20,7 @@ qda_shrink_cov(x, ...)
 sample observations, and the columns are the features. Only complete data are 
 retained.}
 
-\item{...}{additional arguments}
+\item{...}{additional arguments (not currently used).}
 
 \item{y}{Vector of class labels for each training observation. Only complete 
 data are retained.}

@@ -197,6 +197,7 @@ rda_high_dim.formula <- function(formula, data, ...) {
 #'
 #' @param x object to print
 #' @param ... unused
+#' @keywords internal
 #' @export
 print.rda_high_dim <- function(x, ...) {
   cat("High-Dimensional Regularized Discriminant Analysis\n\n")

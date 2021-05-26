@@ -119,6 +119,7 @@ lda_shrink_cov.formula <- function(formula, data, prior = NULL, num_alphas = 101
 #'
 #' @param x object to print
 #' @param ... unused
+#' @keywords internal
 #' @export
 print.lda_shrink_cov <- function(x, ...) {
   cat("Shrinkage-based Diagonal LDA\n\n")

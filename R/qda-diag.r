@@ -102,6 +102,7 @@ qda_diag.formula <- function(formula, data, prior = NULL, ...) {
 #'
 #' @param x object to print
 #' @param ... unused
+#' @keywords internal
 #' @export
 print.qda_diag <- function(x, ...) {
   cat("Diagonal QDA\n\n")
