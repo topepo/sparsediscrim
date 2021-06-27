@@ -150,7 +150,13 @@ classifier.</p>
 <span class='fu'>rda_high_dim</span><span class='op'>(</span><span class='va'>formula</span>, <span class='va'>data</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for rda_high_dim</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>newdata</span>, projected <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  <span class='va'>newdata</span>,
+  projected <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"class"</span>, <span class='st'>"prob"</span>, <span class='st'>"score"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,7 +169,7 @@ retained.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments</p></td>
+      <td><p>additional arguments (not currently used).</p></td>
     </tr>
     <tr>
       <th>y</th>
@@ -221,6 +227,10 @@ corresponds to a new observation.</p></td>
       <td><p>logical indicating whether <code>newdata</code> have already been
 projected to a q-dimensional subspace. This argument can yield large gains in
 speed when the linear transformation has already been performed.</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>Prediction type: either `"class"`, `"prob"`, or `"score"`.</p></td>
     </tr>
     </table>
 
