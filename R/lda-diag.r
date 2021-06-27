@@ -42,19 +42,22 @@
 #' data are retained. 
 #' @param prior Vector with prior probabilities for each class. If NULL
 #' (default), then equal probabilities are used. See details.
-#' @return `lda_diag` Object that contains the trained DLDA classifier
-#'
+#' @return  The model fitting function returns the fitted classifier. The 
+#' `predict()` method returns either a vector (`type = "class"`) or a data 
+#' frame (all other `type` values).
 #' @references Dudoit, S., Fridlyand, J., & Speed, T. P. (2002). "Comparison of
 #' Discrimination Methods for the Classification of Tumors Using Gene Expression
 #' Data," Journal of the American Statistical Association, 97, 457, 77-87.
 #' @examples
-#' n <- nrow(iris)
-#' train <- sample(seq_len(n), n / 2)
-#' dlda_out <- lda_diag(Species ~ ., data = iris[train, ])
-#' predicted <- predict(dlda_out, iris[-train, -5])$class
+#' library(modeldata)
+#' data(penguins)
+#' pred_rows <- seq(1, 344, by = 20)
+#' penguins <- penguins[, c("species", "body_mass_g", "flipper_length_mm")]
+#' dlda_out <- lda_diag(species ~ ., data = penguins[-pred_rows, ])
+#' predicted <- predict(dlda_out, penguins[pred_rows, -1], type = "class")
 #'
-#' dlda_out2 <- lda_diag(x = iris[train, -5], y = iris[train, 5])
-#' predicted2 <- predict(dlda_out2, iris[-train, -5])$class
+#' dlda_out2 <- lda_diag(x = penguins[-pred_rows, -1], y = penguins$species[-pred_rows])
+#' predicted2 <- predict(dlda_out2, penguins[pred_rows, -1], type = "class")
 #' all.equal(predicted, predicted2)
 lda_diag <- function(x, ...) {
   UseMethod("lda_diag")
@@ -114,6 +117,7 @@ lda_diag.formula <- function(formula, data, prior = NULL, ...) {
 #' @param x object to print
 #' @param ... unused
 #' @export
+#' @keywords internal
 print.lda_diag <- function(x, ...) {
   cat("Diagonal LDA\n\n")
   
@@ -131,10 +135,10 @@ print.lda_diag <- function(x, ...) {
 #' @param object Fitted model object
 #' @param newdata Matrix or data frame of observations to predict. Each row 
 #' corresponds to a new observation.
-#' @param ... additional arguments
-#' @return list predicted class memberships of each row in newdata
-
-predict.lda_diag <- function(object, newdata, ...) {
+#' @param type Prediction type: either `"class"`, `"prob"`, or `"score"`. 
+#' @param ... additional arguments (not currently used).
+predict.lda_diag <- function(object, newdata, type = c("class", "prob", "score"), ...) {
+  type <- rlang::arg_match0(type, c("class", "prob", "score"), arg_nm = "type")
   newdata <- process_newdata(object, newdata)
 
   scores <- apply(newdata, 1, function(obs) {
@@ -143,16 +147,18 @@ predict.lda_diag <- function(object, newdata, ...) {
     })
   })
 
-  # Posterior probabilities via Bayes Theorem
-  means <- lapply(object$est, "[[", "xbar")
-  covs <- replicate(n = object$num_groups, object$var_pool, simplify = FALSE)
-  priors <- lapply(object$est, "[[", "prior")
-  posterior <- posterior_probs(x = newdata, 
-                               means = means, 
-                               covs = covs, 
-                               priors = priors)
-
-  class <- score_to_class(scores, object)
-
-  list(class = class, scores = scores, posterior = posterior)
+  if (type == "prob") {
+    # Posterior probabilities via Bayes Theorem
+    means <- lapply(object$est, "[[", "xbar")
+    covs <- replicate(n = object$num_groups, object$var_pool, simplify = FALSE)
+    priors <- lapply(object$est, "[[", "prior")
+    res <- posterior_probs(x = newdata, means = means, covs = covs, priors = priors)
+    res <- as.data.frame(res)
+  } else if (type == "class") {
+    res <- score_to_class(scores, object)
+  } else {
+    res <- t(scores)
+    res <- as.data.frame(res)
+  }
+  res
 }

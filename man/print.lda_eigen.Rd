@@ -14,3 +14,4 @@
 \description{
 Summarizes the trained lda_eigen classifier in a nice manner.
 }
+\keyword{internal}

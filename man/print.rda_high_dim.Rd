@@ -14,3 +14,4 @@
 \description{
 Summarizes the trained rda_high_dim classifier in a nice manner.
 }
+\keyword{internal}

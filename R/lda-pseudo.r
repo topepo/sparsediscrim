@@ -36,13 +36,15 @@
 #' @return `lda_pseudo` object that contains the trained lda_pseudo
 #' classifier
 #' @examples
-#' n <- nrow(iris)
-#' train <- sample(seq_len(n), n / 2)
-#' lda_pseudo_out <- lda_pseudo(Species ~ ., data = iris[train, ])
-#' predicted <- predict(lda_pseudo_out, iris[-train, -5])$class
+#' library(modeldata)
+#' data(penguins)
+#' pred_rows <- seq(1, 344, by = 20)
+#' penguins <- penguins[, c("species", "body_mass_g", "flipper_length_mm")]
+#' lda_pseudo_out <- lda_pseudo(species ~ ., data = penguins[-pred_rows, ])
+#' predicted <- predict(lda_pseudo_out, penguins[pred_rows, -1], type = "class")
 #'
-#' lda_pseudo_out2 <- lda_pseudo(x = iris[train, -5], y = iris[train, 5])
-#' predicted2 <- predict(lda_pseudo_out2, iris[-train, -5])$class
+#' lda_pseudo_out2 <- lda_pseudo(x = penguins[-pred_rows, -1], y = penguins$species[-pred_rows])
+#' predicted2 <- predict(lda_pseudo_out2, penguins[pred_rows, -1], type = "class")
 #' all.equal(predicted, predicted2)
 lda_pseudo <- function(x, ...) {
   UseMethod("lda_pseudo")
@@ -113,6 +115,7 @@ lda_pseudo.formula <- function(formula, data, prior = NULL, tol = 1e-8, ...) {
 #'
 #' @param x object to print
 #' @param ... unused
+#' @keywords internal
 #' @export
 print.lda_pseudo <- function(x, ...) {
   cat("LDA with the Moore-Penrose Pseudo-Inverse\n\n")
@@ -136,7 +139,8 @@ print.lda_pseudo <- function(x, ...) {
 #' @export
 #' @inheritParams predict.lda_diag
 
-predict.lda_pseudo <- function(object, newdata, ...) {
+predict.lda_pseudo <- function(object, newdata, type = c("class", "prob", "score"), ...) {
+  type <- rlang::arg_match0(type, c("class", "prob", "score"), arg_nm = "type")
   newdata <- process_newdata(object, newdata)
 
   # Calculates the discriminant scores for each test observation
@@ -145,17 +149,20 @@ predict.lda_pseudo <- function(object, newdata, ...) {
       with(class_est, quadform(object$cov_inv, obs - xbar) + log(prior))
     })
   })
-
-  # Posterior probabilities via Bayes Theorem
-  means <- lapply(object$est, "[[", "xbar")
-  covs <- replicate(n=object$num_groups, object$cov_pool, simplify=FALSE)
-  priors <- lapply(object$est, "[[", "prior")
-  posterior <- posterior_probs(x=newdata,
-                               means=means,
-                               covs=covs,
-                               priors=priors)
-
-  class <- score_to_class(scores, object)
-
-  list(class = class, scores = scores, posterior = posterior)
+  
+  if (type == "prob") {
+    # Posterior probabilities via Bayes Theorem
+    means <- lapply(object$est, "[[", "xbar")
+    covs <- replicate(n=object$num_groups, object$cov_pool, simplify=FALSE)
+    priors <- lapply(object$est, "[[", "prior")
+    res <- posterior_probs(x = newdata, means = means, covs = covs, priors = priors)
+    res <- as.data.frame(res)
+    
+  } else if (type == "class") {
+    res <- score_to_class(scores, object)
+  } else {
+    res <- t(scores)
+    res <- as.data.frame(res)
+  }
+  res
 }
