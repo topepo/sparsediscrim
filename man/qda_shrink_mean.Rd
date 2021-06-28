@@ -100,7 +100,7 @@ all.equal(predicted, predicted2)
 Tong, T., Chen, L., and Zhao, H. (2012), "Improved Mean
 Estimation and Its Application to Diagonal Discriminant Analysis,"
 Bioinformatics, 28, 4, 531-537.
-\url{http://bioinformatics.oxfordjournals.org/content/28/4/531.long}
+\url{https://academic.oup.com/bioinformatics/article/28/4/531/211887}
 
 Dudoit, S., Fridlyand, J., & Speed, T. P. (2002). "Comparison of
 Discrimination Methods for the Classification of Tumors Using Gene Expression

@@ -126,5 +126,5 @@ Ramey, J. A., Stein, C. K., and Young, D. M. (2017),
 
 Friedman, J. H. (1989), "Regularized Discriminant Analysis,"
 Journal of American Statistical Association, 84, 405, 165-175.
-\url{http://www.jstor.org/pss/2289860} (Requires full-text access).
+\url{http://www.jstor.org/stable/2289860} (Requires full-text access).
 }
