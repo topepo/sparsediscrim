@@ -14,3 +14,4 @@
 \description{
 Summarizes the trained lda_pseudo classifier in a nice manner.
 }
+\keyword{internal}

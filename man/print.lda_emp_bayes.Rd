@@ -14,3 +14,4 @@
 \description{
 Summarizes the trained lda_emp_bayes classifier in a nice manner.
 }
+\keyword{internal}

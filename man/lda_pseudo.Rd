@@ -13,14 +13,14 @@ lda_pseudo(x, ...)
 
 \method{lda_pseudo}{formula}(formula, data, prior = NULL, tol = 1e-08, ...)
 
-\method{predict}{lda_pseudo}(object, newdata, ...)
+\method{predict}{lda_pseudo}(object, newdata, type = c("class", "prob", "score"), ...)
 }
 \arguments{
 \item{x}{Matrix or data frame containing the training data. The rows are the
 sample observations, and the columns are the features. Only complete data are
 retained.}
 
-\item{...}{additional arguments}
+\item{...}{additional arguments (not currently used).}
 
 \item{y}{Vector of class labels for each training observation. Only complete
 data are retained.}
@@ -42,6 +42,8 @@ preferentially to be taken.}
 
 \item{newdata}{Matrix or data frame of observations to predict. Each row
 corresponds to a new observation.}
+
+\item{type}{Prediction type: either `"class"`, `"prob"`, or `"score"`.}
 }
 \value{
 \code{lda_pseudo} object that contains the trained lda_pseudo
@@ -87,12 +89,14 @@ as the number of classes in \code{y}. The \code{prior} probabilities should be
 nonnegative and sum to one.
 }
 \examples{
-n <- nrow(iris)
-train <- sample(seq_len(n), n / 2)
-lda_pseudo_out <- lda_pseudo(Species ~ ., data = iris[train, ])
-predicted <- predict(lda_pseudo_out, iris[-train, -5])$class
+library(modeldata)
+data(penguins)
+pred_rows <- seq(1, 344, by = 20)
+penguins <- penguins[, c("species", "body_mass_g", "flipper_length_mm")]
+lda_pseudo_out <- lda_pseudo(species ~ ., data = penguins[-pred_rows, ])
+predicted <- predict(lda_pseudo_out, penguins[pred_rows, -1], type = "class")
 
-lda_pseudo_out2 <- lda_pseudo(x = iris[train, -5], y = iris[train, 5])
-predicted2 <- predict(lda_pseudo_out2, iris[-train, -5])$class
+lda_pseudo_out2 <- lda_pseudo(x = penguins[-pred_rows, -1], y = penguins$species[-pred_rows])
+predicted2 <- predict(lda_pseudo_out2, penguins[pred_rows, -1], type = "class")
 all.equal(predicted, predicted2)
 }

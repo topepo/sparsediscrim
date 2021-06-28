@@ -197,6 +197,7 @@ rda_high_dim.formula <- function(formula, data, ...) {
 #'
 #' @param x object to print
 #' @param ... unused
+#' @keywords internal
 #' @export
 print.rda_high_dim <- function(x, ...) {
   cat("High-Dimensional Regularized Discriminant Analysis\n\n")
@@ -223,7 +224,8 @@ print.rda_high_dim <- function(x, ...) {
 #' speed when the linear transformation has already been performed.
 #' @return list with predicted class and discriminant scores for each of the K
 #' classes
-predict.rda_high_dim <- function(object, newdata, projected = FALSE, ...) {
+predict.rda_high_dim <- function(object, newdata, projected = FALSE, type = c("class", "prob", "score"), ...) {
+  type <- rlang::arg_match0(type, c("class", "prob", "score"), arg_nm = "type")
   newdata <- process_newdata(object, newdata)
   
   scores <- sapply(object$est, function(class_est) {
@@ -271,9 +273,22 @@ predict.rda_high_dim <- function(object, newdata, projected = FALSE, ...) {
     posterior <- posterior / rowSums(posterior)
   }
   
-  class <- with(object, factor(groups[min_scores], levels = groups))
-  
-  list(class = class, scores = scores, posterior = posterior)
+  if (type == "prob") {
+    if (is.vector(posterior)) {
+      posterior <- matrix(posterior, nrow = 1)
+      colnames(posterior) <- object$groups
+    }
+    res <- as.data.frame(posterior)
+  } else if (type == "class") {
+    res <- with(object, factor(groups[min_scores], levels = groups))
+  } else {
+    if (is.vector(scores)) {
+      scores <- matrix(scores, nrow = 1)
+      colnames(scores) <- object$groups
+    }
+    res <- as.data.frame(scores)
+  }
+  res
 }
 
 #' Helper function to optimize the HDRDA classifier via cross-validation

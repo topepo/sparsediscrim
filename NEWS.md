@@ -1,3 +1,10 @@
+# sparsediscrim 0.3.0
+
+New CRAN release after archival. 
+
+ * Formula method now works for prediction when factors are used as predictors. 
+ * Predictions now use the `type` argument. 
+
 # sparsediscrim 0.2.5
 
 * Fixed issue where classifiers had errors when only 1 feature used. #41

@@ -14,3 +14,4 @@
 \description{
 Summarizes the trained SDLDA classifier in a nice manner.
 }
+\keyword{internal}

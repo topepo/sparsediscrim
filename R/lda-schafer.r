@@ -34,13 +34,15 @@
 #' @param ... Options passed to [corpcor::invcov.shrink()]
 #' @return `lda_schafer` object that contains the trained classifier
 #' @examples
-#' n <- nrow(iris)
-#' train <- sample(seq_len(n), n / 2)
-#' lda_schafer_out <- lda_schafer(Species ~ ., data = iris[train, ])
-#' predicted <- predict(lda_schafer_out, iris[-train, -5])$class
+#' library(modeldata)
+#' data(penguins)
+#' pred_rows <- seq(1, 344, by = 20)
+#' penguins <- penguins[, c("species", "body_mass_g", "flipper_length_mm")]
+#' lda_schafer_out <- lda_schafer(species ~ ., data = penguins[-pred_rows, ])
+#' predicted <- predict(lda_schafer_out, penguins[pred_rows, -1], type = "class")
 #'
-#' lda_schafer_out2 <- lda_schafer(x = iris[train, -5], y = iris[train, 5])
-#' predicted2 <- predict(lda_schafer_out2, iris[-train, -5])$class
+#' lda_schafer_out2 <- lda_schafer(x = penguins[-pred_rows, -1], y = penguins$species[-pred_rows])
+#' predicted2 <- predict(lda_schafer_out2, penguins[pred_rows, -1], type = "class")
 #' all.equal(predicted, predicted2)
 #' @references Schafer, J., and Strimmer, K. (2005). "A shrinkage approach to
 #' large-scale covariance estimation and implications for functional genomics,"
@@ -111,6 +113,7 @@ lda_schafer.formula <- function(formula, data, prior = NULL, ...) {
 #'
 #' @param x object to print
 #' @param ... unused
+#' @keywords internal
 #' @export
 print.lda_schafer <- function(x, ...) {
   cat("LDA using the Schafer-Strimmer Covariance Matrix Estimator\n\n")
@@ -133,7 +136,8 @@ print.lda_schafer <- function(x, ...) {
 #' @export
 #' @inheritParams predict.lda_diag
 
-predict.lda_schafer <- function(object, newdata, ...) {
+predict.lda_schafer <- function(object, newdata, type = c("class", "prob", "score"), ...) {
+  type <- rlang::arg_match0(type, c("class", "prob", "score"), arg_nm = "type")
   newdata <- process_newdata(object, newdata)
 
   # Calculates the discriminant scores for each test observation
@@ -142,17 +146,20 @@ predict.lda_schafer <- function(object, newdata, ...) {
       with(class_est, quadform(object$cov_inv, obs - xbar) + log(prior))
     })
   })
-
-  # Posterior probabilities via Bayes Theorem
-  means <- lapply(object$est, "[[", "xbar")
-  covs <- replicate(n=object$num_groups, object$cov_pool, simplify=FALSE)
-  priors <- lapply(object$est, "[[", "prior")
-  posterior <- posterior_probs(x=newdata,
-                               means=means,
-                               covs=covs,
-                               priors=priors)
-
-  class <- score_to_class(scores, object)
-
-  list(class = class, scores = scores, posterior = posterior)
+  
+  if (type == "prob") {
+    # Posterior probabilities via Bayes Theorem
+    means <- lapply(object$est, "[[", "xbar")
+    covs <- replicate(n=object$num_groups, object$cov_pool, simplify=FALSE)
+    priors <- lapply(object$est, "[[", "prior")
+    res <- posterior_probs(x = newdata, means = means, covs = covs, priors = priors)
+    res <- as.data.frame(res)
+    
+  } else if (type == "class") {
+    res <- score_to_class(scores, object)
+  } else {
+    res <- t(scores)
+    res <- as.data.frame(res)
+  }
+  res
 }
