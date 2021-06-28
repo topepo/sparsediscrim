@@ -42,7 +42,7 @@ preferentially to be taken.}
 \item{newdata}{Matrix or data frame of observations to predict. Each row
 corresponds to a new observation.}
 
-\item{type}{Prediction type: either `"class"`, `"prob"`, or `"score"`.}
+\item{type}{Prediction type: either \code{"class"}, \code{"prob"}, or \code{"score"}.}
 }
 \value{
 \code{lda_eigen} object that contains the trained MDMP classifier

@@ -72,7 +72,7 @@ corresponds to a new observation.}
 projected to a q-dimensional subspace. This argument can yield large gains in
 speed when the linear transformation has already been performed.}
 
-\item{type}{Prediction type: either `"class"`, `"prob"`, or `"score"`.}
+\item{type}{Prediction type: either \code{"class"}, \code{"prob"}, or \code{"score"}.}
 }
 \value{
 \code{rda_high_dim} object that contains the trained HDRDA classifier

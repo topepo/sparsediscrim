@@ -26,5 +26,5 @@ A naive way to compute the quadratic form is to explicitly write
 inefficient. We provide a more efficient method below.
 
 Note that we have adapted the code from:
-\url{http://tolstoy.newcastle.edu.au/R/help/05/11/14989.html}
+\url{https://stat.ethz.ch/pipermail/r-help/2005-November/081940.html}
 }

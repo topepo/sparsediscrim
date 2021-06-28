@@ -9,7 +9,7 @@
 #' inefficient. We provide a more efficient method below.
 #'
 #' Note that we have adapted the code from:
-#' \url{http://tolstoy.newcastle.edu.au/R/help/05/11/14989.html}
+#' \url{https://stat.ethz.ch/pipermail/r-help/2005-November/081940.html}
 #'
 #' @param A matrix of dimension p x p
 #' @param x vector of length p
@@ -30,7 +30,7 @@ quadform <- function(A, x) {
 #' inefficient. We provide a more efficient method below.
 #'
 #' Note that we have adapted the code from:
-#' \url{http://tolstoy.newcastle.edu.au/R/help/05/11/14989.html}
+#' \url{https://stat.ethz.ch/pipermail/r-help/2005-November/081940.html}
 #'
 #' @param A matrix that is p x p and nonsingular
 #' @param x vector of length p

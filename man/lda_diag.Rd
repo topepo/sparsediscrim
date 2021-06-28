@@ -40,12 +40,12 @@ preferentially to be taken.}
 \item{newdata}{Matrix or data frame of observations to predict. Each row
 corresponds to a new observation.}
 
-\item{type}{Prediction type: either `"class"`, `"prob"`, or `"score"`.}
+\item{type}{Prediction type: either \code{"class"}, \code{"prob"}, or \code{"score"}.}
 }
 \value{
-The model fitting function returns the fitted classifier. The 
-`predict()` method returns either a vector (`type = "class"`) or a data 
-frame (all other `type` values).
+The model fitting function returns the fitted classifier. The
+\code{predict()} method returns either a vector (\code{type = "class"}) or a data
+frame (all other \code{type} values).
 }
 \description{
 Given a set of training data, this function builds the Diagonal Linear
