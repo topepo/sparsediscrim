@@ -14,8 +14,12 @@ coverage](https://codecov.io/gh/topepo/sparsediscrim/branch/main/graph/badge.svg
 
 The R package `sparsediscrim` provides a collection of sparse and
 regularized discriminant analysis classifiers that are especially useful
-for when applied to small-sample, high-dimensional data sets. The
-package was archived in 2018 and was re-released in 2021.
+for when applied to small-sample, high-dimensional data sets.
+
+The package was archived in 2018 and was re-released in 2021. The
+package code was forked from [John Ramey’s
+repo](https://github.com/ramhiser/sparsediscrim) and subsequently
+modified.
 
 ## Installation
 
@@ -88,17 +92,17 @@ The `sparsediscrim` package also includes a variety of additional
 classifiers intended for small-sample, high-dimensional data sets. These
 include:
 
-| Classifier                                                    | Author                                                                                             | R Function                                                                                           |
-|---------------------------------------------------------------|----------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
-| Diagonal Linear Discriminant Analysis                         | [Dudoit et al. (2002)](https://www.tandfonline.com/doi/abs/10.1198/016214502753479248)              | [`lda_diag()`](https://topepo.github.io/sparsediscrim/reference/lda_diag.html)                       |
-| Diagonal Quadratic Discriminant Analysis                      | [Dudoit et al. (2002)](https://www.tandfonline.com/doi/abs/10.1198/016214502753479248)              | [`qda_diag()`](https://topepo.github.io/sparsediscrim/reference/qda_diag.html)                       |
+| Classifier                                                    | Author                                                                                         | R Function                                                                                           |
+|---------------------------------------------------------------|------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
+| Diagonal Linear Discriminant Analysis                         | [Dudoit et al. (2002)](https://www.tandfonline.com/doi/abs/10.1198/016214502753479248)         | [`lda_diag()`](https://topepo.github.io/sparsediscrim/reference/lda_diag.html)                       |
+| Diagonal Quadratic Discriminant Analysis                      | [Dudoit et al. (2002)](https://www.tandfonline.com/doi/abs/10.1198/016214502753479248)         | [`qda_diag()`](https://topepo.github.io/sparsediscrim/reference/qda_diag.html)                       |
 | Shrinkage-based Diagonal Linear Discriminant Analysis         | [Pang et al. (2009)](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1541-0420.2009.01200.x) | [`lda_shrink_cov()`](https://topepo.github.io/sparsediscrim/reference/lda_shrink_cov.html)           |
 | Shrinkage-based Diagonal Quadratic Discriminant Analysis      | [Pang et al. (2009)](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1541-0420.2009.01200.x) | [`qda_shrink_cov()`](https://topepo.github.io/sparsediscrim/reference/qda_shrink_cov.html)           |
-| Shrinkage-mean-based Diagonal Linear Discriminant Analysis    | [Tong et al. (2012)](https://academic.oup.com/bioinformatics/article/28/4/531/211887)               | [`lda_shrink_mean()`](https://topepo.github.io/sparsediscrim/reference/lda_shrink_mean.html)         |
-| Shrinkage-mean-based Diagonal Quadratic Discriminant Analysis | [Tong et al. (2012)](https://academic.oup.com/bioinformatics/article/28/4/531/211887)               | [`qda_shrink_mean()`](https://topepo.github.io/sparsediscrim/reference/qda_shrink_mean.html)         |
-| Minimum Distance Empirical Bayesian Estimator (MDEB)          | [Srivistava and Kubokawa (2007)](http://www.utstat.utoronto.ca/~srivasta/exp1.pdf)                 | [`lda_emp_bayes()`](https://topepo.github.io/sparsediscrim/reference/lda_emp_bayes.html)             |
-| Minimum Distance Rule using Modified Empirical Bayes (MDMEB)  | [Srivistava and Kubokawa (2007)](http://www.utstat.utoronto.ca/~srivasta/exp1.pdf)                 | [`lda_emp_bayes_eigen()`](https://topepo.github.io/sparsediscrim/reference/lda_emp_bayes_eigen.html) |
-| Minimum Distance Rule using Moore-Penrose Inverse (MDMP)      | [Srivistava and Kubokawa (2007)](http://www.utstat.utoronto.ca/~srivasta/exp1.pdf)                 | [`lda_eigen()`](https://topepo.github.io/sparsediscrim/reference/lda_eigen.html)                     |
+| Shrinkage-mean-based Diagonal Linear Discriminant Analysis    | [Tong et al. (2012)](https://academic.oup.com/bioinformatics/article/28/4/531/211887)          | [`lda_shrink_mean()`](https://topepo.github.io/sparsediscrim/reference/lda_shrink_mean.html)         |
+| Shrinkage-mean-based Diagonal Quadratic Discriminant Analysis | [Tong et al. (2012)](https://academic.oup.com/bioinformatics/article/28/4/531/211887)          | [`qda_shrink_mean()`](https://topepo.github.io/sparsediscrim/reference/qda_shrink_mean.html)         |
+| Minimum Distance Empirical Bayesian Estimator (MDEB)          | [Srivistava and Kubokawa (2007)](http://www.utstat.utoronto.ca/~srivasta/exp1.pdf)             | [`lda_emp_bayes()`](https://topepo.github.io/sparsediscrim/reference/lda_emp_bayes.html)             |
+| Minimum Distance Rule using Modified Empirical Bayes (MDMEB)  | [Srivistava and Kubokawa (2007)](http://www.utstat.utoronto.ca/~srivasta/exp1.pdf)             | [`lda_emp_bayes_eigen()`](https://topepo.github.io/sparsediscrim/reference/lda_emp_bayes_eigen.html) |
+| Minimum Distance Rule using Moore-Penrose Inverse (MDMP)      | [Srivistava and Kubokawa (2007)](http://www.utstat.utoronto.ca/~srivasta/exp1.pdf)             | [`lda_eigen()`](https://topepo.github.io/sparsediscrim/reference/lda_eigen.html)                     |
 
 We also include modifications to Linear Discriminant Analysis (LDA) with
 regularized covariance-matrix estimators:
