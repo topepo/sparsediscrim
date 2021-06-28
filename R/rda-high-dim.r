@@ -403,14 +403,14 @@ plot.rda_high_dim_cv <- function(x, ...) {
   error_rate <- 1
   
   p <- ggplot(cv_summary, aes(factor(gamma), factor(lambda)))
-  p <- p + geom_tile(aes(fill=error_rate), colour="white")
-  p <- p + scale_fill_gradient(low="white",
-                               high="steelblue",
-                               name="CV Error Rate")
-  p <- p + labs(x=expression(gamma), y=expression(lambda))
-  p <- p + scale_x_discrete(expand=c(0, 0))
-  p <- p + scale_y_discrete(expand=c(0, 0))
-  p <- p + theme(axis.ticks=element_blank())
+  p <- p + geom_tile(aes(fill = error_rate), colour = "white")
+  p <- p + scale_fill_gradient(low = "white",
+                               high = "steelblue",
+                               name = "CV Error Rate")
+  p <- p + labs(x = expression(gamma), y = expression(lambda))
+  p <- p + scale_x_discrete(expand = c(0, 0))
+  p <- p + scale_y_discrete(expand = c(0, 0))
+  p <- p + theme(axis.ticks = element_blank())
   p
 }
 
