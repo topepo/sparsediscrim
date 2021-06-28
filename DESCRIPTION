@@ -31,7 +31,8 @@ Suggests:
     testthat,
     MASS,
     covr,
-    modeldata
+    modeldata,
+    spelling
 License: MIT + file LICENSE
 URL: https://github.com/topepo/sparsediscrim, https://topepo.github.io/sparsediscrim/
 Roxygen: list(markdown = TRUE)
@@ -39,3 +40,4 @@ RoxygenNote: 7.1.1.9001
 Depends: 
     R (>= 2.10)
 Encoding: UTF-8
+Language: en-US
