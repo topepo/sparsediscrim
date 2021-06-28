@@ -12,7 +12,7 @@
 #' @references Pang, H., Tong, T., & Zhao, H. (2009). "Shrinkage-based Diagonal
 #' Discriminant Analysis and Its Applications in High-Dimensional Data,"
 #' Biometrics, 65, 4, 1021-1029.
-#' \url{http://onlinelibrary.wiley.com/doi/10.1111/j.1541-0420.2009.01200.x/abstract}
+#' \url{https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1541-0420.2009.01200.x}
 #' @return the bias correction value
 h <- function(nu, p, t = -1) {
   if (nu <= 0) {
@@ -44,7 +44,7 @@ h <- function(nu, p, t = -1) {
 #' @references Pang, H., Tong, T., & Zhao, H. (2009). "Shrinkage-based Diagonal
 #' Discriminant Analysis and Its Applications in High-Dimensional Data,"
 #' Biometrics, 65, 4, 1021-1029.
-#' \url{http://onlinelibrary.wiley.com/doi/10.1111/j.1541-0420.2009.01200.x/abstract}
+#' \url{https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1541-0420.2009.01200.x}
 #' @return list with
 #' \itemize{
 #'   \item `alpha`: the alpha that minimizes the average risk under a Stein
@@ -102,7 +102,7 @@ risk_stein <- function(N, K, var_feature, num_alphas = 101, t = -1) {
 #' @references Pang, H., Tong, T., & Zhao, H. (2009). "Shrinkage-based Diagonal
 #' Discriminant Analysis and Its Applications in High-Dimensional Data,"
 #' Biometrics, 65, 4, 1021-1029.
-#' \url{http://onlinelibrary.wiley.com/doi/10.1111/j.1541-0420.2009.01200.x/abstract}
+#' \url{https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1541-0420.2009.01200.x}
 #' @return a vector of the shrunken variances for each feature.
 var_shrinkage <- function(N, K, var_feature, num_alphas = 101, t = -1) {
   nu <- N - K

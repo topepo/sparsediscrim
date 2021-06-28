@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 
-The R package `sparsediscrim` provides a collection of sparse and regularized discriminant analysis classifiers that are especially useful for when applied to small-sample, high-dimensional data sets. The package was archived in 2018 and was re-released in 2021. 
+The R package `sparsediscrim` provides a collection of sparse and regularized discriminant analysis classifiers that are especially useful for when applied to small-sample, high-dimensional data sets. The package was archived in 2018 and was re-released in 2021. The package code was forked from [John Ramey's repo](https://github.com/ramhiser/sparsediscrim) and subsequently modified. 
 
 ## Installation
 

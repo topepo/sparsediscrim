@@ -8,7 +8,7 @@
 #' @references Tong, T., Chen, L., and Zhao, H. (2012), "Improved Mean
 #' Estimation and Its Application to Diagonal Discriminant Analysis,"
 #' Bioinformatics, 28, 4, 531-537.
-#' \url{http://bioinformatics.oxfordjournals.org/content/28/4/531.long}
+#' \url{https://academic.oup.com/bioinformatics/article/28/4/531/211887}
 #' @param x a matrix with `n` rows and `p` columns.
 #' @param r_opt the shrinkage coefficient. If `NULL` (default), we calculate
 #' the shrinkage coefficient with the formula given just above Equation 5 on page

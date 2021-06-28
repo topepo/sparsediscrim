@@ -40,7 +40,7 @@
 #' \url{https://arxiv.org/abs/1602.01182}.
 #' @references Friedman, J. H. (1989), "Regularized Discriminant Analysis,"
 #' Journal of American Statistical Association, 84, 405, 165-175.
-#' \url{http://www.jstor.org/pss/2289860} (Requires full-text access).
+#' \url{http://www.jstor.org/stable/2289860} (Requires full-text access).
 #' @inheritParams lda_diag
 #' @param y vector of class labels for each training observation
 #' @param lambda the HDRDA pooling parameter. Must be between 0 and 1,
